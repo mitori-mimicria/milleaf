@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milleaf 説明書</title>
+<meta name="description" content="Milleaf の説明書。入れ方、本の作り方、書き出し、VRChat の中で読める本。Manual for Milleaf, a Windows app that makes photo books from VRChat screenshots.">
+<meta property="og:title" content="Milleaf">
+<meta property="og:description" content="Milleaf の説明書。入れ方、本の作り方、書き出し、VRChat の中で読める本。Manual for Milleaf, a Windows app that makes photo books from VRChat screenshots.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mitori-mimicria.github.io/milleaf/img/icon_256.png">
+<link rel="icon" href="img/icon_64.png">
+<link rel="apple-touch-icon" href="img/icon_180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* アプリと同じ白い画面と差し色 1 色 */
+  --bg: #ffffff;
+  --panel: #f6f6f6;
+  --line: #e2e2e2;
+  --fg: #1f1f1f;
+  --mute: #5d5d5d;
+  --accent: #2f63c9;
+  --accent-dark: #2754ad;
+  --accent-soft: #e8effb;
+  --key: #fafafa;
+  --key-line: #cfcfcf;
+
+  --sans: system-ui, -apple-system, 'Hiragino Sans', 'Yu Gothic UI', 'Yu Gothic', Meiryo, sans-serif;
+  --mono: ui-monospace, Consolas, 'Cascadia Mono', Menlo, monospace;
+  --gutter: clamp(16px, 4vw, 40px);
+  --shadow: rgba(0, 0, 0, 0.12);
+  color-scheme: light;
+}
+/* 暗い表示（アプリの「ダーク」に近い色） */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #18191b; --panel: #222427; --line: #34373b; --fg: #e4e4e4; --mute: #a3a3a3;
+    --accent: #7ea4ff; --accent-dark: #a5c0ff; --accent-soft: #263452; --key: #25272a; --key-line: #4a4d52;
+    --shadow: rgba(0, 0, 0, 0.5); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #18191b; --panel: #222427; --line: #34373b; --fg: #e4e4e4; --mute: #a3a3a3;
+  --accent: #7ea4ff; --accent-dark: #a5c0ff; --accent-soft: #263452; --key: #25272a; --key-line: #4a4d52;
+  --shadow: rgba(0, 0, 0, 0.5); color-scheme: dark;
+}
+/* 和文書体は日本語と英語のときだけ（韓・中は各言語の字形で出す） */
+html[lang="ja"] body, html[lang="en"] body { font-family: 'BIZ UDPGothic', var(--sans); }
+:lang(ko) { --sans: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
+:lang(zh-Hant) { --sans: system-ui, -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
+:lang(zh-Hans) { --sans: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.85 var(--sans);
+  line-break: strict; overflow-wrap: anywhere; overflow-x: clip;
+}
+html[lang="en"] body { line-height: 1.65; }
+::selection { background: var(--accent-soft); color: var(--fg); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent-dark); text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; }
+code, .path { font-family: var(--mono); font-size: 0.9em; background: var(--panel); border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere; }
+kbd {
+  display: inline-block; min-width: 1.9em; padding: 0 6px; text-align: center;
+  font: 13px/1.7 var(--mono); background: var(--key); border: 1px solid var(--key-line); border-bottom-width: 2px; border-radius: 3px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---------- 頭 ---------- */
+.top { display: flex; align-items: center; gap: 16px; padding-top: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.home { font-weight: 700; letter-spacing: 0.04em; color: var(--fg); text-decoration: none; }
+.home:hover { color: var(--accent); }
+.crumb { color: var(--mute); margin-right: auto; font-size: 14px; }
+.lang { position: relative; }
+.lang-btn {
+  display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 10px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; color: var(--fg); font: inherit; font-size: 14px; cursor: pointer;
+}
+.lang-btn:hover, .lang-btn[aria-expanded="true"] { border-color: var(--mute); }
+.lang-btn svg { width: 16px; height: 16px; }
+.lang-pop {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 10; min-width: 160px; padding: 4px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 6px 20px var(--shadow);
+}
+.lang-pop[hidden] { display: none; }
+.lang-pop button {
+  display: block; width: 100%; min-height: 40px; padding: 6px 10px; text-align: left; background: none; border: 0; border-radius: 3px;
+  color: var(--fg); font: inherit; font-size: 14px; cursor: pointer;
+}
+.lang-pop button:hover { background: var(--panel); }
+.lang-pop button[aria-current="true"] { color: var(--accent); font-weight: 700; }
+
+/* ---------- 題名と目次 ---------- */
+.doc { display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 56px; padding-top: 48px; }
+.doc[hidden] { display: none; }
+.title { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding-bottom: 40px; }
+.title img { width: 56px; height: 56px; border-radius: 12px; }
+.title h1 { font-size: 34px; line-height: 1.3; font-weight: 700; letter-spacing: 0.01em; }
+.title p { color: var(--mute); font-size: 14px; font-variant-numeric: tabular-nums; }
+.title .maker { font-family: var(--sans); } /* BIZ UDPGothic の — は細すぎて消えて見える */
+.toc { position: sticky; top: 24px; align-self: start; font-size: 14px; }
+.toc p { color: var(--mute); font-size: 13px; margin-bottom: 8px; }
+.toc ol { list-style: none; padding: 0; border-left: 1px solid var(--line); }
+.toc a { display: block; padding: 5px 0 5px 14px; margin-left: -1px; border-left: 2px solid transparent; color: var(--mute); text-decoration: none; line-height: 1.5; }
+.toc a:hover { color: var(--fg); }
+.toc a[aria-current="true"] { color: var(--accent); border-left-color: var(--accent); font-weight: 700; }
+
+/* ---------- 本文 ---------- */
+article { min-width: 0; padding-bottom: 80px; }
+section { padding-top: 56px; }
+section:first-child { padding-top: 0; }
+h2 { display: flex; align-items: baseline; gap: 14px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 26px; line-height: 1.4; font-weight: 700; }
+section:first-child h2 { border-top: 0; padding-top: 0; }
+h2 .n { color: var(--accent); font-size: 18px; font-variant-numeric: tabular-nums; min-width: 1.2em; }
+h3 { margin-top: 40px; font-size: 19px; line-height: 1.5; font-weight: 700; }
+article p, article ul, article ol, article dl, .tbl { margin-top: 14px; max-width: 42em; }
+h2 + p { margin-top: 20px; }
+article ul { padding-left: 1.3em; }
+article ul li + li { margin-top: 4px; }
+.note { padding: 10px 14px; background: var(--panel); border-radius: 4px; font-size: 15px; }
+
+/* 手順（アプリの「新しい本」の段の丸数字に合わせる） */
+ol.steps { list-style: none; padding: 0; counter-reset: s; }
+ol.steps > li { counter-increment: s; position: relative; padding-left: 38px; }
+ol.steps > li + li { margin-top: 10px; }
+ol.steps > li::before {
+  content: counter(s); position: absolute; left: 0; top: 0.15em;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--fg); color: var(--bg);
+  font-size: 13px; font-weight: 700; line-height: 24px; text-align: center; font-variant-numeric: tabular-nums;
+}
+ol.steps ul { margin-top: 6px; font-size: 15px; }
+
+/* 画面写真 */
+figure.shot { margin-top: 24px; max-width: 100%; }
+figure.shot img { border: 1px solid var(--line); border-radius: 4px; width: 100%; }
+figure.shot figcaption { margin-top: 8px; font-size: 13px; color: var(--mute); }
+
+/* 表 */
+.tbl { max-width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.65; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); }
+th { color: var(--mute); font-weight: 400; font-size: 13px; }
+tbody th { color: var(--fg); font-weight: 700; font-size: 15px; white-space: nowrap; }
+dl.facts { display: grid; grid-template-columns: auto 1fr; gap: 0 20px; border-top: 1px solid var(--line); }
+dl.facts dt, dl.facts dd { padding: 9px 0; border-bottom: 1px solid var(--line); }
+dl.facts dt { color: var(--mute); font-size: 14px; padding-top: 11px; }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: baseline; }
+
+/* 利用規約のページ */
+.doc.single { grid-template-columns: minmax(0, 1fr); }
+pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inherit; font-size: 15px; line-height: 1.85; }
+
+/* よくある質問 */
+.qa h3 { font-size: 17px; margin-top: 32px; }
+.qa h3 + p { margin-top: 6px; }
+
+/* ---------- 奥付 ---------- */
+.foot { display: flex; flex-wrap: wrap; gap: 6px 24px; align-items: baseline; padding-top: 24px; padding-bottom: 36px; border-top: 1px solid var(--line); font-size: 13px; color: var(--mute); }
+.foot .credit { margin-right: auto; font-family: var(--sans); color: var(--fg); }
+
+@media (max-width: 900px) {
+  .doc { grid-template-columns: minmax(0, 1fr); padding-top: 32px; }
+  .title { padding-bottom: 24px; }
+  .title h1 { font-size: 28px; }
+  .toc { position: static; margin-bottom: 40px; padding: 14px 16px; background: var(--panel); border-radius: 4px; }
+  .toc ol { border-left: 0; columns: 2; column-gap: 16px; }
+  .toc a { padding: 6px 0; border-left: 0; margin-left: 0; }
+  .toc a[aria-current="true"] { font-weight: 400; color: var(--mute); }
+}
+/* 狭い画面では表を行ごとの縦並びに（列の名前はビルドが data-label に入れる） */
+@media (max-width: 640px) {
+  .tbl table, .tbl tbody, .tbl tr, .tbl th, .tbl td { display: block; }
+  .tbl thead { display: none; }
+  .tbl tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .tbl tbody th { padding: 0 0 4px; border: 0; white-space: normal; }
+  .tbl td { padding: 2px 0; border: 0; }
+  .tbl td[data-label]::before { content: attr(data-label); display: block; color: var(--mute); font-size: 12px; line-height: 1.6; }
+}
+@media (max-width: 480px) {
+  .toc ol { columns: 1; }
+  h2 { font-size: 23px; }
+  .title img { width: 44px; height: 44px; border-radius: 10px; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="home" href="https://mitori-mimicria.github.io/">Mimicria</a>
+  <span class="crumb">/ Milleaf</span>
+  <div class="lang">
+    <button class="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" id="lang-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+      <span id="lang-cur">日本語</span>
+    </button>
+    <div class="lang-pop" id="lang-pop" hidden></div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc single" lang="ja" data-title="Milleaf 利用規約">
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>利用規約</h1>
+    <p><a href="./">Milleaf 説明書へ戻る</a></p>
+  </div>
+</div>
+<article><pre class="terms-text">Milleaf 利用規約
+
+<strong>第 1 条（適用）</strong>
+
+この規約は、Milleaf（以下「本ソフト」）の製品版と体験版の利用に適用されます。利用者は、本ソフトを使い始めた時点で、この規約に同意したものとみなします。
+
+<strong>第 2 条（利用の許諾）</strong>
+
+1. 製品版は、購入した本人が 1 台のパソコンで利用できます。
+2. 体験版は、配布ページから入手した人が無料で利用できます。体験版には次の制限があります。
+   ・書き出しは 1 日 3 回まで
+   ・テンプレートの書き出しと、ZIP・フォルダからのテンプレートの追加はできません
+3. 法人での利用は、本ソフトを販売しているお店からお問い合わせください。
+
+<strong>第 3 条（禁止事項）</strong>
+
+利用者は、次のことをしてはなりません。
+
+1. 製品版のファイル（ZIP とその中身）を、他人に譲渡・共有・再配布・販売し、またはインターネットで公開すること
+2. 体験版のファイルを再配布すること（体験版を紹介するときは、配布ページを案内してください）
+3. 公式テンプレート（本ソフトに含まれるもの、別に販売するもの）を再配布・販売すること（第 5 条 3 項の場合を除きます）
+4. 本ソフトの飾りを、それだけで素材として配布・販売すること
+5. 本ソフトを改変し、または解析（リバースエンジニアリング、逆コンパイル、逆アセンブルなど）すること（第 7 条 2 項の場合を除きます）
+6. 改変その他の不正な方法で体験版の制限（第 2 条 2 項）を外すこと。その方法や、そのように改変したファイルを配布すること
+
+<strong>第 4 条（書き出したものの権利）</strong>
+
+1. 本ソフトで書き出した PDF・画像・EPUB・ZIP・unitypackage（以下「作品」）の権利は利用者にあります。作者は作品の権利を主張しません。
+2. unitypackage に含まれる Assets/Milleaf/Editor/MilleafPlacer.cs は MIT License です。
+3. 本ソフトに含まれるフォントは、すべて SIL Open Font License です。これらのフォントで作った作品は、販売・頒布できます。PDF には使った文字のフォントの一部が埋め込まれます。画像・EPUB・印刷所入稿データ・unitypackage では、文字は画像になります。
+4. 利用者が追加したフォントやパソコンに入っているフォントには、それぞれのライセンスが適用されます。商用利用や PDF への埋め込みが認められているかは、利用者が確認してください。
+
+<strong>第 5 条（テンプレート）</strong>
+
+1. 利用者が本ソフトで作ったテンプレートの権利は利用者にあり、配布・販売できます。
+2. テンプレートに入れた素材とフォントの権利は、テンプレートを作った人が確認します。フォントのファイルを同梱できるのは、再配布が認められたフォントだけです。その場合はライセンス文（OFL.txt など）も同梱してください。
+3. 公式テンプレートを複製して変更したものは、元のテンプレートと区別できるほど大きく変えた場合に限り、配布できます。色・文字・書体だけを変えたもの、写真枠の並びが同じものは、公式テンプレートの再配布とみなします。
+4. 本ソフトの飾りは、利用者のテンプレートや作品の一部としてなら、配布・販売できます。
+
+<strong>第 6 条（写真に写っているものの権利）</strong>
+
+1. 写真に写っているアバター・衣装・ワールドなどの権利は、それぞれの制作者にあります。作品を配布・販売する前に、それぞれの利用規約（VN3 ライセンスなど）を確認してください。
+2. 他人や他人のアバターが写った写真は、その人の許可を得て使ってください。
+3. 利用者は、VRChat の利用規約とガイドラインに従うものとします。
+4. 作者は、作品を販売・頒布してよいことを保証しません。
+
+<strong>第 7 条（オープンソースの部分）</strong>
+
+1. 本ソフトに含まれるオープンソースのソフトウェアとフォントの一覧とライセンスは、THIRD_PARTY_NOTICES.txt と licenses フォルダにあります。これらの部分には、それぞれのライセンスがこの規約より優先して適用されます。
+2. LGPL のライブラリ（resources\app.asar.unpacked\node_modules\@img\sharp-win32-x64\lib にある libvips などの DLL と、Milleaf.exe と同じフォルダの ffmpeg.dll）は、利用者が用意したものに差し替えられます。そのための改変と、差し替えたライブラリの不具合を調べるための解析は、第 3 条 5 項にかかわらず認めます（LGPL が求める条件です）。
+
+<strong>第 8 条（Adobe の色のプロファイル）</strong>
+
+1. 本ソフトには、印刷所入稿の CMYK 変換のために、Adobe の ICC プロファイル「Japan Color 2001 Coated」（resources\icc\JapanColor2001Coated.icc。以下「プロファイル」）が含まれます。Copyright 2002 Adobe Systems, Inc.
+2. プロファイルは、Adobe の Color Profile Bundling License にもとづき、改変せずに同梱しています。利用者はプロファイルを改変できません。プロファイルの使用・複製・配布は、Adobe のライセンスが認める範囲（そのまま単体で、または画像や PDF に埋め込んで）に限ります。CMYK で書き出した PDF にプロファイルが埋め込まれるのは、この範囲に含まれます。
+3. Adobe は、プロファイルを現状のまま提供し、明示・黙示を問わず、一切の保証（特定の目的への適合性、特定の結果、第三者の権利の非侵害、品質などを含みます）をしません。
+4. Adobe は、プロファイルの使用・配布によって、またはこれに関連して生じた損害（直接・間接・付随的・結果的な損害、逸失利益、第三者からの請求を含みます）について、一切の責任を負いません。
+5. この規約のうち Adobe のライセンスと異なる条件は、本ソフトの作者だけが提供するもので、Adobe が提供するものではありません。
+6. プロファイルは、本ソフトの resources\icc フォルダのほか、Adobe のサイトからも入手できます。
+   https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+7. Adobe は、Adobe Inc. の米国およびその他の国における登録商標または商標です。
+
+(English)
+Milleaf includes the Adobe ICC profile &quot;Japan Color 2001 Coated&quot; (Copyright 2002 Adobe Systems, Inc.), distributed unmodified under the Adobe Color Profile Bundling License. You may not modify the profile. Adobe provides the profile &quot;AS IS&quot; and, on behalf of Adobe and its suppliers, all warranties and conditions, express or implied, are disclaimed, and all liability for damages of any kind arising from or related to the profile is excluded. Any provisions of these terms that differ from the Adobe license are offered by the author of Milleaf alone and not by Adobe. The profile is available in the resources\icc folder of Milleaf and from Adobe at https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+
+<strong>第 9 条（非公式のツールであること）</strong>
+
+本ソフトは個人が作った非公式のツールで、VRChat Inc.、Modular Avatar、Unity Technologies とは関係ありません。VRChat は VRChat Inc. の商標です。
+
+<strong>第 10 条（免責）</strong>
+
+1. 本ソフトは現状のまま提供します。作者は、作者の故意または重大な過失による場合を除き、本ソフトの利用または作品によって生じた損害について、本ソフトの購入代金を上限として責任を負います。
+2. VRChat・Unity・Modular Avatar などの更新により、作品が使えなくなることがあります。
+
+<strong>第 11 条（お問い合わせ）</strong>
+
+本ソフトを入手したお店からお問い合わせください。
+
+<strong>第 12 条（規約の変更）</strong>
+
+この規約は変更されることがあります。各バージョンの本ソフトには、そのバージョンに同梱された規約が適用されます。
+
+<strong>第 13 条（準拠法）</strong>
+
+この規約は日本法に準拠します。
+
+2026-10-04
+© Mimicria — Mitori</pre></article>
+</div>
+
+<div class="doc single" lang="en" data-title="Milleaf Terms of use" hidden>
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>Terms of use</h1>
+    <p><a href="./">Back to the Milleaf manual</a></p>
+  </div>
+</div>
+<article><pre class="terms-text">Milleaf Terms of Use (English translation)
+
+This is a translation for reference. The Japanese text (利用規約.txt) is the original. If the two differ, the Japanese text applies.
+
+<strong>Article 1 (Scope)</strong>
+
+These terms apply to the use of the full version and the trial version of Milleaf (&quot;the software&quot;). You are deemed to have agreed to these terms when you start using the software.
+
+<strong>Article 2 (Permission to use)</strong>
+
+1. The person who bought the full version may use it on one computer.
+2. Anyone who got the trial version from the distribution page may use it free of charge. The trial version has the following limits.
+   - Up to 3 exports per day
+   - Exporting templates, and adding templates from a ZIP or folder, are not available
+3. For use by a company or other legal entity, please contact us through a store that sells the software.
+
+<strong>Article 3 (Prohibited acts)</strong>
+
+You must not do any of the following.
+
+1. Transferring the files of the full version (the ZIP and its contents) to others, sharing, redistributing or selling them, or publishing them on the internet
+2. Redistributing the files of the trial version (when you tell others about the trial version, point them to the distribution page)
+3. Redistributing or selling the official templates (those included in the software and those sold separately), except as provided in Article 5, paragraph 3
+4. Distributing or selling the software's decorations on their own as materials
+5. Modifying the software, or analyzing it (reverse engineering, decompiling, disassembling and the like), except as provided in Article 7, paragraph 2
+6. Removing the limits of the trial version (Article 2, paragraph 2) by modification or any other improper means. Distributing a way to do so, or files modified in that way
+
+<strong>Article 4 (Rights to what you export)</strong>
+
+1. The rights to the PDFs, images, EPUBs, ZIPs and unitypackages exported with the software (&quot;your work&quot;) belong to you. The author claims no rights to your work.
+2. Assets/Milleaf/Editor/MilleafPlacer.cs, included in the unitypackage, is under the MIT License.
+3. All fonts included in the software are under the SIL Open Font License. Your work made with these fonts may be sold and distributed. In PDFs, the parts of the fonts needed for the characters used are embedded. In images, EPUBs, print submission data and unitypackages, text is turned into images.
+4. Fonts you add and fonts installed on your computer are governed by their own licenses. Check for yourself whether they allow commercial use and embedding in PDFs.
+
+<strong>Article 5 (Templates)</strong>
+
+1. The rights to templates you make with the software belong to you, and you may distribute and sell them.
+2. The person who made a template must check the rights to the materials and fonts put in it. Font files may be bundled only for fonts whose license allows redistribution. In that case, also bundle the license text (such as OFL.txt).
+3. A copy of an official template that you have changed may be distributed only if it has been changed enough to be distinguished from the original template. A copy in which only the colors, text or typefaces have been changed, or in which the arrangement of photo frames is the same, is regarded as redistribution of the official template.
+4. The software's decorations may be distributed and sold as part of your templates or your work.
+
+<strong>Article 6 (Rights to what appears in photos)</strong>
+
+1. The rights to the avatars, outfits, worlds and other things shown in photos belong to their respective creators. Before you distribute or sell your work, check each of their terms of use (such as the VN3 license).
+2. Use photos that show other people or other people's avatars after getting those people's permission.
+3. You shall follow the VRChat Terms of Service and guidelines.
+4. The author does not guarantee that you may sell or distribute your work.
+
+<strong>Article 7 (Open-source parts)</strong>
+
+1. The list of open-source software and fonts included in the software, and their licenses, are in THIRD_PARTY_NOTICES.txt and the licenses folder. For these parts, their own licenses apply in preference to these terms.
+2. You may replace the LGPL libraries (the DLLs, such as libvips, in resources\app.asar.unpacked\node_modules\@img\sharp-win32-x64\lib, and ffmpeg.dll in the same folder as Milleaf.exe) with ones you provide. Notwithstanding Article 3, paragraph 5, modification for that purpose, and analysis to investigate problems with the replaced libraries, are permitted (this is a condition required by the LGPL).
+
+<strong>Article 8 (Adobe color profile)</strong>
+
+1. For CMYK conversion in print submission, the software includes the Adobe ICC profile &quot;Japan Color 2001 Coated&quot; (resources\icc\JapanColor2001Coated.icc, &quot;the profile&quot;). Copyright 2002 Adobe Systems, Inc.
+2. The profile is bundled unmodified under the Adobe Color Profile Bundling License. You may not modify the profile. You may use, copy and distribute the profile only to the extent the Adobe license allows (as is and on its own, or embedded in images or PDFs). Embedding the profile in PDFs exported in CMYK falls within this scope.
+3. Adobe provides the profile &quot;AS IS&quot; and makes no warranties of any kind, express or implied (including fitness for a particular purpose, particular results, non-infringement of third-party rights, and quality).
+4. Adobe is not liable for any damages arising from or related to the use or distribution of the profile (including direct, indirect, incidental and consequential damages, lost profits, and third-party claims).
+5. Any provisions of these terms that differ from the Adobe license are offered by the author of the software alone, and not by Adobe.
+6. The profile is available in the resources\icc folder of the software and also from Adobe's website.
+   https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+7. Adobe is either a registered trademark or a trademark of Adobe Inc. in the United States and/or other countries.
+
+(English)
+Milleaf includes the Adobe ICC profile &quot;Japan Color 2001 Coated&quot; (Copyright 2002 Adobe Systems, Inc.), distributed unmodified under the Adobe Color Profile Bundling License. You may not modify the profile. Adobe provides the profile &quot;AS IS&quot; and, on behalf of Adobe and its suppliers, all warranties and conditions, express or implied, are disclaimed, and all liability for damages of any kind arising from or related to the profile is excluded. Any provisions of these terms that differ from the Adobe license are offered by the author of Milleaf alone and not by Adobe. The profile is available in the resources\icc folder of Milleaf and from Adobe at https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+
+<strong>Article 9 (Unofficial tool)</strong>
+
+The software is an unofficial tool made by an individual and is not affiliated with VRChat Inc., Modular Avatar or Unity Technologies. VRChat is a trademark of VRChat Inc.
+
+<strong>Article 10 (Disclaimer)</strong>
+
+1. The software is provided as is. Except in cases of intent or gross negligence by the author, the author's liability for damages arising from the use of the software or from your work is limited to the purchase price of the software.
+2. Your work may stop working after updates to VRChat, Unity, Modular Avatar and the like.
+
+<strong>Article 11 (Contact)</strong>
+
+Please contact us through the store where you got the software.
+
+<strong>Article 12 (Changes to these terms)</strong>
+
+These terms may be changed. Each version of the software is governed by the terms bundled with that version.
+
+<strong>Article 13 (Governing law)</strong>
+
+These terms are governed by the laws of Japan.
+
+2026-10-04
+© Mimicria — Mitori</pre></article>
+</div>
+
+<div class="doc single" lang="ko" data-title="Milleaf 이용 약관" hidden>
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>이용 약관</h1>
+    <p><a href="./">Milleaf 설명서로 돌아가기</a></p>
+  </div>
+</div>
+<article><pre class="terms-text">Milleaf 이용약관 (한국어 번역)
+
+이 문서는 참고용 번역입니다. 원문은 일본어(利用規約.txt)이며, 내용이 다를 때는 일본어 원문이 적용됩니다.
+
+<strong>제1조(적용)</strong>
+
+이 약관은 Milleaf(이하 &quot;본 소프트웨어&quot;)의 정식판과 체험판 이용에 적용됩니다. 사용자는 본 소프트웨어를 사용하기 시작한 시점에 이 약관에 동의한 것으로 봅니다.
+
+<strong>제2조(이용 허락)</strong>
+
+1. 정식판은 구매한 본인이 컴퓨터 1대에서 사용할 수 있습니다.
+2. 체험판은 배포처 페이지에서 받은 사람이 무료로 사용할 수 있습니다. 체험판에는 다음과 같은 제한이 있습니다.
+   ・내보내기는 하루 3회까지
+   ・템플릿 내보내기와 ZIP·폴더에서 템플릿 추가는 할 수 없습니다
+3. 법인에서 사용하려면 본 소프트웨어를 판매하는 스토어를 통해 문의해 주십시오.
+
+<strong>제3조(금지 사항)</strong>
+
+사용자는 다음 행위를 해서는 안 됩니다.
+
+1. 정식판의 파일(ZIP과 그 내용물)을 다른 사람에게 양도·공유·재배포·판매하거나 인터넷에 공개하는 행위
+2. 체험판의 파일을 재배포하는 행위(체험판을 소개할 때는 배포처 페이지를 안내해 주십시오)
+3. 공식 템플릿(본 소프트웨어에 들어 있는 것, 따로 판매하는 것)을 재배포·판매하는 행위(제5조 제3항의 경우는 제외합니다)
+4. 본 소프트웨어의 장식을 그것만으로 소재로서 배포·판매하는 행위
+5. 본 소프트웨어를 수정하거나 분석(리버스 엔지니어링, 디컴파일, 디스어셈블 등)하는 행위(제7조 제2항의 경우는 제외합니다)
+6. 수정이나 그 밖의 부정한 방법으로 체험판의 제한(제2조 제2항)을 해제하는 행위. 그 방법이나 그렇게 수정한 파일을 배포하는 행위
+
+<strong>제4조(내보낸 것의 권리)</strong>
+
+1. 본 소프트웨어로 내보낸 PDF·이미지·EPUB·ZIP·unitypackage(이하 &quot;작품&quot;)의 권리는 사용자에게 있습니다. 제작자는 작품에 대한 권리를 주장하지 않습니다.
+2. unitypackage에 들어 있는 Assets/Milleaf/Editor/MilleafPlacer.cs는 MIT License입니다.
+3. 본 소프트웨어에 들어 있는 글꼴은 모두 SIL Open Font License입니다. 이 글꼴로 만든 작품은 판매·배포할 수 있습니다. PDF에는 사용한 글자에 해당하는 글꼴의 일부가 포함됩니다. 이미지·EPUB·인쇄소 입고 데이터·unitypackage에서는 글자가 이미지가 됩니다.
+4. 사용자가 추가한 글꼴이나 컴퓨터에 설치된 글꼴에는 각각의 라이선스가 적용됩니다. 상업적 이용이나 PDF에 포함하는 것이 허용되는지는 사용자가 직접 확인해 주십시오.
+
+<strong>제5조(템플릿)</strong>
+
+1. 사용자가 본 소프트웨어로 만든 템플릿의 권리는 사용자에게 있으며, 배포·판매할 수 있습니다.
+2. 템플릿에 넣은 소재와 글꼴의 권리는 템플릿을 만든 사람이 확인합니다. 글꼴 파일을 함께 넣을 수 있는 것은 재배포가 허용된 글꼴뿐입니다. 그 경우에는 라이선스 문서(OFL.txt 등)도 함께 넣어 주십시오.
+3. 공식 템플릿을 복제해 변경한 것은 원래 템플릿과 구별할 수 있을 만큼 크게 바꾼 경우에 한해 배포할 수 있습니다. 색·문자·서체만 바꾼 것이나 사진 틀의 배치가 같은 것은 공식 템플릿의 재배포로 봅니다.
+4. 본 소프트웨어의 장식은 사용자의 템플릿이나 작품의 일부로서라면 배포·판매할 수 있습니다.
+
+<strong>제6조(사진에 찍힌 것의 권리)</strong>
+
+1. 사진에 찍힌 아바타·의상·월드 등의 권리는 각 창작자에게 있습니다. 작품을 배포·판매하기 전에 각각의 이용약관(VN3 라이선스 등)을 확인하십시오.
+2. 다른 사람이나 다른 사람의 아바타가 찍힌 사진은 그 사람의 허락을 받고 사용하십시오.
+3. 사용자는 VRChat의 이용약관과 가이드라인을 따르는 것으로 합니다.
+4. 제작자는 작품을 판매·배포해도 된다는 것을 보증하지 않습니다.
+
+<strong>제7조(오픈소스 부분)</strong>
+
+1. 본 소프트웨어에 들어 있는 오픈소스 소프트웨어와 글꼴의 목록과 라이선스는 THIRD_PARTY_NOTICES.txt와 licenses 폴더에 있습니다. 이 부분에는 각각의 라이선스가 이 약관보다 우선하여 적용됩니다.
+2. LGPL 라이브러리(resources\app.asar.unpacked\node_modules\@img\sharp-win32-x64\lib에 있는 libvips 등의 DLL과, Milleaf.exe와 같은 폴더의 ffmpeg.dll)는 사용자가 준비한 것으로 교체할 수 있습니다. 이를 위한 수정과, 교체한 라이브러리의 문제를 조사하기 위한 분석은 제3조 제5항에도 불구하고 허용합니다(LGPL이 요구하는 조건입니다).
+
+<strong>제8조(Adobe 색 프로파일)</strong>
+
+1. 본 소프트웨어에는 인쇄소 입고용 CMYK 변환을 위해 Adobe의 ICC 프로파일 &quot;Japan Color 2001 Coated&quot;(resources\icc\JapanColor2001Coated.icc, 이하 &quot;프로파일&quot;)가 들어 있습니다. Copyright 2002 Adobe Systems, Inc.
+2. 프로파일은 Adobe의 Color Profile Bundling License에 따라 수정하지 않고 동봉하고 있습니다. 사용자는 프로파일을 수정할 수 없습니다. 프로파일의 사용·복제·배포는 Adobe 라이선스가 허용하는 범위(그대로 단독으로, 또는 이미지나 PDF에 포함하여)로 한정됩니다. CMYK로 내보낸 PDF에 프로파일이 포함되는 것은 이 범위에 들어갑니다.
+3. Adobe는 프로파일을 &quot;있는 그대로&quot; 제공하며, 명시적이든 묵시적이든 어떠한 보증(특정 목적에의 적합성, 특정 결과, 제3자 권리의 비침해, 품질 등을 포함합니다)도 하지 않습니다.
+4. Adobe는 프로파일의 사용·배포로 인해 또는 이와 관련하여 발생한 손해(직접·간접·부수적·결과적 손해, 일실 이익, 제3자의 청구를 포함합니다)에 대해 어떠한 책임도 지지 않습니다.
+5. 이 약관 중 Adobe 라이선스와 다른 조건은 본 소프트웨어의 제작자만이 제공하는 것이며, Adobe가 제공하는 것이 아닙니다.
+6. 프로파일은 본 소프트웨어의 resources\icc 폴더 외에 Adobe 사이트에서도 받을 수 있습니다.
+   https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+7. Adobe는 Adobe Inc.의 미국 및 기타 국가에서의 등록 상표 또는 상표입니다.
+
+(English)
+Milleaf includes the Adobe ICC profile &quot;Japan Color 2001 Coated&quot; (Copyright 2002 Adobe Systems, Inc.), distributed unmodified under the Adobe Color Profile Bundling License. You may not modify the profile. Adobe provides the profile &quot;AS IS&quot; and, on behalf of Adobe and its suppliers, all warranties and conditions, express or implied, are disclaimed, and all liability for damages of any kind arising from or related to the profile is excluded. Any provisions of these terms that differ from the Adobe license are offered by the author of Milleaf alone and not by Adobe. The profile is available in the resources\icc folder of Milleaf and from Adobe at https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+
+<strong>제9조(비공식 도구)</strong>
+
+본 소프트웨어는 개인이 만든 비공식 도구로, VRChat Inc.·Modular Avatar·Unity Technologies와는 관계가 없습니다. VRChat은 VRChat Inc.의 상표입니다.
+
+<strong>제10조(면책)</strong>
+
+1. 본 소프트웨어는 있는 그대로 제공합니다. 제작자는 제작자의 고의 또는 중대한 과실로 인한 경우를 제외하고, 본 소프트웨어의 이용 또는 작품으로 인해 발생한 손해에 대해 본 소프트웨어의 구매 대금을 상한으로 책임을 집니다.
+2. VRChat·Unity·Modular Avatar 등의 업데이트로 작품을 사용할 수 없게 될 수 있습니다.
+
+<strong>제11조(문의)</strong>
+
+본 소프트웨어를 받은 스토어를 통해 문의해 주십시오.
+
+<strong>제12조(약관의 변경)</strong>
+
+이 약관은 변경될 수 있습니다. 각 버전의 본 소프트웨어에는 그 버전에 동봉된 약관이 적용됩니다.
+
+<strong>제13조(준거법)</strong>
+
+이 약관은 일본법을 준거법으로 합니다.
+
+2026-10-04
+© Mimicria — Mitori</pre></article>
+</div>
+
+<div class="doc single" lang="zh-Hant" data-title="Milleaf 使用條款" hidden>
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>使用條款</h1>
+    <p><a href="./">回到 Milleaf 說明書</a></p>
+  </div>
+</div>
+<article><pre class="terms-text">Milleaf 使用條款（繁體中文翻譯）
+
+本文件為參考用翻譯。原文為日文（利用規約.txt），內容有出入時以日文原文為準。
+
+<strong>第1條（適用）</strong>
+
+本條款適用於 Milleaf（以下稱「本軟體」）正式版與體驗版的使用。使用者自開始使用本軟體時起，即視為已同意本條款。
+
+<strong>第2條（使用許可）</strong>
+
+1. 正式版可由購買者本人在 1 台電腦上使用。
+2. 體驗版可由從發布頁面取得的人免費使用。體驗版有以下限制。
+   ・匯出每天最多 3 次
+   ・無法匯出範本，也無法從 ZIP 或資料夾新增範本
+3. 法人使用請透過販售本軟體的商店洽詢。
+
+<strong>第3條（禁止事項）</strong>
+
+使用者不得從事下列行為。
+
+1. 將正式版的檔案（ZIP 及其內容）轉讓、分享、再散布或販售給他人，或公開在網路上
+2. 再散布體驗版的檔案（介紹體驗版時，請告知發布頁面）
+3. 再散布或販售官方範本（本軟體內附的範本、另外販售的範本）（第5條第3項的情形除外）
+4. 將本軟體的裝飾單獨作為素材散布或販售
+5. 修改或分析本軟體（逆向工程、反編譯、反組譯等）（第7條第2項的情形除外）
+6. 以修改或其他不正當的方法解除體驗版的限制（第2條第2項）。散布該方法或經如此修改的檔案
+
+<strong>第4條（匯出內容的權利）</strong>
+
+1. 以本軟體匯出的 PDF、圖片、EPUB、ZIP、unitypackage（以下稱「作品」）的權利屬於使用者。作者不主張作品的權利。
+2. unitypackage 內含的 Assets/Milleaf/Editor/MilleafPlacer.cs 採用 MIT License。
+3. 本軟體內附的字型皆採用 SIL Open Font License。使用這些字型製作的作品可以販售、散布。PDF 會嵌入所用文字的部分字型。在圖片、EPUB、印刷廠交稿資料、unitypackage 中，文字會成為圖像。
+4. 使用者新增的字型及電腦中安裝的字型，各自適用其授權。是否允許商業使用及嵌入 PDF，請由使用者自行確認。
+
+<strong>第5條（範本）</strong>
+
+1. 使用者以本軟體製作的範本，其權利屬於使用者，可以散布、販售。
+2. 範本中放入的素材與字型的權利，由製作範本的人確認。只有允許再散布的字型，才可以將字型檔一併放入。此時請同時放入授權文件（如 OFL.txt）。
+3. 複製官方範本後加以變更者，僅限於大幅改動到足以與原範本區別的情形，才可以散布。僅更換顏色、文字或字體者，以及相框排列相同者，視為官方範本的再散布。
+4. 本軟體的裝飾，作為使用者的範本或作品的一部分時，可以散布、販售。
+
+<strong>第6條（照片拍攝對象的權利）</strong>
+
+1. 照片中出現的 Avatar、服裝、世界等的權利，屬於各自的製作者。散布或販售作品前，請確認各自的使用條款（VN3 授權等）。
+2. 拍到他人或他人 Avatar 的照片，請取得對方的許可後再使用。
+3. 使用者應遵守 VRChat 的服務條款與準則。
+4. 作者不保證作品可以販售或散布。
+
+<strong>第7條（開放原始碼的部分）</strong>
+
+1. 本軟體所含開放原始碼軟體與字型的清單及授權條款，收錄於 THIRD_PARTY_NOTICES.txt 與 licenses 資料夾。對於這些部分，各自的授權條款優先於本條款適用。
+2. LGPL 函式庫（resources\app.asar.unpacked\node_modules\@img\sharp-win32-x64\lib 中的 libvips 等 DLL，以及與 Milleaf.exe 位於同一資料夾的 ffmpeg.dll）可以替換為使用者自行準備的版本。為此進行的修改，以及為調查替換後函式庫的問題而進行的分析，不受第3條第5項的限制，予以允許（此為 LGPL 要求的條件）。
+
+<strong>第8條（Adobe 色彩描述檔）</strong>
+
+1. 為了印刷廠交稿的 CMYK 轉換，本軟體內含 Adobe 的 ICC 描述檔「Japan Color 2001 Coated」（resources\icc\JapanColor2001Coated.icc，以下稱「描述檔」）。Copyright 2002 Adobe Systems, Inc.
+2. 描述檔依據 Adobe 的 Color Profile Bundling License，未經修改而隨附。使用者不得修改描述檔。描述檔的使用、複製、散布，僅限於 Adobe 授權允許的範圍（原樣單獨使用，或嵌入圖片或 PDF）。以 CMYK 匯出的 PDF 中嵌入描述檔，屬於此範圍。
+3. Adobe 以「現狀」提供描述檔，不作任何明示或默示的保證（包括適合特定目的、可得到特定結果、不侵害第三人權利、品質等）。
+4. 對於因使用、散布描述檔或與其相關而產生的損害（包括直接、間接、附帶、衍生的損害、所失利益、第三人的請求），Adobe 不負任何責任。
+5. 本條款中與 Adobe 授權不同的條件，僅由本軟體的作者提供，並非由 Adobe 提供。
+6. 描述檔除了在本軟體的 resources\icc 資料夾中，也可以從 Adobe 網站取得。
+   https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+7. Adobe 是 Adobe Inc. 在美國及其他國家的註冊商標或商標。
+
+(English)
+Milleaf includes the Adobe ICC profile &quot;Japan Color 2001 Coated&quot; (Copyright 2002 Adobe Systems, Inc.), distributed unmodified under the Adobe Color Profile Bundling License. You may not modify the profile. Adobe provides the profile &quot;AS IS&quot; and, on behalf of Adobe and its suppliers, all warranties and conditions, express or implied, are disclaimed, and all liability for damages of any kind arising from or related to the profile is excluded. Any provisions of these terms that differ from the Adobe license are offered by the author of Milleaf alone and not by Adobe. The profile is available in the resources\icc folder of Milleaf and from Adobe at https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+
+<strong>第9條（非官方工具）</strong>
+
+本軟體是個人製作的非官方工具，與 VRChat Inc.、Modular Avatar、Unity Technologies 無關。VRChat 是 VRChat Inc. 的商標。
+
+<strong>第10條（免責）</strong>
+
+1. 本軟體以現狀提供。除作者有故意或重大過失的情形外，作者對於因使用本軟體或作品而產生的損害，以本軟體的購買金額為上限負責。
+2. 因 VRChat、Unity、Modular Avatar 等的更新，作品可能無法繼續使用。
+
+<strong>第11條（聯絡方式）</strong>
+
+請透過您取得本軟體的商店洽詢。
+
+<strong>第12條（條款的變更）</strong>
+
+本條款可能會變更。各版本的本軟體，適用該版本所隨附的條款。
+
+<strong>第13條（準據法）</strong>
+
+本條款以日本法為準據法。
+
+2026-10-04
+© Mimicria — Mitori</pre></article>
+</div>
+
+<div class="doc single" lang="zh-Hans" data-title="Milleaf 使用条款" hidden>
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>使用条款</h1>
+    <p><a href="./">回到 Milleaf 说明书</a></p>
+  </div>
+</div>
+<article><pre class="terms-text">Milleaf 使用条款（简体中文翻译）
+
+本文件为参考用翻译。原文为日文（利用規約.txt），内容有出入时以日文原文为准。
+
+<strong>第1条（适用）</strong>
+
+本条款适用于 Milleaf（以下称“本软件”）正式版与体验版的使用。使用者自开始使用本软件时起，即视为已同意本条款。
+
+<strong>第2条（使用许可）</strong>
+
+1. 正式版可由购买者本人在 1 台电脑上使用。
+2. 体验版可由从发布页面获取的人免费使用。体验版有以下限制。
+   ・导出每天最多 3 次
+   ・无法导出模板，也无法从 ZIP 或文件夹添加模板
+3. 法人使用请通过销售本软件的商店咨询。
+
+<strong>第3条（禁止事项）</strong>
+
+使用者不得从事下列行为。
+
+1. 将正式版的文件（ZIP 及其内容）转让、分享、再分发或销售给他人，或公开在网络上
+2. 再分发体验版的文件（介绍体验版时，请告知发布页面）
+3. 再分发或销售官方模板（本软件内附的模板、另外销售的模板）（第5条第3项的情形除外）
+4. 将本软件的装饰单独作为素材分发或销售
+5. 修改或分析本软件（逆向工程、反编译、反汇编等）（第7条第2项的情形除外）
+6. 以修改或其他不正当的方法解除体验版的限制（第2条第2项）。分发该方法或经如此修改的文件
+
+<strong>第4条（导出内容的权利）</strong>
+
+1. 用本软件导出的 PDF、图片、EPUB、ZIP、unitypackage（以下称“作品”）的权利属于使用者。作者不主张作品的权利。
+2. unitypackage 内含的 Assets/Milleaf/Editor/MilleafPlacer.cs 采用 MIT License。
+3. 本软件内附的字体均采用 SIL Open Font License。使用这些字体制作的作品可以销售、分发。PDF 会嵌入所用文字的部分字体。在图片、EPUB、印刷厂交稿数据、unitypackage 中，文字会成为图像。
+4. 使用者添加的字体及电脑中安装的字体，各自适用其许可。是否允许商业使用及嵌入 PDF，请由使用者自行确认。
+
+<strong>第5条（模板）</strong>
+
+1. 使用者用本软件制作的模板，其权利属于使用者，可以分发、销售。
+2. 模板中放入的素材与字体的权利，由制作模板的人确认。只有允许再分发的字体，才可以将字体文件一并放入。此时请同时放入许可文件（如 OFL.txt）。
+3. 复制官方模板后加以变更者，仅限于大幅改动到足以与原模板区别的情形，才可以分发。仅更换颜色、文字或字体者，以及相框排列相同者，视为官方模板的再分发。
+4. 本软件的装饰，作为使用者的模板或作品的一部分时，可以分发、销售。
+
+<strong>第6条（照片拍摄对象的权利）</strong>
+
+1. 照片中出现的 Avatar、服装、世界等的权利，属于各自的制作者。分发或销售作品前，请确认各自的使用条款（VN3 许可等）。
+2. 拍到他人或他人 Avatar 的照片，请取得对方的许可后再使用。
+3. 使用者应遵守 VRChat 的服务条款与准则。
+4. 作者不保证作品可以销售或分发。
+
+<strong>第7条（开源部分）</strong>
+
+1. 本软件所含开源软件与字体的清单及许可证，收录于 THIRD_PARTY_NOTICES.txt 与 licenses 文件夹。对于这些部分，各自的许可证优先于本条款适用。
+2. LGPL 库（resources\app.asar.unpacked\node_modules\@img\sharp-win32-x64\lib 中的 libvips 等 DLL，以及与 Milleaf.exe 位于同一文件夹的 ffmpeg.dll）可以替换为使用者自行准备的版本。为此进行的修改，以及为调查替换后库的问题而进行的分析，不受第3条第5项的限制，予以允许（此为 LGPL 要求的条件）。
+
+<strong>第8条（Adobe 颜色配置文件）</strong>
+
+1. 为了印刷厂交稿的 CMYK 转换，本软件内含 Adobe 的 ICC 配置文件“Japan Color 2001 Coated”（resources\icc\JapanColor2001Coated.icc，以下称“配置文件”）。Copyright 2002 Adobe Systems, Inc.
+2. 配置文件依据 Adobe 的 Color Profile Bundling License，未经修改而随附。使用者不得修改配置文件。配置文件的使用、复制、分发，仅限于 Adobe 许可允许的范围（原样单独使用，或嵌入图片或 PDF）。以 CMYK 导出的 PDF 中嵌入配置文件，属于此范围。
+3. Adobe 以“现状”提供配置文件，不作任何明示或默示的保证（包括适合特定目的、可得到特定结果、不侵害第三方权利、质量等）。
+4. 对于因使用、分发配置文件或与其相关而产生的损害（包括直接、间接、附带、衍生的损害、所失利益、第三方的请求），Adobe 不承担任何责任。
+5. 本条款中与 Adobe 许可不同的条件，仅由本软件的作者提供，并非由 Adobe 提供。
+6. 配置文件除了在本软件的 resources\icc 文件夹中，也可以从 Adobe 网站获取。
+   https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+7. Adobe 是 Adobe Inc. 在美国及其他国家的注册商标或商标。
+
+(English)
+Milleaf includes the Adobe ICC profile &quot;Japan Color 2001 Coated&quot; (Copyright 2002 Adobe Systems, Inc.), distributed unmodified under the Adobe Color Profile Bundling License. You may not modify the profile. Adobe provides the profile &quot;AS IS&quot; and, on behalf of Adobe and its suppliers, all warranties and conditions, express or implied, are disclaimed, and all liability for damages of any kind arising from or related to the profile is excluded. Any provisions of these terms that differ from the Adobe license are offered by the author of Milleaf alone and not by Adobe. The profile is available in the resources\icc folder of Milleaf and from Adobe at https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
+
+<strong>第9条（非官方工具）</strong>
+
+本软件是个人制作的非官方工具，与 VRChat Inc.、Modular Avatar、Unity Technologies 无关。VRChat 是 VRChat Inc. 的商标。
+
+<strong>第10条（免责）</strong>
+
+1. 本软件按现状提供。除作者有故意或重大过失的情形外，作者对于因使用本软件或作品而产生的损害，以本软件的购买金额为上限承担责任。
+2. 因 VRChat、Unity、Modular Avatar 等的更新，作品可能无法继续使用。
+
+<strong>第11条（联系方式）</strong>
+
+请通过您取得本软件的商店咨询。
+
+<strong>第12条（条款的变更）</strong>
+
+本条款可能会变更。各版本的本软件，适用该版本所随附的条款。
+
+<strong>第13条（准据法）</strong>
+
+本条款以日本法为准据法。
+
+2026-10-04
+© Mimicria — Mitori</pre></article>
+</div>
+</main>
+
+<footer class="wrap foot">
+  <span class="credit">© Mimicria — Mitori</span>
+  <a href="https://mitori-mimicria.booth.pm/">BOOTH</a>
+  <a href="https://mimicria.gumroad.com/">Gumroad</a>
+  <a href="https://x.com/mitori_mimicria">X @mitori_mimicria</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* 言語（Milleaf・サークルのサイトと同じ 5 言語・同じ決め方。保存のキーもサイトと共通） */
+  var LANGS = [
+    { id: 'ja', label: '日本語' },
+    { id: 'en', label: 'English' },
+    { id: 'ko', label: '한국어' },
+    { id: 'zh-Hant', label: '繁體中文' },
+    { id: 'zh-Hans', label: '简体中文' }
+  ];
+  var STORAGE_KEY = 'mimicria.lang';
+  function isLang(v) { return LANGS.some(function (l) { return l.id === v; }); }
+  function queryLang() {
+    var q = new URLSearchParams(location.search).get('lang');
+    return q && isLang(q) ? q : null;
+  }
+  function initialLang() {
+    var q = queryLang();
+    if (q) return q;
+    try {
+      var v = localStorage.getItem(STORAGE_KEY);
+      if (v && isLang(v)) return v;
+    } catch (e) { /* 保存できない環境 */ }
+    var nav = (navigator.language || 'en').toLowerCase();
+    if (nav.indexOf('ja') === 0) return 'ja';
+    if (nav.indexOf('ko') === 0) return 'ko';
+    if (nav.indexOf('zh') === 0) return /tw|hk|mo|hant/.test(nav) ? 'zh-Hant' : 'zh-Hans';
+    return 'en';
+  }
+
+  var docs = [].slice.call(document.querySelectorAll('.doc'));
+  var btn = document.getElementById('lang-btn'), pop = document.getElementById('lang-pop');
+  var lang = 'ja', observer = null;
+
+  /* 見出しの id（#export など）は、表示中の言語の見出しだけに付ける。どの言語でも同じ名前で飛べる */
+  function apply(l) {
+    if (!hasDoc(l)) l = hasDoc('en') ? 'en' : 'ja';
+    lang = l;
+    document.documentElement.lang = l;
+    var active = null;
+    docs.forEach(function (d) {
+      var on = d.getAttribute('lang') === l;
+      d.hidden = !on;
+      if (on) active = d;
+      [].forEach.call(d.querySelectorAll('[data-id]'), function (e) {
+        if (on) e.id = e.getAttribute('data-id'); else e.removeAttribute('id');
+      });
+    });
+    if (active) document.title = active.getAttribute('data-title');
+    document.getElementById('lang-cur').textContent = LANGS.filter(function (x) { return x.id === l; })[0].label;
+    buildMenu();
+    watchToc(active);
+  }
+
+  /* 目次: いま読んでいる章に印 */
+  function watchToc(doc) {
+    if (observer) observer.disconnect();
+    if (!doc || !('IntersectionObserver' in window)) return;
+    var links = [].slice.call(doc.querySelectorAll('.toc a'));
+    var mark = function (id) {
+      links.forEach(function (a) {
+        if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+    };
+    observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) mark(en.target.getAttribute('data-id')); });
+    }, { rootMargin: '0px 0px -70% 0px' });
+    [].forEach.call(doc.querySelectorAll('section[data-id]'), function (s) { observer.observe(s); });
+  }
+
+  function buildMenu() {
+    pop.textContent = '';
+    LANGS.forEach(function (l) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.lang = l.id;
+      b.textContent = l.label;
+      if (l.id === lang) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () {
+        try { localStorage.setItem(STORAGE_KEY, l.id); } catch (e) { /* 保存できない環境 */ }
+        /* ?lang= で開いていたら、URL も選んだ言語にする（読み込み直しても戻らないように） */
+        if (queryLang()) {
+          var u = new URL(location.href);
+          u.searchParams.set('lang', l.id);
+          history.replaceState(null, '', u);
+        }
+        apply(l.id);
+        close();
+        btn.focus();
+      });
+      pop.appendChild(b);
+    });
+  }
+  function open() { pop.hidden = false; btn.setAttribute('aria-expanded', 'true'); }
+  function close() { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+  btn.addEventListener('click', function () { if (pop.hidden) open(); else close(); });
+  window.addEventListener('pointerdown', function (e) { if (!pop.hidden && !e.target.closest('.lang')) close(); });
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) { close(); btn.focus(); } });
+
+  /* 本文の無い言語は英語、それも無ければ日本語で出す */
+  function hasDoc(l) { return docs.some(function (d) { return d.getAttribute('lang') === l; }); }
+  apply(initialLang());
+  if (location.hash) {
+    var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) target.scrollIntoView();
+  }
+})();
+</script>
+</body>
+</html>

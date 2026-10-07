@@ -1,0 +1,1844 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milleaf 説明書</title>
+<meta name="description" content="Milleaf の説明書。入れ方、本の作り方、書き出し、VRChat の中で読める本。Manual for Milleaf, a Windows app that makes photo books from VRChat screenshots.">
+<meta property="og:title" content="Milleaf">
+<meta property="og:description" content="Milleaf の説明書。入れ方、本の作り方、書き出し、VRChat の中で読める本。Manual for Milleaf, a Windows app that makes photo books from VRChat screenshots.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://mitori-mimicria.github.io/milleaf/img/icon_256.png">
+<link rel="icon" href="img/icon_64.png">
+<link rel="apple-touch-icon" href="img/icon_180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* アプリと同じ白い画面と差し色 1 色 */
+  --bg: #ffffff;
+  --panel: #f6f6f6;
+  --line: #e2e2e2;
+  --fg: #1f1f1f;
+  --mute: #5d5d5d;
+  --accent: #2f63c9;
+  --accent-dark: #2754ad;
+  --accent-soft: #e8effb;
+  --key: #fafafa;
+  --key-line: #cfcfcf;
+
+  --sans: system-ui, -apple-system, 'Hiragino Sans', 'Yu Gothic UI', 'Yu Gothic', Meiryo, sans-serif;
+  --mono: ui-monospace, Consolas, 'Cascadia Mono', Menlo, monospace;
+  --gutter: clamp(16px, 4vw, 40px);
+  --shadow: rgba(0, 0, 0, 0.12);
+  color-scheme: light;
+}
+/* 暗い表示（アプリの「ダーク」に近い色） */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #18191b; --panel: #222427; --line: #34373b; --fg: #e4e4e4; --mute: #a3a3a3;
+    --accent: #7ea4ff; --accent-dark: #a5c0ff; --accent-soft: #263452; --key: #25272a; --key-line: #4a4d52;
+    --shadow: rgba(0, 0, 0, 0.5); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #18191b; --panel: #222427; --line: #34373b; --fg: #e4e4e4; --mute: #a3a3a3;
+  --accent: #7ea4ff; --accent-dark: #a5c0ff; --accent-soft: #263452; --key: #25272a; --key-line: #4a4d52;
+  --shadow: rgba(0, 0, 0, 0.5); color-scheme: dark;
+}
+/* 和文書体は日本語と英語のときだけ（韓・中は各言語の字形で出す） */
+html[lang="ja"] body, html[lang="en"] body { font-family: 'BIZ UDPGothic', var(--sans); }
+:lang(ko) { --sans: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
+:lang(zh-Hant) { --sans: system-ui, -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
+:lang(zh-Hans) { --sans: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.85 var(--sans);
+  line-break: strict; overflow-wrap: anywhere; overflow-x: clip;
+}
+html[lang="en"] body { line-height: 1.65; }
+::selection { background: var(--accent-soft); color: var(--fg); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent-dark); text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+h1, h2, h3, p, ol, ul, dl, dd, figure { margin: 0; }
+code, .path { font-family: var(--mono); font-size: 0.9em; background: var(--panel); border-radius: 3px; padding: 1px 5px; overflow-wrap: anywhere; }
+kbd {
+  display: inline-block; min-width: 1.9em; padding: 0 6px; text-align: center;
+  font: 13px/1.7 var(--mono); background: var(--key); border: 1px solid var(--key-line); border-bottom-width: 2px; border-radius: 3px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---------- 頭 ---------- */
+.top { display: flex; align-items: center; gap: 16px; padding-top: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.home { font-weight: 700; letter-spacing: 0.04em; color: var(--fg); text-decoration: none; }
+.home:hover { color: var(--accent); }
+.crumb { color: var(--mute); margin-right: auto; font-size: 14px; }
+.lang { position: relative; }
+.lang-btn {
+  display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 10px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; color: var(--fg); font: inherit; font-size: 14px; cursor: pointer;
+}
+.lang-btn:hover, .lang-btn[aria-expanded="true"] { border-color: var(--mute); }
+.lang-btn svg { width: 16px; height: 16px; }
+.lang-pop {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 10; min-width: 160px; padding: 4px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 6px 20px var(--shadow);
+}
+.lang-pop[hidden] { display: none; }
+.lang-pop button {
+  display: block; width: 100%; min-height: 40px; padding: 6px 10px; text-align: left; background: none; border: 0; border-radius: 3px;
+  color: var(--fg); font: inherit; font-size: 14px; cursor: pointer;
+}
+.lang-pop button:hover { background: var(--panel); }
+.lang-pop button[aria-current="true"] { color: var(--accent); font-weight: 700; }
+
+/* ---------- 題名と目次 ---------- */
+.doc { display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 56px; padding-top: 48px; }
+.doc[hidden] { display: none; }
+.title { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding-bottom: 40px; }
+.title img { width: 56px; height: 56px; border-radius: 12px; }
+.title h1 { font-size: 34px; line-height: 1.3; font-weight: 700; letter-spacing: 0.01em; }
+.title p { color: var(--mute); font-size: 14px; font-variant-numeric: tabular-nums; }
+.title .maker { font-family: var(--sans); } /* BIZ UDPGothic の — は細すぎて消えて見える */
+.toc { position: sticky; top: 24px; align-self: start; font-size: 14px; }
+.toc p { color: var(--mute); font-size: 13px; margin-bottom: 8px; }
+.toc ol { list-style: none; padding: 0; border-left: 1px solid var(--line); }
+.toc a { display: block; padding: 5px 0 5px 14px; margin-left: -1px; border-left: 2px solid transparent; color: var(--mute); text-decoration: none; line-height: 1.5; }
+.toc a:hover { color: var(--fg); }
+.toc a[aria-current="true"] { color: var(--accent); border-left-color: var(--accent); font-weight: 700; }
+
+/* ---------- 本文 ---------- */
+article { min-width: 0; padding-bottom: 80px; }
+section { padding-top: 56px; }
+section:first-child { padding-top: 0; }
+h2 { display: flex; align-items: baseline; gap: 14px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 26px; line-height: 1.4; font-weight: 700; }
+section:first-child h2 { border-top: 0; padding-top: 0; }
+h2 .n { color: var(--accent); font-size: 18px; font-variant-numeric: tabular-nums; min-width: 1.2em; }
+h3 { margin-top: 40px; font-size: 19px; line-height: 1.5; font-weight: 700; }
+article p, article ul, article ol, article dl, .tbl { margin-top: 14px; max-width: 42em; }
+h2 + p { margin-top: 20px; }
+article ul { padding-left: 1.3em; }
+article ul li + li { margin-top: 4px; }
+.note { padding: 10px 14px; background: var(--panel); border-radius: 4px; font-size: 15px; }
+
+/* 手順（アプリの「新しい本」の段の丸数字に合わせる） */
+ol.steps { list-style: none; padding: 0; counter-reset: s; }
+ol.steps > li { counter-increment: s; position: relative; padding-left: 38px; }
+ol.steps > li + li { margin-top: 10px; }
+ol.steps > li::before {
+  content: counter(s); position: absolute; left: 0; top: 0.15em;
+  width: 24px; height: 24px; border-radius: 50%; background: var(--fg); color: var(--bg);
+  font-size: 13px; font-weight: 700; line-height: 24px; text-align: center; font-variant-numeric: tabular-nums;
+}
+ol.steps ul { margin-top: 6px; font-size: 15px; }
+
+/* 画面写真 */
+figure.shot { margin-top: 24px; max-width: 100%; }
+figure.shot img { border: 1px solid var(--line); border-radius: 4px; width: 100%; }
+figure.shot figcaption { margin-top: 8px; font-size: 13px; color: var(--mute); }
+
+/* 表 */
+.tbl { max-width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.65; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); }
+th { color: var(--mute); font-weight: 400; font-size: 13px; }
+tbody th { color: var(--fg); font-weight: 700; font-size: 15px; white-space: nowrap; }
+dl.facts { display: grid; grid-template-columns: auto 1fr; gap: 0 20px; border-top: 1px solid var(--line); }
+dl.facts dt, dl.facts dd { padding: 9px 0; border-bottom: 1px solid var(--line); }
+dl.facts dt { color: var(--mute); font-size: 14px; padding-top: 11px; }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: baseline; }
+
+/* 利用規約のページ */
+.doc.single { grid-template-columns: minmax(0, 1fr); }
+pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inherit; font-size: 15px; line-height: 1.85; }
+
+/* よくある質問 */
+.qa h3 { font-size: 17px; margin-top: 32px; }
+.qa h3 + p { margin-top: 6px; }
+
+/* ---------- 奥付 ---------- */
+.foot { display: flex; flex-wrap: wrap; gap: 6px 24px; align-items: baseline; padding-top: 24px; padding-bottom: 36px; border-top: 1px solid var(--line); font-size: 13px; color: var(--mute); }
+.foot .credit { margin-right: auto; font-family: var(--sans); color: var(--fg); }
+
+@media (max-width: 900px) {
+  .doc { grid-template-columns: minmax(0, 1fr); padding-top: 32px; }
+  .title { padding-bottom: 24px; }
+  .title h1 { font-size: 28px; }
+  .toc { position: static; margin-bottom: 40px; padding: 14px 16px; background: var(--panel); border-radius: 4px; }
+  .toc ol { border-left: 0; columns: 2; column-gap: 16px; }
+  .toc a { padding: 6px 0; border-left: 0; margin-left: 0; }
+  .toc a[aria-current="true"] { font-weight: 400; color: var(--mute); }
+}
+/* 狭い画面では表を行ごとの縦並びに（列の名前はビルドが data-label に入れる） */
+@media (max-width: 640px) {
+  .tbl table, .tbl tbody, .tbl tr, .tbl th, .tbl td { display: block; }
+  .tbl thead { display: none; }
+  .tbl tr { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .tbl tbody th { padding: 0 0 4px; border: 0; white-space: normal; }
+  .tbl td { padding: 2px 0; border: 0; }
+  .tbl td[data-label]::before { content: attr(data-label); display: block; color: var(--mute); font-size: 12px; line-height: 1.6; }
+}
+@media (max-width: 480px) {
+  .toc ol { columns: 1; }
+  h2 { font-size: 23px; }
+  .title img { width: 44px; height: 44px; border-radius: 10px; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="home" href="https://mitori-mimicria.github.io/">Mimicria</a>
+  <span class="crumb">/ Milleaf</span>
+  <div class="lang">
+    <button class="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" id="lang-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+      <span id="lang-cur">日本語</span>
+    </button>
+    <div class="lang-pop" id="lang-pop" hidden></div>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc" lang="ja" data-title="Milleaf 説明書" data-toc="目次" data-updated="2026年10月7日更新">
+
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>Milleaf 説明書</h1>
+    <p>2026年10月7日更新（Milleaf 0.6）</p>
+    <p class="maker">作者: Mimicria — Mitori</p>
+  </div>
+</div>
+
+<nav class="toc" aria-label="目次"><p>目次</p><ol><li><a href="#about">1. はじめに</a></li><li><a href="#install">2. 入れ方と起動</a></li><li><a href="#make">3. 本を作る</a></li><li><a href="#edit">4. 本を直す</a></li><li><a href="#export">5. 書き出す</a></li><li><a href="#vrchat">6. VRChat の中で読める本</a></li><li><a href="#update">7. 新しい版にする・元に戻す</a></li><li><a href="#faq">8. 困ったとき</a></li><li><a href="#terms">9. 利用規約とライセンス</a></li></ol></nav>
+<article>
+
+<section data-id="about">
+<h2><span class="n">1</span>はじめに</h2>
+<p>Milleaf は、VRChat のスクリーンショットから写真集を作る Windows アプリです。フォルダを選ぶと、似た写真をまとめて、テンプレートに合わせて写真を並べます。できたあとは、写真や文字、飾りを 1 ページずつ直せます。</p>
+
+<dl class="facts">
+  <dt>写真を選ぶ</dt><dd>月ごとのフォルダから読み込み、連写や似た写真を 1 枚にまとめます</dd>
+  <dt>自動で本にする</dt><dd>テンプレートは 5 種類（シンプル、雑誌風、フィルム・インスタント、ぎゅうぎゅう、漫画）。別売の公式追加テンプレートを入れると増えます</dd>
+  <dt>直す</dt><dd>写真の入れ替え、レイアウトの変更、文字と飾りの追加、モザイク、トリミング、色の調整</dd>
+  <dt>書き出す</dt><dd>PDF、連番画像（PNG・JPEG）、電子書籍（EPUB）、印刷所の入稿データ、VRChat の中で読める本（unitypackage）</dd>
+</dl>
+
+<figure class="shot"><img src="img/ja/library.webp" width="1920" height="1200" alt="本棚。作った本が並びます" loading="lazy" decoding="async"><figcaption>本棚。作った本が並びます</figcaption></figure>
+
+<h3>動作環境</h3>
+<dl class="facts">
+  <dt>OS</dt><dd>Windows 10 / 11（64 ビット）</dd>
+  <dt>表示言語</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文（右上の地球のボタンか「設定」で切り替え）</dd>
+  <dt>インターネット</dt><dd>要りません。写真や本の中身を外へ送ることはありません</dd>
+  <dt>VRChat の本</dt><dd>VRChat の中で読める本を作るときだけ、Unity と VRChat SDK、Modular Avatar が要ります（<a href="#vrchat">6 章</a>）</dd>
+</dl>
+
+<h3>製品版と体験版</h3>
+<p>体験版は無料です。本を作る・直す機能は製品版と同じで、書き出しの回数とテンプレートの出し入れに制限があります。</p>
+<div class="tbl"><table>
+  <thead><tr><th></th><th>製品版</th><th>体験版</th></tr></thead>
+  <tbody>
+    <tr><th>本を作る・直す</th><td data-label="製品版">できます</td><td data-label="体験版">製品版と同じです</td></tr>
+    <tr><th>書き出し</th><td data-label="製品版">回数の制限はありません</td><td data-label="体験版">種類を問わず 1 日 3 回まで。日付が変わると戻ります</td></tr>
+    <tr><th>テンプレートの書き出し（ZIP）</th><td data-label="製品版">できます</td><td data-label="体験版">できません</td></tr>
+    <tr><th>テンプレートの追加（公式追加テンプレートを含む）</th><td data-label="製品版">できます</td><td data-label="体験版">できません</td></tr>
+  </tbody>
+</table></div>
+<p>体験版で作った本とテンプレートは、製品版でそのまま開けます。</p>
+</section>
+
+<section data-id="install">
+<h2><span class="n">2</span>入れ方と起動</h2>
+<p>インストールはありません。ZIP を展開して使います。</p>
+<ol class="steps">
+  <li>BOOTH または Gumroad から ZIP（<code>Milleaf-（版）-win-portable.zip</code>）をダウンロードします。</li>
+  <li>ZIP を右クリックし、「プロパティ」の下にある「許可する」にチェックがあれば入れて「OK」を押します（起動のときの警告が減ります）。</li>
+  <li>ZIP を右クリックし、「すべて展開」で好きな場所へ展開します。<code>C:\Program Files</code> の中は書き込めないことがあるので避けてください。</li>
+  <li>展開したフォルダの <code>Milleaf.exe</code> をダブルクリックします。</li>
+  <li>「Windows によって PC が保護されました」と出たら、「詳細情報」を押してから「実行」を押します。Milleaf には電子署名を付けていないため、はじめての起動で出ます。</li>
+</ol>
+<p class="note">ZIP の中から直接は起動できません。ウイルス対策ソフトが止めたときは、展開したフォルダを除外に加えてください。</p>
+
+<h3>データの置き場所</h3>
+<ul>
+  <li>作った本と設定、テンプレートは <code>%APPDATA%\Milleaf</code> に保存されます。「設定」の「データの場所」にある「フォルダを開く」で開けます。</li>
+  <li>このフォルダは、アプリのフォルダを消しても残ります。新しい版にしても、前の本がそのまま見えます。</li>
+  <li>USB メモリなどで持ち運ぶときは、<code>Milleaf.exe</code> と同じ場所に <code>Milleaf-data</code> という空のフォルダを作ってから起動します。データはそこに保存されます。</li>
+  <li>元のスクリーンショットは読むだけで、変更も移動もしません。</li>
+  <li>やめるときは、Milleaf のフォルダと <code>%APPDATA%\Milleaf</code> を削除します。</li>
+</ul>
+<figure class="shot"><img src="img/ja/settings.webp" width="1920" height="1200" alt="設定。データの場所、バックアップ、利用規約はここから開きます" loading="lazy" decoding="async"><figcaption>設定。データの場所、バックアップ、利用規約はここから開きます</figcaption></figure>
+</section>
+
+<section data-id="make">
+<h2><span class="n">3</span>本を作る</h2>
+<p>作り方は 2 つあります。</p>
+<ul>
+  <li><strong>おまかせでつくる</strong>: フォルダを選ぶだけで、全部のテンプレートで組んだ候補が並びます。いちばん早い方法です。</li>
+  <li><strong>新しい本</strong>: 使う写真を選び、テンプレートとページの設定を決めてから本にします。</li>
+</ul>
+
+<h3>スクリーンショットの場所</h3>
+<ul>
+  <li>VRChat の写真は、ふつう <code>ピクチャ\VRChat</code> に月ごとのフォルダ（<code>2026-09</code> など）で保存されています。Milleaf はこの場所を自動で探します。</li>
+  <li>見つからないときや、ほかの場所にも写真があるときは「場所を追加」で選びます。選んだ場所は次から覚えています。</li>
+  <li>一覧で、使う月にチェックを入れます。「直近」「直近 3 つ」「すべて」でまとめて選べます。</li>
+</ul>
+
+<h3>おまかせでつくる</h3>
+<ol class="steps">
+  <li>本棚の「おまかせでつくる」を押します。</li>
+  <li>使う月にチェックを入れます。</li>
+  <li>「本の厚さ」（少なめ 30 枚・ふつう 60 枚・多め 110 枚・全部使う）と「文字」（入れない・日付だけ・日付とワールド名）を選び、「つくる」を押します。</li>
+  <li>同じ写真を全部のテンプレートで組んだ候補が並びます。気に入ったカードを押すと本になります。</li>
+</ol>
+<figure class="shot"><img src="img/ja/quick.webp" width="1920" height="1200" alt="おまかせでつくるの候補。カードを押すと、その組み方で本になります" loading="lazy" decoding="async"><figcaption>おまかせでつくるの候補。カードを押すと、その組み方で本になります</figcaption></figure>
+
+<h3>新しい本</h3>
+<ol class="steps">
+  <li>本棚の「新しい本」を押します。</li>
+  <li>写真のフォルダ: 使う月にチェックを入れて「写真を読み込む」を押します。VRChat 以外の画像は、右の「フォルダを追加」から読み込めます。</li>
+  <li>写真を選ぶ: はじめは全部が選ばれています。使わない写真の印を外します。</li>
+  <li>本の設定: テンプレートを選び、タイトルや写真の密度などを決めて「本をつくる」を押します。右上に、いまの設定で組んだときのページ数が出ます。</li>
+</ol>
+<figure class="shot"><img src="img/ja/new-folder.webp" width="1920" height="1200" alt="写真のフォルダ。月ごとにチェックを入れます" loading="lazy" decoding="async"><figcaption>写真のフォルダ。月ごとにチェックを入れます</figcaption></figure>
+<figure class="shot"><img src="img/ja/new-photos.webp" width="1920" height="1200" alt="写真を選ぶ。右に大きく出して 1 枚ずつ決められます" loading="lazy" decoding="async"><figcaption>写真を選ぶ。右に大きく出して 1 枚ずつ決められます</figcaption></figure>
+<p>写真を選ぶ画面のキー:</p>
+<div class="keys">
+  <span><kbd>P</kbd> <kbd>Enter</kbd></span><span>使う</span>
+  <span><kbd>X</kbd> <kbd>Delete</kbd></span><span>使わない</span>
+  <span><kbd>Space</kbd></span><span>使う・使わないを切り替え</span>
+  <span><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></span><span>前後の写真へ</span>
+  <span><kbd>S</kbd></span><span>大きく見る・一覧だけを切り替え</span>
+</div>
+<ul>
+  <li>「似た写真をまとめる」を押すと、連写や構図の近い写真を組にして、鮮明な 1 枚だけを選びます。組は「+N 枚」から開いて選び直せます。</li>
+  <li>「ワールド」に切り替えると、写真に記録されたワールド名ごとに並びます。</li>
+</ul>
+<figure class="shot"><img src="img/ja/new-settings.webp" width="1920" height="1200" alt="本の設定。左でテンプレート、右でタイトルや写真の密度を決めます" loading="lazy" decoding="async"><figcaption>本の設定。左でテンプレート、右でタイトルや写真の密度を決めます</figcaption></figure>
+<ul>
+  <li>「紙の本」: 印刷所に出す予定なら、チェックを入れます。チェックを入れると、写真を少し明るくしておきます（紙は画面より暗く刷り上がるため）。</li>
+  <li>「始め方」で「枠だけの本から始める」を選ぶと、写真を入れずに表紙と数ページだけで始まります。</li>
+  <li>本の大きさ（A5 など）はテンプレートで決まります。</li>
+</ul>
+
+<h3>写真を選んでおく</h3>
+<p>本棚の「写真を選んでおく」で、本にする前に写真だけを選び、名前を付けて保存できます。保存したものは「選んでおいた写真」のタブにあり、「この写真で本をつくる」で使えます。写真そのものは複製せず、どの写真を選んだかだけを保存します。</p>
+</section>
+
+<section data-id="edit">
+<h2><span class="n">4</span>本を直す</h2>
+<p>本を開くとエディタになります。左に写真、中央にページ、右に選んだものの設定、下にページの一覧が並びます。</p>
+<figure class="shot"><img src="img/ja/editor.webp" width="1920" height="1200" alt="エディタ。写真を左からページの枠へドラッグして入れます" loading="lazy" decoding="async"><figcaption>エディタ。写真を左からページの枠へドラッグして入れます</figcaption></figure>
+<ul>
+  <li><strong>保存</strong>: 自動で保存されます。<kbd>Ctrl</kbd> + <kbd>Z</kbd> で 1 つ前に戻せます。</li>
+  <li><strong>写真を替える</strong>: 左の写真をページの枠へドラッグします。枠どうしをドラッグすると入れ替わります。</li>
+  <li><strong>写真の位置と大きさ</strong>: 枠の中の写真をドラッグすると位置が、<kbd>Alt</kbd> + ホイールで拡大が変わります。枠の大きさは角をドラッグするか、<kbd>Ctrl</kbd> + ホイールで変えます。</li>
+  <li><strong>レイアウト</strong>: ページを選び、右の「レイアウトを変える」から選びます。写真は残したまま、配置だけが変わります。</li>
+  <li><strong>文字と飾り、写真枠</strong>: 上の「追加」から足します。文字はダブルクリックで直接書けます。フキダシもここにあります。</li>
+  <li><strong>本全体の見た目</strong>: 上の「テンプレート」で本全体を組み直し、「配色」で紙と文字の色、差し色を変えます。「本の情報」では、タイトルや綴じ方向、文字の大きさ、奥付を変えられます。</li>
+  <li><strong>ページ</strong>: 下の一覧で追加や複製、削除をします。ドラッグで並べ替えられます。</li>
+  <li><strong>まとめて組み直す</strong>: 上の「おまかせ」で、写真を残したまま本全体を組み直したり、キャプションや表紙をまとめて変えたりできます。</li>
+</ul>
+<p class="note">操作の一覧は、右下の「?」か <kbd>?</kbd> キーで出ます。その画面でできることとキーが並びます。</p>
+
+<h3>写真の編集</h3>
+<p>枠の写真をダブルクリックすると「写真を編集」が開きます。モザイク、トリミング、色の調整はここでします。</p>
+<figure class="shot"><img src="img/ja/photo-edit.webp" width="1920" height="1200" alt="写真を編集。範囲を囲んでモザイクをかけたところ" loading="lazy" decoding="async"><figcaption>写真を編集。範囲を囲んでモザイクをかけたところ</figcaption></figure>
+<ul>
+  <li>写り込んだ人やネームタグを隠すときは、左の「四角」「楕円」「なげなわ」「ブラシ」で範囲を指定し、右で「モザイク」「ぼかし」「塗りつぶし」を選びます。</li>
+  <li>トリミングと回転、反転もここでできます。</li>
+  <li>色は「印刷向け」「明るく」などの見本から選ぶか、明るさやコントラストを動かします。同じ日や同じワールドの写真にまとめてかけることもできます。</li>
+  <li>元のファイルは変更しません。「適用」のあとも、いつでも編集し直せます。「画像として保存」で、編集した 1 枚を PNG か JPEG で保存できます。</li>
+</ul>
+</section>
+
+<section data-id="export">
+<h2><span class="n">5</span>書き出す</h2>
+<ol class="steps">
+  <li>エディタの右上の「書き出し」を押します。</li>
+  <li>形式を選び、設定を決めます。</li>
+  <li>「フォルダを選んで書き出す」を押し、保存先を選びます。</li>
+</ol>
+<figure class="shot"><img src="img/ja/export.webp" width="1920" height="1200" alt="書き出し。使い道ごとに形式が並びます" loading="lazy" decoding="async"><figcaption>書き出し。使い道ごとに形式が並びます</figcaption></figure>
+<div class="tbl"><table>
+  <thead><tr><th>形式</th><th>使い道</th><th>主な設定</th></tr></thead>
+  <tbody>
+    <tr><th>PDF</th><td data-label="使い道">読む、人に見せる、家で印刷する</td><td data-label="主な設定">解像度（150〜350 dpi）、塗り足し、トンボ</td></tr>
+    <tr><th>連番画像</th><td data-label="使い道">SNS に載せるなど。1 ページ 1 枚</td><td data-label="主な設定">PNG（無劣化）か JPEG（軽い）、解像度</td></tr>
+    <tr><th>電子書籍（EPUB）</th><td data-label="使い道">電子書籍アプリで読む</td><td data-label="主な設定">画像の大きさ（スマホは 1200、タブレットは 1600 以上）</td></tr>
+    <tr><th>グラフィック（オンデマンド印刷）</th><td data-label="使い道">ネット印刷のグラフィックで冊子を刷る</td><td data-label="主な設定">中綴じ・無線綴じ、紙、背幅、RGB か CMYK</td></tr>
+    <tr><th>同人誌印刷所</th><td data-label="使い道">同人誌の印刷所に入稿する</td><td data-label="主な設定">綴じ方、表 2・表 3、ノンブル、PDF か PNG</td></tr>
+    <tr><th>VRChat 用の本（Unity）</th><td data-label="使い道">アバターに持たせて VRChat の中で読む</td><td data-label="主な設定"><a href="#vrchat">6 章</a></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>選んだフォルダの中に、<code>（題名）_Milleaf-v（版）_PDF</code> のように形式ごとのフォルダができ、その中に入ります。</li>
+  <li>体験版の書き出しは、種類を問わず 1 日 3 回までです。書き出し画面に、今日の残りの回数が出ます。</li>
+</ul>
+
+<h3>紙の本にするとき</h3>
+<ul>
+  <li>印刷所向けの書き出しは、350 dpi、塗り足し 3 mm、トンボなしです。</li>
+  <li>中綴じは 4 の倍数のページ数、無線綴じは 20〜304 ページの偶数が要ります。合わないときは書き出し画面に出ます。</li>
+  <li>同人誌印刷所の書き出しには、入稿の説明（<code>nyuukou.txt</code>）が付きます。</li>
+</ul>
+</section>
+
+<section data-id="vrchat">
+<h2><span class="n">6</span>VRChat の中で読める本</h2>
+<p>アバターに持たせて、VRChat の中でページをめくれる本を書き出せます。PC 版の VRChat 用で、Quest には対応していません。</p>
+<figure class="shot"><img src="img/ja/export-vrchat.webp" width="1920" height="1200" alt="VRChat 用の本の設定。アバターに増える容量も出ます" loading="lazy" decoding="async"><figcaption>VRChat 用の本の設定。アバターに増える容量も出ます</figcaption></figure>
+
+<h3>必要なもの</h3>
+<ul>
+  <li>アバターをアップロードできる Unity のプロジェクト（Unity 2022.3 と VRChat SDK の Avatars。2022.3.22f1 で動作を確かめています）</li>
+  <li>Modular Avatar（1.18 で動作を確かめています）。VCC（VRChat Creator Companion）か ALCOM で、先にプロジェクトへ入れておきます</li>
+</ul>
+
+<h3>書き出しの設定</h3>
+<ul>
+  <li>本の高さ（手に持つなら 15〜25 cm）、テクスチャの大きさ（1024・2048・4096）、付ける場所（左手・右手・胸の前）を選びます。デスクトップ（VR なし）で使うなら「胸の前」が見やすい位置です。</li>
+  <li>「アバターに増える容量」に、テクスチャメモリとダウンロードの大きさが出ます。</li>
+  <li>本の写真は、ほかの人にも見えます。</li>
+</ul>
+
+<h3>アバターに入れる</h3>
+<ol class="steps">
+  <li>Unity でアバターのプロジェクトを開き、書き出した <code>.unitypackage</code> を取り込みます（ダブルクリックか、Assets → Import Package → Custom Package）。</li>
+  <li><code>Assets/Milleaf/（題名）_（月日）/Milleaf.prefab</code> を、ヒエラルキーのアバターの中へドラッグします。選んだ場所（手か胸の前）に自動で置き直されます。</li>
+  <li>そのままアップロードします。</li>
+</ol>
+<ul>
+  <li>向きを変えるときは、ヒエラルキーで Milleaf を選び、インスペクターの Rotation を変えます。</li>
+  <li>手の位置がずれたときは、Unity のメニューの Tools → Milleaf →「本を手に合わせ直す」を使います。</li>
+  <li>同じ本を書き出し直して取り込むと、前の中身が新しくなります。同じ本は 1 つのアバターに 1 冊までです。</li>
+  <li>本のフォルダには README.txt が入っています。</li>
+</ul>
+
+<h3>VRChat の中で</h3>
+<p>Expression メニューの「本」から操作します。</p>
+<dl class="facts">
+  <dt>開く</dt><dd>本を出す、しまう</dd>
+  <dt>次のページ・前のページ</dt><dd>見開きをめくります。最後まで行くと最初に戻ります</dd>
+  <dt>ページを選ぶ</dt><dd>回して見開きを選びます</dd>
+  <dt>指でめくる</dt><dd>ページの外側の端に指で触れるとめくれます。ほかの人の指でもめくれます（止めるときは「指でめくる」「ほかの人もめくれる」をオフ）</dd>
+</dl>
+<p>デスクトップ（VR なし）では、「次のページ」か「ページを選ぶ」でめくります。</p>
+</section>
+
+<section data-id="update">
+<h2><span class="n">7</span>新しい版にする・元に戻す</h2>
+<h3>新しい版にする</h3>
+<ol class="steps">
+  <li>新しい ZIP を、入手したお店（BOOTH・Gumroad）からダウンロードし、いまのフォルダとは別の場所に展開します。</li>
+  <li>新しい <code>Milleaf.exe</code> を起動します。本と設定はそのまま使えます。起動したときに、それまでのデータのバックアップも作ります。</li>
+  <li>問題なく動いたら、古いフォルダを削除します。</li>
+</ol>
+<ul>
+  <li>古いフォルダに <code>Milleaf-data</code> を作っていたときは、起動したときの案内で「写して使う」を選びます。</li>
+  <li>うまく動かないときは、古いフォルダの <code>Milleaf.exe</code> でこれまでどおり使えます。ただし、新しい版で保存した本は、古い版では見るだけになります。</li>
+  <li>「設定」の「新しいバージョンが出たら知らせる」をオンにすると、新しい版が出たときに本棚の右上に知らせが出ます。1 日 1 回、公開している版の情報を読むだけで、こちらからは何も送りません。</li>
+</ul>
+<h3>バックアップから戻す</h3>
+<ul>
+  <li>新しい版をはじめて起動したとき、それまでの本とテンプレート、設定を自動で写しておきます（写真そのものは写しません）。</li>
+  <li>「設定」の「バックアップから戻す」で、一覧から時点を選んで「戻す」を押します。戻す直前の状態も写しておくので、あとから戻し直せます。</li>
+</ul>
+</section>
+
+<section data-id="faq" class="qa">
+<h2><span class="n">8</span>困ったとき</h2>
+
+<h3>起動しない、すぐに閉じる</h3>
+<p>ZIP をすべて展開してから、展開したフォルダの <code>Milleaf.exe</code> を起動しているか確かめてください。<code>C:\Program Files</code> の中に置いた場合は、ほかの場所へ移します。ウイルス対策ソフトが止めている場合は、展開したフォルダを除外に加えます。</p>
+
+<h3>「Windows によって PC が保護されました」と出る</h3>
+<p>「詳細情報」を押してから「実行」を押します（<a href="#install">2 章</a>）。</p>
+
+<h3>VRChat の写真が見つからない</h3>
+<p>VRChat の設定で写真の保存先を変えている場合は、自動では見つかりません。「場所を追加」で写真のフォルダを選んでください。</p>
+
+<h3>「この本の写真が N 枚見つかりません」と出る</h3>
+<p>本を作ったあとに写真を移動したか削除したか、写真のある外付けドライブが外れています。写真を元の場所に戻すと、また表示されます。写真が見つからないあいだは書き出せません。</p>
+
+<h3>写真の読み込みに時間がかかる</h3>
+<p>はじめて読むフォルダは、写真を 1 枚ずつ開くので数分かかることがあります。2 回目からは速くなります。</p>
+
+<h3>「この PC に無いフォント」と出る</h3>
+<p>本で使っている書体が、この PC にありません。そのまま書き出すと別の書体で出ます。書体を選び直すか、「設定」の「追加したフォント」からフォントを追加してください。</p>
+
+<h3>書き出せない</h3>
+<p>「書き出せませんでした」のあとに理由が出ます。ディスクの空きが足りない、書き込めないフォルダを選んだ、ファイルをほかのアプリで開いている、フォルダの場所が長すぎる、のどれかです。別のフォルダを選んで試してください。</p>
+
+<h3>体験版で書き出せなくなった</h3>
+<p>体験版の書き出しは 1 日 3 回までです。日付が変わると 3 回に戻ります。製品版には回数の制限はありません。</p>
+
+<h3>VRChat で本が出たままで、メニューも無い</h3>
+<p>アバターのプロジェクトに Modular Avatar が入っていません。入れてからアップロードし直してください。</p>
+
+<h3>VRChat でメニューが見つからない</h3>
+<p>Expression メニューの「More」の中を見てください。見つからないときは、Unity でプレハブがアバターの中にあるか確かめます。</p>
+
+<h3>ほかの人がページをめくれない</h3>
+<p>VRChat の設定の「Avatar Interactions」で、その人を許可してください。</p>
+
+<h3>不具合を知らせたい</h3>
+<p>アプリの右下の吹き出しのボタン（<kbd>F8</kbd>）で、その画面のスクリーンショットと一緒にメモを残せます。「まとめてフォルダに書き出す」でできたフォルダを添えて、入手したお店からお問い合わせください。</p>
+</section>
+
+<section data-id="terms">
+<h2><span class="n">9</span>利用規約とライセンス</h2>
+<ul>
+  <li><a href="terms.html">利用規約</a></li>
+  <li><a href="THIRD_PARTY_NOTICES.txt">使っているソフトウェアとフォントのライセンス</a>（英語）</li>
+</ul>
+<p>写真に写っているアバター・衣装・ワールドの権利は、それぞれの制作者にあります。本を配布・販売する前に、それぞれの利用規約と、写っている人の許可を確かめてください。</p>
+<p>Milleaf は個人が作った非公式のツールで、VRChat Inc.、Modular Avatar、Unity Technologies とは関係ありません。記載している会社名・サービス名は、各社の商標または登録商標です。</p>
+</section>
+
+</article>
+</div>
+
+
+<div class="doc" hidden lang="en" data-title="Milleaf manual" data-toc="Contents">
+
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>Milleaf manual</h1>
+    <p>Updated October 7, 2026 (Milleaf 0.6)</p>
+    <p class="maker">Made by Mimicria — Mitori</p>
+  </div>
+</div>
+
+<nav class="toc" aria-label="Contents"><p>Contents</p><ol><li><a href="#about">1. Getting started</a></li><li><a href="#install">2. Install and start</a></li><li><a href="#make">3. Make a book</a></li><li><a href="#edit">4. Edit a book</a></li><li><a href="#export">5. Export</a></li><li><a href="#vrchat">6. Books you can read in VRChat</a></li><li><a href="#update">7. Updating and restoring</a></li><li><a href="#faq">8. Troubleshooting</a></li><li><a href="#terms">9. Terms and licenses</a></li></ol></nav>
+<article>
+
+<section data-id="about">
+<h2><span class="n">1</span>Getting started</h2>
+<p>Milleaf is a Windows app that makes photo books from your VRChat screenshots. Choose a folder, and it groups similar shots and lays out the pages from a template. After that, you can change the photos, text and decorations page by page.</p>
+
+<dl class="facts">
+  <dt>Choose photos</dt><dd>Load photos from the monthly folders and keep one shot from each burst or group of similar shots</dd>
+  <dt>Lay out</dt><dd>5 templates: Simple, Magazine, Film &amp; Instant, Packed and Manga. Official add-on templates, sold separately, add more</dd>
+  <dt>Edit</dt><dd>Swap photos, change layouts, add text and decorations, mosaic, crop and adjust colors</dd>
+  <dt>Export</dt><dd>PDF, page images (PNG or JPEG), e-book (EPUB), print-ready files and a book you can read inside VRChat (unitypackage)</dd>
+</dl>
+
+<figure class="shot"><img src="img/en/library.webp" width="1920" height="1200" alt="The shelf, where your books are listed" loading="lazy" decoding="async"><figcaption>The shelf, where your books are listed</figcaption></figure>
+
+<h3>Requirements</h3>
+<dl class="facts">
+  <dt>OS</dt><dd>Windows 10 / 11 (64-bit)</dd>
+  <dt>Languages</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文 (switch with the globe button at the top right or in Settings)</dd>
+  <dt>Internet</dt><dd>Not needed. Milleaf never sends your photos or books anywhere</dd>
+  <dt>VRChat book</dt><dd>Only to make a book you can read inside VRChat: Unity, the VRChat SDK and Modular Avatar (<a href="#vrchat">section 6</a>)</dd>
+</dl>
+
+<h3>Full version and trial</h3>
+<p>The trial is free. Making and editing books works the same as in the full version. The trial limits how often you can export, and it cannot export or add templates.</p>
+<div class="tbl"><table>
+  <thead><tr><th></th><th>Full version</th><th>Trial</th></tr></thead>
+  <tbody>
+    <tr><th>Make and edit books</th><td data-label="Full version">Yes</td><td data-label="Trial">Same as the full version</td></tr>
+    <tr><th>Export</th><td data-label="Full version">No limit</td><td data-label="Trial">Up to 3 times a day, any format. The count resets when the date changes</td></tr>
+    <tr><th>Export templates (ZIP)</th><td data-label="Full version">Yes</td><td data-label="Trial">No</td></tr>
+    <tr><th>Add templates (including official add-ons)</th><td data-label="Full version">Yes</td><td data-label="Trial">No</td></tr>
+  </tbody>
+</table></div>
+<p>Books and templates made in the trial open as they are in the full version.</p>
+</section>
+
+<section data-id="install">
+<h2><span class="n">2</span>Install and start</h2>
+<p>There is no installer. You unzip Milleaf and run it.</p>
+<ol class="steps">
+  <li>Download the ZIP (<code>Milleaf-(version)-win-portable.zip</code>) from BOOTH or Gumroad.</li>
+  <li>Right-click the ZIP and open Properties. If there is an Unblock checkbox at the bottom, tick it and click OK. This cuts down the warnings when you start Milleaf.</li>
+  <li>Right-click the ZIP, choose Extract All and pick a folder. Avoid <code>C:\Program Files</code>, where Milleaf may not be able to save.</li>
+  <li>Double-click <code>Milleaf.exe</code> in the extracted folder.</li>
+  <li>If "Windows protected your PC" appears, click More info, then Run anyway. Milleaf is not code-signed, so this shows up the first time you run it.</li>
+</ol>
+<p class="note">Milleaf cannot run from inside the ZIP. If your antivirus blocks it, add the extracted folder to its exclusions.</p>
+
+<h3>Where your data is saved</h3>
+<ul>
+  <li>Books, settings and templates are saved in <code>%APPDATA%\Milleaf</code>. To open it, go to Settings, Data location, Open folder.</li>
+  <li>This folder stays when you delete the app folder, so your books are still there after you update.</li>
+  <li>To carry Milleaf on a USB drive, create an empty folder named <code>Milleaf-data</code> next to <code>Milleaf.exe</code> before you start it. Your data is then saved there.</li>
+  <li>Milleaf only reads your screenshots. It never changes or moves them.</li>
+  <li>To remove Milleaf, delete the Milleaf folder and <code>%APPDATA%\Milleaf</code>.</li>
+</ul>
+<figure class="shot"><img src="img/en/settings.webp" width="1920" height="1200" alt="Settings: data location, backups and the terms of use" loading="lazy" decoding="async"><figcaption>Settings: data location, backups and the terms of use</figcaption></figure>
+</section>
+
+<section data-id="make">
+<h2><span class="n">3</span>Make a book</h2>
+<p>There are two ways.</p>
+<ul>
+  <li><strong>Make one for me</strong>: choose folders, and Milleaf lays the photos out in every template so you can pick one. This is the quickest way.</li>
+  <li><strong>New book</strong>: choose the photos yourself, then the template and page settings.</li>
+</ul>
+
+<h3>Screenshot folder</h3>
+<ul>
+  <li>VRChat usually saves photos in <code>Pictures\VRChat</code>, in one folder per month (such as <code>2026-09</code>). Milleaf looks there on its own.</li>
+  <li>If it cannot find them, or you keep photos somewhere else too, use Add location. Milleaf remembers the folders you add.</li>
+  <li>Tick the months you want in the list. Latest, Latest 3 and All select several at once.</li>
+</ul>
+
+<h3>Make one for me</h3>
+<ol class="steps">
+  <li>On the shelf, click Make one for me.</li>
+  <li>Tick the months to use.</li>
+  <li>Choose the Book size (Fewer: 30 photos, Normal: 60, More: 110, or Use all) and the Text (None, Date only, or Date and world), then click Create.</li>
+  <li>The same photos appear laid out in every template. Click the card you like to make it a book.</li>
+</ol>
+<figure class="shot"><img src="img/en/quick.webp" width="1920" height="1200" alt="Make one for me: click a card to make the book with that layout" loading="lazy" decoding="async"><figcaption>Make one for me: click a card to make the book with that layout</figcaption></figure>
+
+<h3>New book</h3>
+<ol class="steps">
+  <li>On the shelf, click New book.</li>
+  <li>Photo folder: tick the months and click Load photos. For images from outside VRChat, use Add folder on the right.</li>
+  <li>Choose photos: every photo starts selected. Clear the ones you don't want.</li>
+  <li>Book settings: pick a template, set the title, photo density and other options, then click Make the book. The page count at the top right shows how many pages these settings make.</li>
+</ol>
+<figure class="shot"><img src="img/en/new-folder.webp" width="1920" height="1200" alt="Photo folder: tick a month to use it" loading="lazy" decoding="async"><figcaption>Photo folder: tick a month to use it</figcaption></figure>
+<figure class="shot"><img src="img/en/new-photos.webp" width="1920" height="1200" alt="Choose photos: the large view on the right lets you decide one photo at a time" loading="lazy" decoding="async"><figcaption>Choose photos: the large view on the right lets you decide one photo at a time</figcaption></figure>
+<p>Keys on the Choose photos screen:</p>
+<div class="keys">
+  <span><kbd>P</kbd> <kbd>Enter</kbd></span><span>Use</span>
+  <span><kbd>X</kbd> <kbd>Delete</kbd></span><span>Don't use</span>
+  <span><kbd>Space</kbd></span><span>Switch between use and don't use</span>
+  <span><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></span><span>Move to another photo</span>
+  <span><kbd>S</kbd></span><span>Switch between the large view and the list</span>
+</div>
+<ul>
+  <li>Group similar photos puts bursts and near-identical shots into groups and keeps the sharpest one. Open a group from its "+N" label to pick a different shot.</li>
+  <li>Switch to World to sort the photos by the world name saved in them.</li>
+</ul>
+<figure class="shot"><img src="img/en/new-settings.webp" width="1920" height="1200" alt="Book settings: templates on the left, title and photo density on the right" loading="lazy" decoding="async"><figcaption>Book settings: templates on the left, title and photo density on the right</figcaption></figure>
+<ul>
+  <li>Printed book: tick this if you plan to send the book to a print shop. Milleaf then brightens the photos a little, because paper prints darker than a screen shows.</li>
+  <li>Under Start with, Empty frames only starts with a cover and a few pages and no photos.</li>
+  <li>The page size (such as A5) comes from the template.</li>
+</ul>
+
+<h3>Pick photos first</h3>
+<p>Pick photos first on the shelf lets you choose photos and save the selection under a name before you make a book. Saved selections are on the Saved photo picks tab. Use Make a book with these to start a book from one. Milleaf saves only which photos you chose. It does not copy the photos.</p>
+</section>
+
+<section data-id="edit">
+<h2><span class="n">4</span>Edit a book</h2>
+<p>Opening a book takes you to the editor: photos on the left, the page in the middle, settings for whatever you selected on the right, and the page list at the bottom.</p>
+<figure class="shot"><img src="img/en/editor.webp" width="1920" height="1200" alt="The editor. Drag photos from the left into the frames on the page" loading="lazy" decoding="async"><figcaption>The editor. Drag photos from the left into the frames on the page</figcaption></figure>
+<ul>
+  <li><strong>Saving</strong>: Milleaf saves as you go. <kbd>Ctrl</kbd> + <kbd>Z</kbd> undoes the last step.</li>
+  <li><strong>Swap photos</strong>: drag a photo from the left into a frame. Drag one frame onto another to swap them.</li>
+  <li><strong>Position and size</strong>: drag a photo inside its frame to move it, and use <kbd>Alt</kbd> + wheel to zoom. Drag a corner of the frame, or use <kbd>Ctrl</kbd> + wheel, to resize the frame.</li>
+  <li><strong>Layout</strong>: select a page and pick one under Change layout on the right. The photos stay and only their arrangement changes.</li>
+  <li><strong>Text, decorations and photo frames</strong>: use Add at the top. Double-click text to type in it. Speech bubbles are here too.</li>
+  <li><strong>The whole book</strong>: Template at the top lays out the whole book again, and Colors changes the paper, text and accent colors. Book info has the title, binding, text size and colophon.</li>
+  <li><strong>Pages</strong>: add, duplicate and delete pages in the list at the bottom. Drag to reorder them.</li>
+  <li><strong>Redo the layout</strong>: Auto at the top lays out the whole book again with the same photos, or changes all the captions or the cover at once.</li>
+</ul>
+<p class="note">The <kbd>?</kbd> button at the bottom right (or the <kbd>?</kbd> key) lists what you can do on the current screen and the keys for it.</p>
+
+<h3>Photo editing</h3>
+<p>Double-click a photo in a frame to open Edit photo. Mosaic, cropping and color adjustments are all here.</p>
+<figure class="shot"><img src="img/en/photo-edit.webp" width="1920" height="1200" alt="Edit photo, with a mosaic over a selected area" loading="lazy" decoding="async"><figcaption>Edit photo, with a mosaic over a selected area</figcaption></figure>
+<ul>
+  <li>To hide people or name tags in the shot, mark the area with Rectangle, Ellipse, Lasso or Brush on the left, then choose Mosaic, Blur or Fill on the right.</li>
+  <li>You can also crop, rotate and flip here.</li>
+  <li>For color, pick a preset such as Print or Brighter, or move the sliders for brightness, contrast and so on. You can apply the same change to every photo from the same day or the same world.</li>
+  <li>Your original files are never changed. You can edit again at any time after you click Apply. Save as image saves the edited photo as a PNG or JPEG.</li>
+</ul>
+</section>
+
+<section data-id="export">
+<h2><span class="n">5</span>Export</h2>
+<ol class="steps">
+  <li>Click Export at the top right of the editor.</li>
+  <li>Pick a format and set its options.</li>
+  <li>Click Choose a folder and export, then choose where to save.</li>
+</ol>
+<figure class="shot"><img src="img/en/export.webp" width="1920" height="1200" alt="Export, with the formats grouped by use" loading="lazy" decoding="async"><figcaption>Export, with the formats grouped by use</figcaption></figure>
+<div class="tbl"><table>
+  <thead><tr><th>Format</th><th>Use it to</th><th>Main options</th></tr></thead>
+  <tbody>
+    <tr><th>PDF</th><td data-label="Use it to">Read, share, or print at home</td><td data-label="Main options">Resolution (150 to 350 dpi), bleed, crop marks</td></tr>
+    <tr><th>Page images</th><td data-label="Use it to">Post on social media. One image per page</td><td data-label="Main options">PNG (lossless) or JPEG (small), resolution</td></tr>
+    <tr><th>E-book (EPUB)</th><td data-label="Use it to">Read in an e-book app</td><td data-label="Main options">Image size (1200 for phones, 1600 or more for tablets)</td></tr>
+    <tr><th>Graphic (on-demand printing)</th><td data-label="Use it to">Print a booklet with the Japanese online printer Graphic</td><td data-label="Main options">Saddle stitch or perfect binding, paper, spine width, RGB or CMYK</td></tr>
+    <tr><th>Doujinshi printers</th><td data-label="Use it to">Send the book to a doujinshi print shop</td><td data-label="Main options">Binding, inside covers, page numbers, PDF or PNG</td></tr>
+    <tr><th>VRChat book (Unity)</th><td data-label="Use it to">Give it to your avatar and read it inside VRChat</td><td data-label="Main options"><a href="#vrchat">Section 6</a></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>Each export goes into its own folder inside the folder you chose, named like <code>(title)_Milleaf-v(version)_PDF</code>.</li>
+  <li>The trial can export up to 3 times a day, in any format. The export screen shows how many exports are left today.</li>
+</ul>
+
+<h3>Printing a book</h3>
+<ul>
+  <li>Print-shop exports are 350 dpi with a 3 mm bleed and no crop marks.</li>
+  <li>Saddle stitch needs a page count that is a multiple of 4. Perfect binding needs an even count from 20 to 304 pages. The export screen tells you if the count does not fit.</li>
+  <li>The doujinshi printer export comes with a short note for the print shop (<code>nyuukou.txt</code>, in Japanese).</li>
+</ul>
+<p class="note">The print-ready export is made for printing services in Japan: presets for the online printer Graphic and for doujinshi printers, with CMYK conversion to Japan Color 2001 Coated. Printers in other countries may use different page sizes, bleed and color settings, so check with your printer before you order.</p>
+</section>
+
+<section data-id="vrchat">
+<h2><span class="n">6</span>Books you can read in VRChat</h2>
+<p>Milleaf can export a book that your avatar holds and that you can page through inside VRChat. It is for VRChat on PC. Quest is not supported.</p>
+<figure class="shot"><img src="img/en/export-vrchat.webp" width="1920" height="1200" alt="VRChat book options, including how much it adds to your avatar" loading="lazy" decoding="async"><figcaption>VRChat book options, including how much it adds to your avatar</figcaption></figure>
+
+<h3>What you need</h3>
+<ul>
+  <li>A Unity project you can upload avatars from (Unity 2022.3 with the VRChat Avatars SDK; tested with 2022.3.22f1)</li>
+  <li>Modular Avatar (tested with 1.18). Add it to the project first with VCC (VRChat Creator Companion) or ALCOM</li>
+</ul>
+
+<h3>Export options</h3>
+<ul>
+  <li>Choose the book height (15 to 25 cm for holding it), the texture size (1024, 2048 or 4096) and where to attach it (Left hand, Right hand or Chest). Chest is the easiest to read on desktop, without VR.</li>
+  <li>Added avatar size shows the texture memory and download size the book adds.</li>
+  <li>Other players can see the photos in your book.</li>
+</ul>
+
+<h3>Add it to your avatar</h3>
+<ol class="steps">
+  <li>Open your avatar project in Unity and import the exported <code>.unitypackage</code> (double-click it, or use Assets → Import Package → Custom Package).</li>
+  <li>Drag <code>Assets/Milleaf/(title)_(month and day)/Milleaf.prefab</code> onto your avatar in the Hierarchy. It moves itself to the place you chose (a hand or the chest).</li>
+  <li>Upload the avatar as usual.</li>
+</ol>
+<ul>
+  <li>To turn the book, select Milleaf in the Hierarchy and change Rotation in the Inspector.</li>
+  <li>If the book sits in the wrong place in the hand, use Tools → Milleaf → 本を手に合わせ直す (fit the book to the hand again) in the Unity menu.</li>
+  <li>Importing a re-exported copy of the same book updates the old one. One avatar can hold one copy of each book.</li>
+  <li>The book's folder includes a README.txt.</li>
+</ul>
+
+<h3>Inside VRChat</h3>
+<p>Use the book's menu in your Expression menu.</p>
+<dl class="facts">
+  <dt>Open</dt><dd>Take the book out or put it away</dd>
+  <dt>Next page, Previous page</dt><dd>Turn the spread. After the last spread it goes back to the first</dd>
+  <dt>Choose page</dt><dd>Turn the dial to pick a spread</dd>
+  <dt>Turn with finger</dt><dd>Touch the outer edge of a page to turn it. Other players can turn pages this way too (turn off Turn with finger or Others can turn pages to stop this)</dd>
+</dl>
+<p>On desktop, without VR, use Next page or Choose page.</p>
+</section>
+
+<section data-id="update">
+<h2><span class="n">7</span>Updating and restoring</h2>
+<h3>Update to a new version</h3>
+<ol class="steps">
+  <li>Download the new ZIP from the store where you got Milleaf (BOOTH or Gumroad), and unzip it to a different folder from the current one.</li>
+  <li>Start the new <code>Milleaf.exe</code>. Your books and settings carry over, and Milleaf backs up your data when it starts.</li>
+  <li>Once everything works, delete the old folder.</li>
+</ol>
+<ul>
+  <li>If you had a <code>Milleaf-data</code> folder in the old folder, choose to copy it when Milleaf asks at startup.</li>
+  <li>If something goes wrong, the old <code>Milleaf.exe</code> still works as before. Books saved in the new version open read-only in the old one, though.</li>
+  <li>Turn on Tell me when a new version is out in Settings to get a notice at the top right of the shelf. Milleaf reads the public version info once a day and sends nothing from your PC.</li>
+</ul>
+<h3>Restore from a backup</h3>
+<ul>
+  <li>The first time a new version starts, Milleaf copies your books, templates and settings (not the photos).</li>
+  <li>In Settings, click Restore from backup, pick a point from the list and restore it. Milleaf also saves the state just before restoring, so you can go back again.</li>
+</ul>
+</section>
+
+<section data-id="faq" class="qa">
+<h2><span class="n">8</span>Troubleshooting</h2>
+
+<h3>Milleaf does not start, or closes right away</h3>
+<p>Make sure you extracted the whole ZIP and are starting <code>Milleaf.exe</code> from the extracted folder. If you put it in <code>C:\Program Files</code>, move it somewhere else. If your antivirus is blocking it, add the extracted folder to its exclusions.</p>
+
+<h3>"Windows protected your PC" appears</h3>
+<p>Click More info, then Run anyway (<a href="#install">section 2</a>).</p>
+
+<h3>Milleaf cannot find my VRChat photos</h3>
+<p>If you changed where VRChat saves photos, Milleaf cannot find them on its own. Use Add location and choose the folder.</p>
+
+<h3>"N photos in this book could not be found"</h3>
+<p>The photos were moved or deleted after you made the book, or the external drive they are on is disconnected. Put the photos back where they were and they will show again. You cannot export until the photos are found.</p>
+
+<h3>Loading photos takes a long time</h3>
+<p>The first time Milleaf reads a folder, it opens each photo, which can take a few minutes. It is faster from the second time.</p>
+
+<h3>"Fonts not on this PC"</h3>
+<p>The book uses a font this PC does not have, and a different font will be used in the export. Choose another font, or add the font in Settings under Added fonts.</p>
+
+<h3>Export failed</h3>
+<p>The reason follows "Export failed". It is one of these: not enough disk space, a folder Milleaf cannot write to, a file open in another app, or a folder path that is too long. Try a different folder.</p>
+
+<h3>The trial stopped exporting</h3>
+<p>The trial can export 3 times a day. The count resets when the date changes. The full version has no limit.</p>
+
+<h3>In VRChat, the book is always out and there is no menu</h3>
+<p>Modular Avatar is missing from the avatar project. Add it and upload the avatar again.</p>
+
+<h3>I cannot find the book's menu in VRChat</h3>
+<p>Look under More in the Expression menu. If it is not there, check in Unity that the prefab is inside your avatar.</p>
+
+<h3>Other players cannot turn the pages</h3>
+<p>Allow that player under Avatar Interactions in VRChat's settings.</p>
+
+<h3>Reporting a problem</h3>
+<p>The speech bubble button at the bottom right of the app (<kbd>F8</kbd>) saves a note together with a screenshot of the screen. Use Export all to a folder (text + images), then contact us through the store where you got Milleaf and include that folder.</p>
+</section>
+
+<section data-id="terms">
+<h2><span class="n">9</span>Terms and licenses</h2>
+<ul>
+  <li><a href="terms.html">Terms of use</a></li>
+  <li><a href="THIRD_PARTY_NOTICES.txt">Licenses for the software and fonts Milleaf uses</a></li>
+</ul>
+<p>The avatars, outfits and worlds in your photos belong to their creators. Before you share or sell a book, check each of their terms and get permission from the people in the photos.</p>
+<p>Milleaf is an unofficial tool made by an individual. It is not affiliated with VRChat Inc., Modular Avatar or Unity Technologies. Company and service names are trademarks or registered trademarks of their owners.</p>
+</section>
+
+</article>
+</div>
+
+
+<div class="doc" hidden lang="ko" data-title="Milleaf 설명서" data-toc="목차" data-updated="2026년 10월 7일 업데이트">
+
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>Milleaf 설명서</h1>
+    <p>2026년 10월 7일 업데이트 (Milleaf 0.6)</p>
+    <p class="maker">만든 사람: Mimicria — Mitori</p>
+  </div>
+</div>
+
+<nav class="toc" aria-label="목차"><p>목차</p><ol><li><a href="#about">1. 시작하며</a></li><li><a href="#install">2. 설치와 실행</a></li><li><a href="#make">3. 책 만들기</a></li><li><a href="#edit">4. 책 고치기</a></li><li><a href="#export">5. 내보내기</a></li><li><a href="#vrchat">6. VRChat 안에서 읽을 수 있는 책</a></li><li><a href="#update">7. 새 버전으로 바꾸기·되돌리기</a></li><li><a href="#faq">8. 문제가 생겼을 때</a></li><li><a href="#terms">9. 이용 약관과 라이선스</a></li></ol></nav>
+<article>
+
+<section data-id="about">
+<h2><span class="n">1</span>시작하며</h2>
+<p>Milleaf는 VRChat 스크린샷으로 사진집을 만드는 Windows 앱입니다. 폴더를 고르면 비슷한 사진을 묶고, 템플릿에 맞춰 페이지를 조판합니다. 조판한 뒤에는 사진과 글자, 장식을 한 페이지씩 고칠 수 있습니다.</p>
+
+<dl class="facts">
+  <dt>사진 선택</dt><dd>월별 폴더에서 불러오고, 연사나 비슷한 사진을 1장으로 묶습니다</dd>
+  <dt>자동 조판</dt><dd>템플릿은 5가지(심플, 매거진풍, 필름·인스턴트, 빽빽하게, 만화). 별도로 판매하는 공식 추가 템플릿을 넣으면 늘어납니다</dd>
+  <dt>고치기</dt><dd>사진 교체, 레이아웃 변경, 글자와 장식 추가, 모자이크, 자르기, 색 보정</dd>
+  <dt>내보내기</dt><dd>PDF, 연번 이미지(PNG·JPEG), 전자책(EPUB), 인쇄소 입고 데이터, VRChat 안에서 읽을 수 있는 책(unitypackage)</dd>
+</dl>
+
+<figure class="shot"><img src="img/ko/library.webp" width="1920" height="1200" alt="책장. 만든 책이 나란히 놓입니다" loading="lazy" decoding="async"><figcaption>책장. 만든 책이 나란히 놓입니다</figcaption></figure>
+
+<h3>동작 환경</h3>
+<dl class="facts">
+  <dt>OS</dt><dd>Windows 10 / 11(64비트)</dd>
+  <dt>표시 언어</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文(오른쪽 위의 지구 버튼이나 ‘설정’에서 전환)</dd>
+  <dt>인터넷</dt><dd>필요하지 않습니다. 사진이나 책의 내용을 외부로 보내지 않습니다</dd>
+  <dt>VRChat 책</dt><dd>VRChat 안에서 읽을 수 있는 책을 만들 때만 Unity와 VRChat SDK, Modular Avatar가 필요합니다(<a href="#vrchat">6장</a>)</dd>
+</dl>
+
+<h3>정식판과 체험판</h3>
+<p>체험판은 무료입니다. 책을 만들고 고치는 기능은 정식판과 같으며, 내보내기 횟수와 템플릿 내보내기·추가에 제한이 있습니다.</p>
+<div class="tbl"><table>
+  <thead><tr><th></th><th>정식판</th><th>체험판</th></tr></thead>
+  <tbody>
+    <tr><th>책 만들기·고치기</th><td data-label="정식판">할 수 있습니다</td><td data-label="체험판">정식판과 같습니다</td></tr>
+    <tr><th>내보내기</th><td data-label="정식판">횟수 제한이 없습니다</td><td data-label="체험판">종류와 관계없이 하루 3회까지. 날짜가 바뀌면 다시 3회가 됩니다</td></tr>
+    <tr><th>템플릿 내보내기(ZIP)</th><td data-label="정식판">할 수 있습니다</td><td data-label="체험판">할 수 없습니다</td></tr>
+    <tr><th>템플릿 추가(공식 추가 템플릿 포함)</th><td data-label="정식판">할 수 있습니다</td><td data-label="체험판">할 수 없습니다</td></tr>
+  </tbody>
+</table></div>
+<p>체험판에서 만든 책과 템플릿은 정식판에서 그대로 열 수 있습니다.</p>
+</section>
+
+<section data-id="install">
+<h2><span class="n">2</span>설치와 실행</h2>
+<p>설치 과정은 없습니다. ZIP의 압축을 풀어서 사용합니다.</p>
+<ol class="steps">
+  <li>BOOTH 또는 Gumroad에서 ZIP(<code>Milleaf-(버전)-win-portable.zip</code>)을 다운로드합니다.</li>
+  <li>ZIP을 마우스 오른쪽 버튼으로 클릭해 ‘속성’을 열고, 아래쪽에 ‘차단 해제’ 체크 상자가 있으면 체크한 뒤 ‘확인’을 누릅니다(실행할 때 나오는 경고가 줄어듭니다).</li>
+  <li>ZIP을 마우스 오른쪽 버튼으로 클릭하고 ‘압축 풀기’로 원하는 위치에 압축을 풉니다. <code>C:\Program Files</code> 안에는 저장하지 못할 수 있으므로 피하세요.</li>
+  <li>압축을 푼 폴더의 <code>Milleaf.exe</code>를 더블클릭합니다.</li>
+  <li>‘Windows의 PC 보호’가 나오면 ‘추가 정보’를 누른 다음 ‘실행’을 누릅니다. Milleaf에는 전자 서명이 없기 때문에 처음 실행할 때 나옵니다.</li>
+</ol>
+<p class="note">ZIP 안에서 바로 실행할 수는 없습니다. 백신 프로그램이 막았을 때는 압축을 푼 폴더를 예외 목록에 추가하세요.</p>
+
+<h3>데이터 저장 위치</h3>
+<ul>
+  <li>만든 책과 설정, 템플릿은 <code>%APPDATA%\Milleaf</code>에 저장됩니다. ‘설정’의 ‘데이터 위치’에 있는 ‘폴더 열기’로 열 수 있습니다.</li>
+  <li>이 폴더는 앱 폴더를 지워도 남습니다. 새 버전으로 바꿔도 이전 책이 그대로 보입니다.</li>
+  <li>USB 메모리 등으로 가지고 다닐 때는 <code>Milleaf.exe</code>와 같은 위치에 <code>Milleaf-data</code>라는 빈 폴더를 만든 뒤 실행합니다. 데이터는 그곳에 저장됩니다.</li>
+  <li>원본 스크린샷은 읽기만 하며, 변경하거나 옮기지 않습니다.</li>
+  <li>그만 쓸 때는 Milleaf 폴더와 <code>%APPDATA%\Milleaf</code>를 삭제합니다.</li>
+</ul>
+<figure class="shot"><img src="img/ko/settings.webp" width="1920" height="1200" alt="설정. 데이터 위치, 백업, 이용 약관은 여기서 엽니다" loading="lazy" decoding="async"><figcaption>설정. 데이터 위치, 백업, 이용 약관은 여기서 엽니다</figcaption></figure>
+</section>
+
+<section data-id="make">
+<h2><span class="n">3</span>책 만들기</h2>
+<p>만드는 방법은 두 가지입니다.</p>
+<ul>
+  <li><strong>자동으로 만들기</strong>: 폴더만 고르면 모든 템플릿으로 조판한 후보가 나열됩니다. 가장 빠른 방법입니다.</li>
+  <li><strong>새 책</strong>: 사용할 사진을 고르고, 템플릿과 페이지 설정을 정한 뒤 조판합니다.</li>
+</ul>
+
+<h3>스크린샷 위치</h3>
+<ul>
+  <li>VRChat 사진은 보통 <code>사진\VRChat</code>에 월별 폴더(<code>2026-09</code> 등)로 저장되어 있습니다. Milleaf는 이 위치를 자동으로 찾습니다.</li>
+  <li>찾지 못할 때나 다른 위치에도 사진이 있을 때는 ‘위치 추가’로 고릅니다. 고른 위치는 다음부터 기억합니다.</li>
+  <li>목록에서 사용할 달에 체크합니다. ‘최근’, ‘최근 3개’, ‘모두’로 한꺼번에 고를 수 있습니다.</li>
+</ul>
+
+<h3>자동으로 만들기</h3>
+<ol class="steps">
+  <li>책장의 ‘자동으로 만들기’를 누릅니다.</li>
+  <li>사용할 달에 체크합니다.</li>
+  <li>‘책의 두께’(적게 30장·보통 60장·많게 110장·전부 사용)와 ‘글자’(넣지 않음·날짜만·날짜와 월드 이름)를 고르고 ‘만들기’를 누릅니다.</li>
+  <li>같은 사진을 모든 템플릿으로 조판한 후보가 나열됩니다. 마음에 드는 카드를 누르면 책이 됩니다.</li>
+</ol>
+<figure class="shot"><img src="img/ko/quick.webp" width="1920" height="1200" alt="자동으로 만들기의 후보. 카드를 누르면 그 구성으로 책이 됩니다" loading="lazy" decoding="async"><figcaption>자동으로 만들기의 후보. 카드를 누르면 그 구성으로 책이 됩니다</figcaption></figure>
+
+<h3>새 책</h3>
+<ol class="steps">
+  <li>책장의 ‘새 책’을 누릅니다.</li>
+  <li>사진 폴더: 사용할 달에 체크하고 ‘사진 불러오기’를 누릅니다. VRChat 이외의 이미지는 오른쪽의 ‘폴더 추가’로 불러올 수 있습니다.</li>
+  <li>사진 선택: 처음에는 모든 사진이 선택되어 있습니다. 사용하지 않을 사진의 표시를 해제합니다.</li>
+  <li>책 설정: 템플릿을 고르고, 제목과 사진 밀도 등을 정한 뒤 ‘책 만들기’를 누릅니다. 오른쪽 위에 현재 설정으로 조판했을 때의 페이지 수가 나옵니다.</li>
+</ol>
+<figure class="shot"><img src="img/ko/new-folder.webp" width="1920" height="1200" alt="사진 폴더. 달마다 체크합니다" loading="lazy" decoding="async"><figcaption>사진 폴더. 달마다 체크합니다</figcaption></figure>
+<figure class="shot"><img src="img/ko/new-photos.webp" width="1920" height="1200" alt="사진 선택. 오른쪽에 크게 띄워 한 장씩 정할 수 있습니다" loading="lazy" decoding="async"><figcaption>사진 선택. 오른쪽에 크게 띄워 한 장씩 정할 수 있습니다</figcaption></figure>
+<p>사진 선택 화면의 키:</p>
+<div class="keys">
+  <span><kbd>P</kbd> <kbd>Enter</kbd></span><span>사용</span>
+  <span><kbd>X</kbd> <kbd>Delete</kbd></span><span>사용 안 함</span>
+  <span><kbd>Space</kbd></span><span>사용 / 사용 안 함 전환</span>
+  <span><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></span><span>이전·다음 사진으로</span>
+  <span><kbd>S</kbd></span><span>크게 보기 / 목록만 전환</span>
+</div>
+<ul>
+  <li>‘비슷한 사진 묶기’를 누르면 연사나 구도가 비슷한 사진을 묶고, 선명한 1장만 고릅니다. 묶음은 ‘+N장’에서 열어 다시 고를 수 있습니다.</li>
+  <li>‘월드’로 전환하면 사진에 기록된 월드 이름별로 나열됩니다.</li>
+</ul>
+<figure class="shot"><img src="img/ko/new-settings.webp" width="1920" height="1200" alt="책 설정. 왼쪽에서 템플릿, 오른쪽에서 제목과 사진 밀도를 정합니다" loading="lazy" decoding="async"><figcaption>책 설정. 왼쪽에서 템플릿, 오른쪽에서 제목과 사진 밀도를 정합니다</figcaption></figure>
+<ul>
+  <li>‘종이책’: 인쇄소에 맡길 예정이면 체크합니다. 체크하면 사진을 조금 밝게 해 둡니다(종이는 화면보다 어둡게 인쇄되기 때문입니다).</li>
+  <li>‘시작 방법’에서 ‘빈 프레임만’을 고르면 사진을 넣지 않고 표지와 몇 페이지만으로 시작합니다.</li>
+  <li>책의 크기(A5 등)는 템플릿에 따라 정해집니다.</li>
+</ul>
+
+<h3>사진 미리 고르기</h3>
+<p>책장의 ‘사진 미리 고르기’로 책을 만들기 전에 사진만 골라 이름을 붙여 저장할 수 있습니다. 저장한 것은 ‘골라 둔 사진’ 탭에 있으며, ‘이 사진으로 책 만들기’로 사용할 수 있습니다. 사진 자체는 복제하지 않고, 어떤 사진을 골랐는지만 저장합니다.</p>
+</section>
+
+<section data-id="edit">
+<h2><span class="n">4</span>책 고치기</h2>
+<p>책을 열면 에디터가 됩니다. 왼쪽에 사진, 가운데에 페이지, 오른쪽에 선택한 것의 설정, 아래에 페이지 목록이 나열됩니다.</p>
+<figure class="shot"><img src="img/ko/editor.webp" width="1920" height="1200" alt="에디터. 사진을 왼쪽에서 페이지의 프레임으로 드래그해 넣습니다" loading="lazy" decoding="async"><figcaption>에디터. 사진을 왼쪽에서 페이지의 프레임으로 드래그해 넣습니다</figcaption></figure>
+<ul>
+  <li><strong>저장</strong>: 자동으로 저장됩니다. <kbd>Ctrl</kbd> + <kbd>Z</kbd>로 한 단계 전으로 되돌릴 수 있습니다.</li>
+  <li><strong>사진 바꾸기</strong>: 왼쪽 사진을 페이지의 프레임으로 드래그합니다. 프레임끼리 드래그하면 서로 바뀝니다.</li>
+  <li><strong>사진의 위치와 크기</strong>: 프레임 안의 사진을 드래그하면 위치가, <kbd>Alt</kbd> + 휠로 확대 배율이 바뀝니다. 프레임 크기는 모서리를 드래그하거나 <kbd>Ctrl</kbd> + 휠로 바꿉니다.</li>
+  <li><strong>레이아웃</strong>: 페이지를 고르고 오른쪽의 ‘레이아웃 변경’에서 고릅니다. 사진은 그대로 두고 배치만 바뀝니다.</li>
+  <li><strong>글자와 장식, 사진 프레임</strong>: 위쪽의 ‘추가’에서 넣습니다. 글자는 더블클릭하면 바로 입력할 수 있습니다. 말풍선도 여기에 있습니다.</li>
+  <li><strong>책 전체의 모양</strong>: 위쪽의 ‘템플릿’으로 책 전체를 다시 조판하고, ‘배색’으로 종이와 글자 색, 포인트 색을 바꿉니다. ‘책 정보’에서는 제목과 제본 방향, 글자 크기, 판권면을 바꿀 수 있습니다.</li>
+  <li><strong>페이지</strong>: 아래 목록에서 추가, 복제, 삭제를 합니다. 드래그해서 순서를 바꿀 수 있습니다.</li>
+  <li><strong>한꺼번에 다시 조판</strong>: 위쪽의 ‘자동’으로 사진은 그대로 둔 채 책 전체를 다시 조판하거나, 캡션이나 표지를 한꺼번에 바꿀 수 있습니다.</li>
+</ul>
+<p class="note">조작 목록은 오른쪽 아래의 ‘?’나 <kbd>?</kbd> 키로 나옵니다. 그 화면에서 할 수 있는 일과 키가 나열됩니다.</p>
+
+<h3>사진 편집</h3>
+<p>프레임의 사진을 더블클릭하면 ‘사진 편집’이 열립니다. 모자이크, 자르기, 색 보정은 여기서 합니다.</p>
+<figure class="shot"><img src="img/ko/photo-edit.webp" width="1920" height="1200" alt="사진 편집. 범위를 둘러싸서 모자이크를 적용한 모습" loading="lazy" decoding="async"><figcaption>사진 편집. 범위를 둘러싸서 모자이크를 적용한 모습</figcaption></figure>
+<ul>
+  <li>찍힌 사람이나 이름표를 가릴 때는 왼쪽의 ‘사각형’, ‘타원’, ‘올가미’, ‘브러시’로 범위를 지정하고, 오른쪽에서 ‘모자이크’, ‘흐리기’, ‘채우기’를 고릅니다.</li>
+  <li>자르기와 회전, 반전도 여기서 할 수 있습니다.</li>
+  <li>색은 ‘인쇄용’, ‘밝게’ 등의 프리셋에서 고르거나 밝기와 대비를 조절합니다. 같은 날이나 같은 월드의 사진에 한꺼번에 적용할 수도 있습니다.</li>
+  <li>원본 파일은 변경하지 않습니다. ‘적용’한 뒤에도 언제든지 다시 편집할 수 있습니다. ‘이미지로 저장’으로 편집한 1장을 PNG나 JPEG로 저장할 수 있습니다.</li>
+</ul>
+</section>
+
+<section data-id="export">
+<h2><span class="n">5</span>내보내기</h2>
+<ol class="steps">
+  <li>에디터 오른쪽 위의 ‘내보내기’를 누릅니다.</li>
+  <li>형식을 고르고 설정을 정합니다.</li>
+  <li>‘폴더를 선택해 내보내기’를 누르고 저장할 위치를 고릅니다.</li>
+</ol>
+<figure class="shot"><img src="img/ko/export.webp" width="1920" height="1200" alt="내보내기. 용도별로 형식이 나열됩니다" loading="lazy" decoding="async"><figcaption>내보내기. 용도별로 형식이 나열됩니다</figcaption></figure>
+<div class="tbl"><table>
+  <thead><tr><th>형식</th><th>용도</th><th>주요 설정</th></tr></thead>
+  <tbody>
+    <tr><th>PDF</th><td data-label="용도">읽기, 다른 사람에게 보여 주기, 집에서 인쇄하기</td><td data-label="주요 설정">해상도(150~350 dpi), 재단 여유, 재단선</td></tr>
+    <tr><th>연번 이미지</th><td data-label="용도">SNS에 올리기 등. 1페이지에 1장</td><td data-label="주요 설정">PNG(무손실) 또는 JPEG(가벼움), 해상도</td></tr>
+    <tr><th>전자책(EPUB)</th><td data-label="용도">전자책 앱에서 읽기</td><td data-label="주요 설정">이미지 크기(스마트폰은 1200, 태블릿은 1600 이상)</td></tr>
+    <tr><th>그래픽 (온디맨드 인쇄)</th><td data-label="용도">온라인 인쇄소 그래픽에서 책자 인쇄하기</td><td data-label="주요 설정">중철·무선철, 용지, 책등 폭, RGB 또는 CMYK</td></tr>
+    <tr><th>동인지 인쇄소</th><td data-label="용도">동인지 인쇄소에 입고하기</td><td data-label="주요 설정">제본 방식, 표2·표3, 쪽번호, PDF 또는 PNG</td></tr>
+    <tr><th>VRChat용 책(Unity)</th><td data-label="용도">아바타에게 들려서 VRChat 안에서 읽기</td><td data-label="주요 설정"><a href="#vrchat">6장</a></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>고른 폴더 안에 <code>(제목)_Milleaf-v(버전)_PDF</code>처럼 형식별 폴더가 생기고, 그 안에 저장됩니다.</li>
+  <li>체험판의 내보내기는 종류와 관계없이 하루 3회까지입니다. 내보내기 화면에 오늘 남은 횟수가 나옵니다.</li>
+</ul>
+
+<h3>종이책으로 만들 때</h3>
+<ul>
+  <li>인쇄소용 내보내기는 350 dpi, 재단 여유 3 mm, 재단선 없음입니다.</li>
+  <li>중철은 4의 배수 페이지 수, 무선철은 20~304페이지 사이의 짝수 페이지 수가 필요합니다. 맞지 않을 때는 내보내기 화면에 표시됩니다.</li>
+  <li>동인지 인쇄소 내보내기에는 입고 안내(<code>nyuukou.txt</code>, 일본어)가 함께 들어갑니다.</li></ul>
+<p class="note">인쇄소용 내보내기는 일본의 인쇄소를 위한 기능입니다. 온라인 인쇄소 그래픽(Graphic)과 동인지 인쇄소에 맞춘 설정이 들어 있고, CMYK는 Japan Color 2001 Coated로 변환합니다. 다른 나라의 인쇄소는 판형, 재단 여유, 색 설정이 다를 수 있으니 주문하기 전에 인쇄소에 확인해 주세요.</p>
+</section>
+
+<section data-id="vrchat">
+<h2><span class="n">6</span>VRChat 안에서 읽을 수 있는 책</h2>
+<p>아바타에게 들려서 VRChat 안에서 페이지를 넘길 수 있는 책을 내보낼 수 있습니다. PC판 VRChat용이며, Quest는 지원하지 않습니다.</p>
+<figure class="shot"><img src="img/ko/export-vrchat.webp" width="1920" height="1200" alt="VRChat용 책 설정. 아바타에 늘어나는 용량도 나옵니다" loading="lazy" decoding="async"><figcaption>VRChat용 책 설정. 아바타에 늘어나는 용량도 나옵니다</figcaption></figure>
+
+<h3>필요한 것</h3>
+<ul>
+  <li>아바타를 업로드할 수 있는 Unity 프로젝트(Unity 2022.3과 VRChat SDK의 Avatars. 2022.3.22f1에서 동작을 확인했습니다)</li>
+  <li>Modular Avatar(1.18에서 동작을 확인했습니다). VCC(VRChat Creator Companion)나 ALCOM으로 먼저 프로젝트에 넣어 둡니다</li>
+</ul>
+
+<h3>내보내기 설정</h3>
+<ul>
+  <li>책 높이(손에 들려면 15~25 cm), 텍스처 크기(1024·2048·4096), 붙일 위치(왼손·오른손·가슴 앞)를 고릅니다. 데스크톱(VR 없음)에서 쓴다면 ‘가슴 앞’이 보기 편한 위치입니다.</li>
+  <li>‘아바타에 늘어나는 용량’에 텍스처 메모리와 다운로드 크기가 나옵니다.</li>
+  <li>책의 사진은 다른 사람에게도 보입니다.</li>
+</ul>
+
+<h3>아바타에 넣기</h3>
+<ol class="steps">
+  <li>Unity에서 아바타 프로젝트를 열고, 내보낸 <code>.unitypackage</code>를 가져옵니다(더블클릭하거나 Assets → Import Package → Custom Package).</li>
+  <li><code>Assets/Milleaf/(제목)_(월일)/Milleaf.prefab</code>을 하이어라키의 아바타 안으로 드래그합니다. 고른 위치(손이나 가슴 앞)에 자동으로 다시 배치됩니다.</li>
+  <li>그대로 업로드합니다.</li>
+</ol>
+<ul>
+  <li>방향을 바꿀 때는 하이어라키에서 Milleaf를 고르고, 인스펙터의 Rotation을 바꿉니다.</li>
+  <li>손 위치가 어긋났을 때는 Unity 메뉴의 Tools → Milleaf → 本を手に合わせ直す(책을 손에 다시 맞추기)를 사용합니다.</li>
+  <li>같은 책을 다시 내보내 가져오면 이전 내용이 새것으로 바뀝니다. 같은 책은 아바타 하나에 1권까지입니다.</li>
+  <li>책 폴더에는 README.txt가 들어 있습니다.</li>
+</ul>
+
+<h3>VRChat 안에서</h3>
+<p>Expression 메뉴의 ‘책’에서 조작합니다.</p>
+<dl class="facts">
+  <dt>열기</dt><dd>책을 꺼내거나 넣습니다</dd>
+  <dt>다음 페이지·이전 페이지</dt><dd>펼침면을 넘깁니다. 끝까지 가면 처음으로 돌아갑니다</dd>
+  <dt>페이지 고르기</dt><dd>돌려서 펼침면을 고릅니다</dd>
+  <dt>손가락으로 넘기기</dt><dd>페이지 바깥쪽 가장자리에 손가락을 대면 넘어갑니다. 다른 사람의 손가락으로도 넘길 수 있습니다(막으려면 ‘손가락으로 넘기기’, ‘다른 사람도 넘길 수 있음’을 끔)</dd>
+</dl>
+<p>데스크톱(VR 없음)에서는 ‘다음 페이지’나 ‘페이지 고르기’로 넘깁니다.</p>
+</section>
+
+<section data-id="update">
+<h2><span class="n">7</span>새 버전으로 바꾸기·되돌리기</h2>
+<h3>새 버전으로 바꾸기</h3>
+<ol class="steps">
+  <li>Milleaf를 받은 스토어(BOOTH 또는 Gumroad)에서 새 ZIP을 다운로드해, 지금 폴더와는 다른 위치에 압축을 풉니다.</li>
+  <li>새 <code>Milleaf.exe</code>를 실행합니다. 책과 설정은 그대로 사용할 수 있습니다. 실행할 때 그때까지의 데이터 백업도 만듭니다.</li>
+  <li>문제없이 동작하면 이전 폴더를 삭제합니다.</li>
+</ol>
+<ul>
+  <li>이전 폴더에 <code>Milleaf-data</code>를 만들어 두었을 때는 실행할 때 나오는 안내에서 ‘복사해서 사용’을 고릅니다.</li>
+  <li>잘 동작하지 않을 때는 이전 폴더의 <code>Milleaf.exe</code>로 지금까지처럼 사용할 수 있습니다. 다만 새 버전에서 저장한 책은 이전 버전에서는 보기만 할 수 있습니다.</li>
+  <li>‘설정’의 ‘새 버전이 나오면 알림’을 켜면 새 버전이 나왔을 때 책장 오른쪽 위에 알림이 나옵니다. 하루 한 번 공개된 버전 정보를 읽기만 하며, 이쪽에서는 아무것도 보내지 않습니다.</li>
+</ul>
+<h3>백업에서 복원</h3>
+<ul>
+  <li>새 버전을 처음 실행할 때 그때까지의 책과 템플릿, 설정을 자동으로 복사해 둡니다(사진 자체는 복사하지 않습니다).</li>
+  <li>‘설정’의 ‘백업에서 복원’에서 목록의 시점을 고르고 ‘되돌리기’를 누릅니다. 복원하기 직전의 상태도 복사해 두므로 나중에 다시 되돌릴 수 있습니다.</li>
+</ul>
+</section>
+
+<section data-id="faq" class="qa">
+<h2><span class="n">8</span>문제가 생겼을 때</h2>
+
+<h3>실행되지 않거나 바로 닫힘</h3>
+<p>ZIP의 압축을 모두 푼 뒤, 압축을 푼 폴더의 <code>Milleaf.exe</code>를 실행하고 있는지 확인하세요. <code>C:\Program Files</code> 안에 둔 경우에는 다른 위치로 옮깁니다. 백신 프로그램이 막고 있는 경우에는 압축을 푼 폴더를 예외 목록에 추가합니다.</p>
+
+<h3>‘Windows의 PC 보호’가 나옴</h3>
+<p>‘추가 정보’를 누른 다음 ‘실행’을 누릅니다(<a href="#install">2장</a>).</p>
+
+<h3>VRChat 사진을 찾을 수 없음</h3>
+<p>VRChat 설정에서 사진 저장 위치를 바꾼 경우에는 자동으로 찾지 못합니다. ‘위치 추가’로 사진 폴더를 고르세요.</p>
+
+<h3>‘이 책의 사진 N장을 찾을 수 없습니다’가 나옴</h3>
+<p>책을 만든 뒤에 사진을 옮겼거나 삭제했거나, 사진이 있는 외장 드라이브가 분리되어 있습니다. 사진을 원래 위치로 되돌리면 다시 표시됩니다. 사진을 찾을 수 없는 동안에는 내보낼 수 없습니다.</p>
+
+<h3>사진을 불러오는 데 시간이 걸림</h3>
+<p>처음 읽는 폴더는 사진을 한 장씩 열기 때문에 몇 분 걸릴 수 있습니다. 두 번째부터는 빨라집니다.</p>
+
+<h3>‘이 PC에 없는 글꼴’이 나옴</h3>
+<p>책에서 사용하는 글꼴이 이 PC에 없습니다. 그대로 내보내면 다른 글꼴로 나옵니다. 글꼴을 다시 고르거나, ‘설정’의 ‘추가한 글꼴’에서 글꼴을 추가하세요.</p>
+
+<h3>내보낼 수 없음</h3>
+<p>‘내보내기 실패’ 뒤에 이유가 나옵니다. 디스크 여유 공간이 부족하거나, 쓸 수 없는 폴더를 골랐거나, 파일을 다른 앱에서 열고 있거나, 폴더 경로가 너무 긴 경우 중 하나입니다. 다른 폴더를 골라 다시 시도하세요.</p>
+
+<h3>체험판에서 내보낼 수 없게 됨</h3>
+<p>체험판의 내보내기는 하루 3회까지입니다. 날짜가 바뀌면 다시 3회가 됩니다. 정식판에는 횟수 제한이 없습니다.</p>
+
+<h3>VRChat에서 책이 나온 채로 있고 메뉴도 없음</h3>
+<p>아바타 프로젝트에 Modular Avatar가 들어 있지 않습니다. 넣은 뒤 다시 업로드하세요.</p>
+
+<h3>VRChat에서 메뉴를 찾을 수 없음</h3>
+<p>Expression 메뉴의 ‘More’ 안을 확인하세요. 찾을 수 없을 때는 Unity에서 프리팹이 아바타 안에 있는지 확인합니다.</p>
+
+<h3>다른 사람이 페이지를 넘길 수 없음</h3>
+<p>VRChat 설정의 ‘Avatar Interactions’에서 그 사람을 허용하세요.</p>
+
+<h3>문제를 알리고 싶을 때</h3>
+<p>앱 오른쪽 아래의 말풍선 버튼(<kbd>F8</kbd>)으로 그 화면의 스크린샷과 함께 메모를 남길 수 있습니다. ‘폴더로 모두 내보내기 (텍스트 + 이미지)’로 만든 폴더를 첨부해 Milleaf를 받은 스토어를 통해 문의해 주세요.</p>
+</section>
+
+<section data-id="terms">
+<h2><span class="n">9</span>이용 약관과 라이선스</h2>
+<ul>
+  <li><a href="terms.html">이용 약관</a></li>
+  <li><a href="THIRD_PARTY_NOTICES.txt">사용하는 소프트웨어와 글꼴의 라이선스</a>(영어)</li>
+</ul>
+<p>사진에 찍힌 아바타·의상·월드의 권리는 각 제작자에게 있습니다. 책을 배포하거나 판매하기 전에 각각의 이용 약관과 사진에 찍힌 사람의 허락을 확인하세요.</p>
+<p>Milleaf는 개인이 만든 비공식 도구이며, VRChat Inc., Modular Avatar, Unity Technologies와 관계가 없습니다. 기재된 회사명·서비스명은 각 회사의 상표 또는 등록 상표입니다.</p>
+</section>
+
+</article>
+</div>
+
+
+<div class="doc" hidden lang="zh-Hant" data-title="Milleaf 說明書" data-toc="目錄" data-updated="2026年10月7日更新">
+
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>Milleaf 說明書</h1>
+    <p>2026年10月7日更新（Milleaf 0.6）</p>
+    <p class="maker">作者：Mimicria — Mitori</p>
+  </div>
+</div>
+
+<nav class="toc" aria-label="目錄"><p>目錄</p><ol><li><a href="#about">1. 簡介</a></li><li><a href="#install">2. 安裝與啟動</a></li><li><a href="#make">3. 製作書</a></li><li><a href="#edit">4. 修改書</a></li><li><a href="#export">5. 匯出</a></li><li><a href="#vrchat">6. 可在 VRChat 中閱讀的書</a></li><li><a href="#update">7. 更新與還原</a></li><li><a href="#faq">8. 遇到問題時</a></li><li><a href="#terms">9. 使用條款與授權</a></li></ol></nav>
+<article>
+
+<section data-id="about">
+<h2><span class="n">1</span>簡介</h2>
+<p>Milleaf 是用 VRChat 截圖製作寫真集的 Windows 應用程式。選擇資料夾後，會把相似的照片歸成一組，並依照範本排出頁面。排好之後，可以逐頁修改照片、文字與裝飾。</p>
+
+<dl class="facts">
+  <dt>選擇照片</dt><dd>從每月的資料夾讀取，把連拍和相似的照片歸成 1 張</dd>
+  <dt>自動排版</dt><dd>範本共 5 種（簡約、雜誌風、底片・拍立得、滿滿的、漫畫）。加入另售的官方追加範本後還會增加</dd>
+  <dt>修改</dt><dd>替換照片、更改版面、加入文字與裝飾、馬賽克、裁切、調整顏色</dd>
+  <dt>匯出</dt><dd>PDF、連號圖片（PNG、JPEG）、電子書（EPUB）、印刷廠交稿資料、可在 VRChat 中閱讀的書（unitypackage）</dd>
+</dl>
+
+<figure class="shot"><img src="img/zh-Hant/library.webp" width="1920" height="1200" alt="書架。製作的書會排列在這裡" loading="lazy" decoding="async"><figcaption>書架。製作的書會排列在這裡</figcaption></figure>
+
+<h3>系統需求</h3>
+<dl class="facts">
+  <dt>OS</dt><dd>Windows 10 / 11（64 位元）</dd>
+  <dt>顯示語言</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文（用右上角的地球按鈕或「設定」切換）</dd>
+  <dt>網路</dt><dd>不需要。不會把照片或書的內容傳送到外部</dd>
+  <dt>VRChat 的書</dt><dd>只有製作可在 VRChat 中閱讀的書時，才需要 Unity、VRChat SDK 與 Modular Avatar（<a href="#vrchat">第 6 章</a>）</dd>
+</dl>
+
+<h3>正式版與體驗版</h3>
+<p>體驗版免費。製作與修改書的功能和正式版相同，但匯出次數以及範本的匯出與新增有限制。</p>
+<div class="tbl"><table>
+  <thead><tr><th></th><th>正式版</th><th>體驗版</th></tr></thead>
+  <tbody>
+    <tr><th>製作與修改書</th><td data-label="正式版">可以</td><td data-label="體驗版">與正式版相同</td></tr>
+    <tr><th>匯出</th><td data-label="正式版">沒有次數限制</td><td data-label="體驗版">不論種類，每天最多 3 次。日期變更後恢復</td></tr>
+    <tr><th>範本匯出（ZIP）</th><td data-label="正式版">可以</td><td data-label="體驗版">不可以</td></tr>
+    <tr><th>新增範本（包含官方追加範本）</th><td data-label="正式版">可以</td><td data-label="體驗版">不可以</td></tr>
+  </tbody>
+</table></div>
+<p>在體驗版製作的書與範本，可以直接在正式版開啟。</p>
+</section>
+
+<section data-id="install">
+<h2><span class="n">2</span>安裝與啟動</h2>
+<p>不需要安裝。解壓縮 ZIP 後即可使用。</p>
+<ol class="steps">
+  <li>從 BOOTH 或 Gumroad 下載 ZIP（<code>Milleaf-（版本）-win-portable.zip</code>）。</li>
+  <li>在 ZIP 上按右鍵開啟「內容」，如果下方有「解除封鎖」核取方塊，請勾選後按「確定」（可以減少啟動時的警告）。</li>
+  <li>在 ZIP 上按右鍵，用「解壓縮全部」解壓縮到想要的位置。<code>C:\Program Files</code> 內有時無法寫入，請避開。</li>
+  <li>按兩下解壓縮後資料夾中的 <code>Milleaf.exe</code>。</li>
+  <li>如果出現「Windows 已保護您的電腦」，請按「其他資訊」，再按「仍要執行」。Milleaf 沒有數位簽章，所以第一次啟動時會出現。</li>
+</ol>
+<p class="note">無法直接從 ZIP 內啟動。如果防毒軟體阻擋了啟動，請把解壓縮後的資料夾加入排除清單。</p>
+
+<h3>資料的存放位置</h3>
+<ul>
+  <li>製作的書、設定與範本會儲存在 <code>%APPDATA%\Milleaf</code>。可以用「設定」中「資料位置」的「開啟資料夾」開啟。</li>
+  <li>刪除應用程式的資料夾後，這個資料夾仍會保留。更新到新版本後，之前的書也會照樣出現。</li>
+  <li>要用 USB 隨身碟等攜帶時，請先在 <code>Milleaf.exe</code> 所在的位置建立名為 <code>Milleaf-data</code> 的空資料夾，再啟動。資料會儲存在那裡。</li>
+  <li>原始截圖只會讀取，不會修改也不會移動。</li>
+  <li>不再使用時，請刪除 Milleaf 的資料夾與 <code>%APPDATA%\Milleaf</code>。</li>
+</ul>
+<figure class="shot"><img src="img/zh-Hant/settings.webp" width="1920" height="1200" alt="設定。資料位置、備份與使用條款都從這裡開啟" loading="lazy" decoding="async"><figcaption>設定。資料位置、備份與使用條款都從這裡開啟</figcaption></figure>
+</section>
+
+<section data-id="make">
+<h2><span class="n">3</span>製作書</h2>
+<p>製作方法有 2 種。</p>
+<ul>
+  <li><strong>自動做一本</strong>：只要選擇資料夾，就會列出用所有範本排好的候選。這是最快的方法。</li>
+  <li><strong>新書</strong>：先選要用的照片，決定範本與頁面設定後再排版。</li>
+</ul>
+
+<h3>截圖位置</h3>
+<ul>
+  <li>VRChat 的照片通常以每月一個資料夾（例如 <code>2026-09</code>）儲存在 <code>圖片\VRChat</code>。Milleaf 會自動尋找這個位置。</li>
+  <li>找不到，或其他位置也有照片時，請用「新增位置」選擇。選過的位置下次會記住。</li>
+  <li>在清單中勾選要使用的月份。可以用「最近」「最近 3 個」「全部」一次選取。</li>
+</ul>
+
+<h3>自動做一本</h3>
+<ol class="steps">
+  <li>按下書架上的「自動做一本」。</li>
+  <li>勾選要使用的月份。</li>
+  <li>選擇「書的厚度」（少一些 30 張、一般 60 張、多一些 110 張、全部使用）與「文字」（不加入、只有日期、日期與世界名稱），再按「製作」。</li>
+  <li>會列出用所有範本排好同一批照片的候選。按下喜歡的卡片，就會做成書。</li>
+</ol>
+<figure class="shot"><img src="img/zh-Hant/quick.webp" width="1920" height="1200" alt="自動做一本的候選。按下卡片，就會以該排法做成書" loading="lazy" decoding="async"><figcaption>自動做一本的候選。按下卡片，就會以該排法做成書</figcaption></figure>
+
+<h3>新書</h3>
+<ol class="steps">
+  <li>按下書架上的「新書」。</li>
+  <li>照片資料夾：勾選要使用的月份，再按「載入照片」。VRChat 以外的圖片，可以從右邊的「新增資料夾」載入。</li>
+  <li>選擇照片：一開始全部都已選取。取消不使用的照片的標記。</li>
+  <li>書籍設定：選擇範本，決定標題、照片密度等，再按「製作」。右上角會顯示以目前設定排版時的頁數。</li>
+</ol>
+<figure class="shot"><img src="img/zh-Hant/new-folder.webp" width="1920" height="1200" alt="照片資料夾。依月份勾選" loading="lazy" decoding="async"><figcaption>照片資料夾。依月份勾選</figcaption></figure>
+<figure class="shot"><img src="img/zh-Hant/new-photos.webp" width="1920" height="1200" alt="選擇照片。可以在右邊放大顯示，逐張決定" loading="lazy" decoding="async"><figcaption>選擇照片。可以在右邊放大顯示，逐張決定</figcaption></figure>
+<p>選擇照片畫面的按鍵：</p>
+<div class="keys">
+  <span><kbd>P</kbd> <kbd>Enter</kbd></span><span>使用</span>
+  <span><kbd>X</kbd> <kbd>Delete</kbd></span><span>不使用</span>
+  <span><kbd>Space</kbd></span><span>切換使用／不使用</span>
+  <span><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></span><span>移到前後的照片</span>
+  <span><kbd>S</kbd></span><span>切換放大檢視／僅清單</span>
+</div>
+<ul>
+  <li>按下「歸組相似照片」，會把連拍和構圖相近的照片歸成一組，只選出最清晰的 1 張。可以從「+N 張」打開該組重新選擇。</li>
+  <li>切換到「世界」，會依照片中記錄的世界名稱排列。</li>
+</ul>
+<figure class="shot"><img src="img/zh-Hant/new-settings.webp" width="1920" height="1200" alt="書籍設定。左邊選範本，右邊決定標題與照片密度" loading="lazy" decoding="async"><figcaption>書籍設定。左邊選範本，右邊決定標題與照片密度</figcaption></figure>
+<ul>
+  <li>「紙本書」：如果打算交給印刷廠，請勾選。勾選後，會先把照片稍微調亮（因為紙張印出來會比螢幕暗）。</li>
+  <li>在「開始方式」選擇「只有空框」，就會不放照片，只用封面與幾頁開始。</li>
+  <li>書的尺寸（A5 等）由範本決定。</li>
+</ul>
+
+<h3>先選照片</h3>
+<p>用書架上的「先選照片」，可以在做成書之前只選照片，取名後儲存。儲存的內容在「預先選好的照片」分頁中，可以用「用這些照片做書」使用。不會複製照片本身，只儲存選了哪些照片。</p>
+</section>
+
+<section data-id="edit">
+<h2><span class="n">4</span>修改書</h2>
+<p>開啟書後會進入編輯器。左邊是照片，中間是頁面，右邊是所選項目的設定，下方是頁面清單。</p>
+<figure class="shot"><img src="img/zh-Hant/editor.webp" width="1920" height="1200" alt="編輯器。把照片從左邊拖曳到頁面的框中放入" loading="lazy" decoding="async"><figcaption>編輯器。把照片從左邊拖曳到頁面的框中放入</figcaption></figure>
+<ul>
+  <li><strong>儲存</strong>：會自動儲存。按 <kbd>Ctrl</kbd> + <kbd>Z</kbd> 可以回到上一步。</li>
+  <li><strong>替換照片</strong>：把左邊的照片拖曳到頁面的框中。在框與框之間拖曳，會互相交換。</li>
+  <li><strong>照片的位置與大小</strong>：拖曳框中的照片可以改變位置，用 <kbd>Alt</kbd> + 滾輪可以改變縮放。框的大小可以拖曳角落，或用 <kbd>Ctrl</kbd> + 滾輪改變。</li>
+  <li><strong>版面</strong>：選擇頁面，從右邊的「更改版面」中選擇。照片保持不變，只改變配置。</li>
+  <li><strong>文字、裝飾與照片框</strong>：從上方的「新增」加入。文字按兩下即可直接輸入。對話框也在這裡。</li>
+  <li><strong>整本書的外觀</strong>：用上方的「範本」重新排整本書，用「配色」更改紙張與文字的顏色及強調色。在「書籍資訊」中可以更改標題、裝訂方向、文字大小與版權頁。</li>
+  <li><strong>頁面</strong>：在下方的清單中新增、複製或刪除。可以拖曳重新排序。</li>
+  <li><strong>一次重新排版</strong>：用上方的「自動」，可以保留照片重新排整本書，或一次更改圖說和封面。</li>
+</ul>
+<p class="note">操作一覽可以用右下角的「?」或 <kbd>?</kbd> 鍵叫出。會列出該畫面能做的操作與按鍵。</p>
+
+<h3>編輯照片</h3>
+<p>按兩下框中的照片，會開啟「編輯照片」。馬賽克、裁切、調整顏色都在這裡進行。</p>
+<figure class="shot"><img src="img/zh-Hant/photo-edit.webp" width="1920" height="1200" alt="編輯照片。圈選範圍並加上馬賽克的樣子" loading="lazy" decoding="async"><figcaption>編輯照片。圈選範圍並加上馬賽克的樣子</figcaption></figure>
+<ul>
+  <li>要遮住入鏡的人或名牌時，用左邊的「矩形」「橢圓」「套索」「筆刷」指定範圍，再在右邊選擇「馬賽克」「模糊」「填色」。</li>
+  <li>也可以在這裡裁切、旋轉與翻轉。</li>
+  <li>顏色可以從「印刷用」「調亮」等預設中選擇，或調整亮度與對比。也可以一次套用到同一天或同一個世界的照片。</li>
+  <li>不會修改原始檔案。「套用」後也隨時可以重新編輯。用「存為圖片」可以把編輯後的 1 張存成 PNG 或 JPEG。</li>
+</ul>
+</section>
+
+<section data-id="export">
+<h2><span class="n">5</span>匯出</h2>
+<ol class="steps">
+  <li>按下編輯器右上角的「匯出」。</li>
+  <li>選擇格式並決定設定。</li>
+  <li>按下「選擇資料夾並匯出」，選擇儲存位置。</li>
+</ol>
+<figure class="shot"><img src="img/zh-Hant/export.webp" width="1920" height="1200" alt="匯出。格式依用途排列" loading="lazy" decoding="async"><figcaption>匯出。格式依用途排列</figcaption></figure>
+<div class="tbl"><table>
+  <thead><tr><th>格式</th><th>用途</th><th>主要設定</th></tr></thead>
+  <tbody>
+    <tr><th>PDF</th><td data-label="用途">閱讀、給別人看、在家列印</td><td data-label="主要設定">解析度（150～350 dpi）、出血、裁切標記</td></tr>
+    <tr><th>連號圖片</th><td data-label="用途">發布到社群網站等。1 頁 1 張</td><td data-label="主要設定">PNG（無損）或 JPEG（較小）、解析度</td></tr>
+    <tr><th>電子書（EPUB）</th><td data-label="用途">用電子書 App 閱讀</td><td data-label="主要設定">圖片大小（手機 1200，平板 1600 以上）</td></tr>
+    <tr><th>Graphic（隨需印刷）</th><td data-label="用途">在網路印刷廠 Graphic 印製冊子</td><td data-label="主要設定">騎馬釘或膠裝、紙張、書背寬度、RGB 或 CMYK</td></tr>
+    <tr><th>同人誌印刷廠</th><td data-label="用途">向同人誌印刷廠交稿</td><td data-label="主要設定">裝訂方式、封面內側（表2・表3）、頁碼、PDF 或 PNG</td></tr>
+    <tr><th>VRChat 用書（Unity）</th><td data-label="用途">讓虛擬角色拿著，在 VRChat 中閱讀</td><td data-label="主要設定"><a href="#vrchat">第 6 章</a></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>在選擇的資料夾中，會依格式建立像 <code>（標題）_Milleaf-v（版本）_PDF</code> 這樣的資料夾，檔案放在其中。</li>
+  <li>體驗版不論種類，每天最多匯出 3 次。匯出畫面會顯示今天剩下的次數。</li>
+</ul>
+
+<h3>做成紙本書時</h3>
+<ul>
+  <li>印刷廠用的匯出為 350 dpi、出血 3 mm、無裁切標記。</li>
+  <li>騎馬釘需要 4 的倍數頁，膠裝需要 20～304 頁之間的偶數頁。頁數不符合時，匯出畫面會顯示。</li>
+  <li>同人誌印刷廠的匯出會附上交稿說明（<code>nyuukou.txt</code>，日文）。</li></ul>
+<p class="note">印刷廠用的匯出是為日本的印刷廠設計的：內建日本網路印刷 Graphic 與同人誌印刷廠的設定，CMYK 會轉換為 Japan Color 2001 Coated。其他國家的印刷廠可能使用不同的尺寸、出血與色彩設定，下單前請先向印刷廠確認。</p>
+</section>
+
+<section data-id="vrchat">
+<h2><span class="n">6</span>可在 VRChat 中閱讀的書</h2>
+<p>可以匯出讓虛擬角色拿著、在 VRChat 中翻頁的書。適用於 PC 版 VRChat，不支援 Quest。</p>
+<figure class="shot"><img src="img/zh-Hant/export-vrchat.webp" width="1920" height="1200" alt="VRChat 用書的設定。也會顯示虛擬角色增加的容量" loading="lazy" decoding="async"><figcaption>VRChat 用書的設定。也會顯示虛擬角色增加的容量</figcaption></figure>
+
+<h3>需要的東西</h3>
+<ul>
+  <li>可以上傳虛擬角色的 Unity 專案（Unity 2022.3 與 VRChat SDK 的 Avatars。已在 2022.3.22f1 確認可以運作）</li>
+  <li>Modular Avatar（已在 1.18 確認可以運作）。請先用 VCC（VRChat Creator Companion）或 ALCOM 加入專案</li>
+</ul>
+
+<h3>匯出設定</h3>
+<ul>
+  <li>選擇書的高度（拿在手上時為 15～25 cm）、貼圖大小（1024、2048、4096）與附加位置（左手、右手、胸前）。在桌面模式（不用 VR）使用時，「胸前」是容易看的位置。</li>
+  <li>「虛擬角色增加的容量」會顯示貼圖記憶體與下載大小。</li>
+  <li>書中的照片其他人也看得到。</li>
+</ul>
+
+<h3>加到虛擬角色</h3>
+<ol class="steps">
+  <li>在 Unity 開啟虛擬角色的專案，匯入匯出的 <code>.unitypackage</code>（按兩下，或用 Assets → Import Package → Custom Package）。</li>
+  <li>把 <code>Assets/Milleaf/（標題）_（月日）/Milleaf.prefab</code> 拖曳到 Hierarchy 中的虛擬角色裡。會自動重新放到所選的位置（手或胸前）。</li>
+  <li>直接上傳。</li>
+</ol>
+<ul>
+  <li>要改變方向時，在 Hierarchy 中選擇 Milleaf，更改 Inspector 的 Rotation。</li>
+  <li>手的位置偏移時，請使用 Unity 選單的 Tools → Milleaf → 本を手に合わせ直す（重新把書對齊到手上）。</li>
+  <li>重新匯出同一本書並匯入後，之前的內容會更新。同一本書每個虛擬角色只能放 1 本。</li>
+  <li>書的資料夾中附有 README.txt。</li>
+</ul>
+
+<h3>在 VRChat 中</h3>
+<p>從 Expression 選單的「書」操作。</p>
+<dl class="facts">
+  <dt>開啟</dt><dd>拿出或收起書</dd>
+  <dt>下一頁、上一頁</dt><dd>翻動跨頁。翻到最後會回到開頭</dd>
+  <dt>選擇頁面</dt><dd>轉動來選擇跨頁</dd>
+  <dt>用手指翻頁</dt><dd>用手指碰觸頁面外側的邊緣即可翻頁。其他人的手指也能翻頁（要停止時，關閉「用手指翻頁」「其他人也能翻頁」）</dd>
+</dl>
+<p>在桌面模式（不用 VR）下，用「下一頁」或「選擇頁面」翻頁。</p>
+</section>
+
+<section data-id="update">
+<h2><span class="n">7</span>更新與還原</h2>
+<h3>更新到新版本</h3>
+<ol class="steps">
+  <li>從取得 Milleaf 的商店（BOOTH 或 Gumroad）下載新的 ZIP，解壓縮到與目前資料夾不同的位置。</li>
+  <li>啟動新的 <code>Milleaf.exe</code>。書與設定可以照常使用。啟動時也會備份之前的資料。</li>
+  <li>確認運作沒有問題後，刪除舊的資料夾。</li>
+</ol>
+<ul>
+  <li>如果在舊資料夾中建立了 <code>Milleaf-data</code>，請在啟動時出現的提示中選擇「複製後使用」。</li>
+  <li>無法正常運作時，可以用舊資料夾的 <code>Milleaf.exe</code> 照常使用。不過，用新版本儲存的書在舊版本中只能檢視。</li>
+  <li>開啟「設定」中的「有新版本時通知」後，有新版本時會在書架右上角顯示通知。每天只讀取一次公開的版本資訊，不會從這裡傳送任何資料。</li>
+</ul>
+<h3>從備份還原</h3>
+<ul>
+  <li>第一次啟動新版本時，會自動複製之前的書、範本與設定（不會複製照片本身）。</li>
+  <li>在「設定」的「從備份還原」中，從清單選擇時間點，再按「復原」。還原前的狀態也會複製保存，之後可以再還原回來。</li>
+</ul>
+</section>
+
+<section data-id="faq" class="qa">
+<h2><span class="n">8</span>遇到問題時</h2>
+
+<h3>無法啟動，或馬上關閉</h3>
+<p>請確認已將 ZIP 全部解壓縮，並且啟動的是解壓縮後資料夾中的 <code>Milleaf.exe</code>。如果放在 <code>C:\Program Files</code> 內，請移到其他位置。如果是防毒軟體阻擋，請把解壓縮後的資料夾加入排除清單。</p>
+
+<h3>出現「Windows 已保護您的電腦」</h3>
+<p>按「其他資訊」，再按「仍要執行」（<a href="#install">第 2 章</a>）。</p>
+
+<h3>找不到 VRChat 的照片</h3>
+<p>如果在 VRChat 的設定中變更了照片的儲存位置，就無法自動找到。請用「新增位置」選擇照片的資料夾。</p>
+
+<h3>出現「找不到這本書中的 N 張照片」</h3>
+<p>製作書之後移動或刪除了照片，或存放照片的外接磁碟機已拔除。把照片放回原來的位置，就會再次顯示。找不到照片期間無法匯出。</p>
+
+<h3>載入照片很花時間</h3>
+<p>第一次讀取的資料夾會逐張開啟照片，可能需要幾分鐘。第二次起會變快。</p>
+
+<h3>出現「這台電腦沒有的字型」</h3>
+<p>書中使用的字型不在這台電腦上。直接匯出會以其他字型輸出。請重新選擇字型，或從「設定」的「新增的字型」加入字型。</p>
+
+<h3>無法匯出</h3>
+<p>「匯出失敗」後面會顯示原因。原因是以下其中之一：磁碟空間不足、選擇了無法寫入的資料夾、檔案正在其他應用程式中開啟、資料夾路徑太長。請選擇其他資料夾再試一次。</p>
+
+<h3>體驗版無法再匯出</h3>
+<p>體驗版每天最多匯出 3 次。日期變更後會恢復為 3 次。正式版沒有次數限制。</p>
+
+<h3>在 VRChat 中書一直顯示著，也沒有選單</h3>
+<p>虛擬角色的專案中沒有加入 Modular Avatar。加入後請重新上傳。</p>
+
+<h3>在 VRChat 中找不到選單</h3>
+<p>請查看 Expression 選單的「More」裡面。找不到時，請在 Unity 中確認 Prefab 是否在虛擬角色裡。</p>
+
+<h3>其他人無法翻頁</h3>
+<p>請在 VRChat 設定的「Avatar Interactions」中允許那個人。</p>
+
+<h3>想回報問題</h3>
+<p>用應用程式右下角的對話氣泡按鈕（<kbd>F8</kbd>），可以連同該畫面的截圖留下筆記。請附上用「全部匯出到資料夾（文字 + 圖片）」產生的資料夾，透過取得 Milleaf 的商店聯絡我們。</p>
+</section>
+
+<section data-id="terms">
+<h2><span class="n">9</span>使用條款與授權</h2>
+<ul>
+  <li><a href="terms.html">使用條款</a></li>
+  <li><a href="THIRD_PARTY_NOTICES.txt">所使用的軟體與字型的授權</a>（英文）</li>
+</ul>
+<p>照片中出現的虛擬角色、服裝與世界的權利，屬於各自的製作者。發布或販售書之前，請確認各自的使用條款，以及照片中人物的許可。</p>
+<p>Milleaf 是個人製作的非官方工具，與 VRChat Inc.、Modular Avatar、Unity Technologies 無關。文中提及的公司名稱與服務名稱，為各公司的商標或註冊商標。</p>
+</section>
+
+</article>
+</div>
+
+
+<div class="doc" hidden lang="zh-Hans" data-title="Milleaf 说明书" data-toc="目录" data-updated="2026年10月7日更新">
+
+<div class="title">
+  <img src="img/icon_128.png" alt="" width="56" height="56">
+  <div>
+    <h1>Milleaf 说明书</h1>
+    <p>2026年10月7日更新（Milleaf 0.6）</p>
+    <p class="maker">作者：Mimicria — Mitori</p>
+  </div>
+</div>
+
+<nav class="toc" aria-label="目录"><p>目录</p><ol><li><a href="#about">1. 简介</a></li><li><a href="#install">2. 安装与启动</a></li><li><a href="#make">3. 制作书</a></li><li><a href="#edit">4. 修改书</a></li><li><a href="#export">5. 导出</a></li><li><a href="#vrchat">6. 可在 VRChat 中阅读的书</a></li><li><a href="#update">7. 更新与恢复</a></li><li><a href="#faq">8. 遇到问题时</a></li><li><a href="#terms">9. 使用条款与许可</a></li></ol></nav>
+<article>
+
+<section data-id="about">
+<h2><span class="n">1</span>简介</h2>
+<p>Milleaf 是用 VRChat 截图制作写真集的 Windows 应用。选择文件夹后，会把相似的照片归为一组，并按照模板排出页面。排好之后，可以逐页修改照片、文字和装饰。</p>
+
+<dl class="facts">
+  <dt>选择照片</dt><dd>从每月的文件夹读取，把连拍和相似的照片归为 1 张</dd>
+  <dt>自动排版</dt><dd>模板共 5 种（简约、杂志风、胶片・拍立得、满满的、漫画）。加入另售的官方追加模板后还会增加</dd>
+  <dt>修改</dt><dd>替换照片、更改版面、添加文字和装饰、马赛克、裁剪、调整颜色</dd>
+  <dt>导出</dt><dd>PDF、连号图片（PNG、JPEG）、电子书（EPUB）、印刷厂交稿数据、可在 VRChat 中阅读的书（unitypackage）</dd>
+</dl>
+
+<figure class="shot"><img src="img/zh-Hans/library.webp" width="1920" height="1200" alt="书架。制作的书会排列在这里" loading="lazy" decoding="async"><figcaption>书架。制作的书会排列在这里</figcaption></figure>
+
+<h3>系统要求</h3>
+<dl class="facts">
+  <dt>OS</dt><dd>Windows 10 / 11（64 位）</dd>
+  <dt>显示语言</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文（用右上角的地球按钮或「设置」切换）</dd>
+  <dt>网络</dt><dd>不需要。不会把照片或书的内容发送到外部</dd>
+  <dt>VRChat 的书</dt><dd>只有制作可在 VRChat 中阅读的书时，才需要 Unity、VRChat SDK 和 Modular Avatar（<a href="#vrchat">第 6 章</a>）</dd>
+</dl>
+
+<h3>正式版和体验版</h3>
+<p>体验版免费。制作和修改书的功能与正式版相同，但导出次数以及模板的导出和添加有限制。</p>
+<div class="tbl"><table>
+  <thead><tr><th></th><th>正式版</th><th>体验版</th></tr></thead>
+  <tbody>
+    <tr><th>制作和修改书</th><td data-label="正式版">可以</td><td data-label="体验版">与正式版相同</td></tr>
+    <tr><th>导出</th><td data-label="正式版">没有次数限制</td><td data-label="体验版">不论种类，每天最多 3 次。日期变更后恢复</td></tr>
+    <tr><th>模板导出（ZIP）</th><td data-label="正式版">可以</td><td data-label="体验版">不可以</td></tr>
+    <tr><th>添加模板（包含官方追加模板）</th><td data-label="正式版">可以</td><td data-label="体验版">不可以</td></tr>
+  </tbody>
+</table></div>
+<p>在体验版制作的书和模板，可以直接在正式版中打开。</p>
+</section>
+
+<section data-id="install">
+<h2><span class="n">2</span>安装与启动</h2>
+<p>无需安装。解压 ZIP 后即可使用。</p>
+<ol class="steps">
+  <li>从 BOOTH 或 Gumroad 下载 ZIP（<code>Milleaf-（版本）-win-portable.zip</code>）。</li>
+  <li>右键单击 ZIP 打开「属性」，如果下方有「解除锁定」复选框，请勾选后点击「确定」（可以减少启动时的警告）。</li>
+  <li>右键单击 ZIP，用「全部解压缩」解压到想要的位置。<code>C:\Program Files</code> 中有时无法写入，请避开。</li>
+  <li>双击解压后文件夹中的 <code>Milleaf.exe</code>。</li>
+  <li>如果出现「Windows 已保护你的电脑」，请点击「更多信息」，再点击「仍要运行」。Milleaf 没有数字签名，所以第一次启动时会出现。</li>
+</ol>
+<p class="note">无法直接从 ZIP 内启动。如果杀毒软件阻止了启动，请把解压后的文件夹加入排除项。</p>
+
+<h3>数据的存放位置</h3>
+<ul>
+  <li>制作的书、设置和模板会保存在 <code>%APPDATA%\Milleaf</code>。可以用「设置」中「数据位置」的「打开文件夹」打开。</li>
+  <li>删除应用的文件夹后，这个文件夹仍会保留。更新到新版本后，之前的书也会照样显示。</li>
+  <li>要用 U 盘等随身携带时，请先在 <code>Milleaf.exe</code> 所在的位置创建名为 <code>Milleaf-data</code> 的空文件夹，再启动。数据会保存在那里。</li>
+  <li>原始截图只会读取，不会修改也不会移动。</li>
+  <li>不再使用时，请删除 Milleaf 的文件夹和 <code>%APPDATA%\Milleaf</code>。</li>
+</ul>
+<figure class="shot"><img src="img/zh-Hans/settings.webp" width="1920" height="1200" alt="设置。数据位置、备份和使用条款都从这里打开" loading="lazy" decoding="async"><figcaption>设置。数据位置、备份和使用条款都从这里打开</figcaption></figure>
+</section>
+
+<section data-id="make">
+<h2><span class="n">3</span>制作书</h2>
+<p>制作方法有 2 种。</p>
+<ul>
+  <li><strong>自动做一本</strong>：只要选择文件夹，就会列出用所有模板排好的候选。这是最快的方法。</li>
+  <li><strong>新书</strong>：先选要用的照片，决定模板和页面设置后再排版。</li>
+</ul>
+
+<h3>截图位置</h3>
+<ul>
+  <li>VRChat 的照片通常以每月一个文件夹（例如 <code>2026-09</code>）保存在 <code>图片\VRChat</code>。Milleaf 会自动查找这个位置。</li>
+  <li>找不到，或其他位置也有照片时，请用「添加位置」选择。选过的位置下次会记住。</li>
+  <li>在列表中勾选要使用的月份。可以用「最近」「最近 3 个」「全部」一次选择。</li>
+</ul>
+
+<h3>自动做一本</h3>
+<ol class="steps">
+  <li>点击书架上的「自动做一本」。</li>
+  <li>勾选要使用的月份。</li>
+  <li>选择「书的厚度」（少一些 30 张、一般 60 张、多一些 110 张、全部使用）和「文字」（不加入、只有日期、日期与世界名称），再点击「制作」。</li>
+  <li>会列出用所有模板排好同一批照片的候选。点击喜欢的卡片，就会做成书。</li>
+</ol>
+<figure class="shot"><img src="img/zh-Hans/quick.webp" width="1920" height="1200" alt="自动做一本的候选。点击卡片，就会以该排法做成书" loading="lazy" decoding="async"><figcaption>自动做一本的候选。点击卡片，就会以该排法做成书</figcaption></figure>
+
+<h3>新书</h3>
+<ol class="steps">
+  <li>点击书架上的「新书」。</li>
+  <li>照片文件夹：勾选要使用的月份，再点击「加载照片」。VRChat 以外的图片，可以从右侧的「添加文件夹」加载。</li>
+  <li>选择照片：一开始全部都已选中。取消不使用的照片的标记。</li>
+  <li>书籍设置：选择模板，决定标题、照片密度等，再点击「制作」。右上角会显示按当前设置排版时的页数。</li>
+</ol>
+<figure class="shot"><img src="img/zh-Hans/new-folder.webp" width="1920" height="1200" alt="照片文件夹。按月份勾选" loading="lazy" decoding="async"><figcaption>照片文件夹。按月份勾选</figcaption></figure>
+<figure class="shot"><img src="img/zh-Hans/new-photos.webp" width="1920" height="1200" alt="选择照片。可以在右侧放大显示，逐张决定" loading="lazy" decoding="async"><figcaption>选择照片。可以在右侧放大显示，逐张决定</figcaption></figure>
+<p>选择照片画面的按键：</p>
+<div class="keys">
+  <span><kbd>P</kbd> <kbd>Enter</kbd></span><span>使用</span>
+  <span><kbd>X</kbd> <kbd>Delete</kbd></span><span>不使用</span>
+  <span><kbd>Space</kbd></span><span>切换使用／不使用</span>
+  <span><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></span><span>移到前后的照片</span>
+  <span><kbd>S</kbd></span><span>切换放大查看／仅列表</span>
+</div>
+<ul>
+  <li>点击「归组相似照片」，会把连拍和构图相近的照片归为一组，只选出最清晰的 1 张。可以从「+N 张」打开该组重新选择。</li>
+  <li>切换到「世界」，会按照片中记录的世界名称排列。</li>
+</ul>
+<figure class="shot"><img src="img/zh-Hans/new-settings.webp" width="1920" height="1200" alt="书籍设置。左侧选模板，右侧决定标题和照片密度" loading="lazy" decoding="async"><figcaption>书籍设置。左侧选模板，右侧决定标题和照片密度</figcaption></figure>
+<ul>
+  <li>「纸质书」：如果打算交给印刷厂，请勾选。勾选后，会先把照片稍微调亮（因为纸张印出来会比屏幕暗）。</li>
+  <li>在「开始方式」选择「只有空框」，就会不放照片，只用封面和几页开始。</li>
+  <li>书的尺寸（A5 等）由模板决定。</li>
+</ul>
+
+<h3>先选照片</h3>
+<p>用书架上的「先选照片」，可以在做成书之前只选照片，命名后保存。保存的内容在「预先选好的照片」标签页中，可以用「用这些照片做书」使用。不会复制照片本身，只保存选了哪些照片。</p>
+</section>
+
+<section data-id="edit">
+<h2><span class="n">4</span>修改书</h2>
+<p>打开书后会进入编辑器。左侧是照片，中间是页面，右侧是所选项目的设置，下方是页面列表。</p>
+<figure class="shot"><img src="img/zh-Hans/editor.webp" width="1920" height="1200" alt="编辑器。把照片从左侧拖到页面的框中放入" loading="lazy" decoding="async"><figcaption>编辑器。把照片从左侧拖到页面的框中放入</figcaption></figure>
+<ul>
+  <li><strong>保存</strong>：会自动保存。按 <kbd>Ctrl</kbd> + <kbd>Z</kbd> 可以回到上一步。</li>
+  <li><strong>替换照片</strong>：把左侧的照片拖到页面的框中。在框与框之间拖动，会互相交换。</li>
+  <li><strong>照片的位置和大小</strong>：拖动框中的照片可以改变位置，用 <kbd>Alt</kbd> + 滚轮可以改变缩放。框的大小可以拖动角落，或用 <kbd>Ctrl</kbd> + 滚轮改变。</li>
+  <li><strong>版面</strong>：选择页面，从右侧的「更改版面」中选择。照片保持不变，只改变配置。</li>
+  <li><strong>文字、装饰和照片框</strong>：从上方的「添加」加入。文字双击即可直接输入。对话框也在这里。</li>
+  <li><strong>整本书的外观</strong>：用上方的「模板」重新排整本书，用「配色」更改纸张和文字的颜色及强调色。在「书籍信息」中可以更改标题、装订方向、文字大小和版权页。</li>
+  <li><strong>页面</strong>：在下方的列表中添加、复制或删除。可以拖动重新排序。</li>
+  <li><strong>一次重新排版</strong>：用上方的「自动」，可以保留照片重新排整本书，或一次更改图注和封面。</li>
+</ul>
+<p class="note">操作一览可以用右下角的「?」或 <kbd>?</kbd> 键调出。会列出该画面能做的操作和按键。</p>
+
+<h3>编辑照片</h3>
+<p>双击框中的照片，会打开「编辑照片」。马赛克、裁剪、调整颜色都在这里进行。</p>
+<figure class="shot"><img src="img/zh-Hans/photo-edit.webp" width="1920" height="1200" alt="编辑照片。圈选范围并加上马赛克的样子" loading="lazy" decoding="async"><figcaption>编辑照片。圈选范围并加上马赛克的样子</figcaption></figure>
+<ul>
+  <li>要遮住入镜的人或名牌时，用左侧的「矩形」「椭圆」「套索」「画笔」指定范围，再在右侧选择「马赛克」「模糊」「填色」。</li>
+  <li>也可以在这里裁剪、旋转和翻转。</li>
+  <li>颜色可以从「印刷用」「调亮」等预设中选择，或调整亮度和对比度。也可以一次应用到同一天或同一个世界的照片。</li>
+  <li>不会修改原始文件。「应用」后也随时可以重新编辑。用「保存为图片」可以把编辑后的 1 张保存为 PNG 或 JPEG。</li>
+</ul>
+</section>
+
+<section data-id="export">
+<h2><span class="n">5</span>导出</h2>
+<ol class="steps">
+  <li>点击编辑器右上角的「导出」。</li>
+  <li>选择格式并决定设置。</li>
+  <li>点击「选择文件夹并导出」，选择保存位置。</li>
+</ol>
+<figure class="shot"><img src="img/zh-Hans/export.webp" width="1920" height="1200" alt="导出。格式按用途排列" loading="lazy" decoding="async"><figcaption>导出。格式按用途排列</figcaption></figure>
+<div class="tbl"><table>
+  <thead><tr><th>格式</th><th>用途</th><th>主要设置</th></tr></thead>
+  <tbody>
+    <tr><th>PDF</th><td data-label="用途">阅读、给别人看、在家打印</td><td data-label="主要设置">分辨率（150～350 dpi）、出血、裁切标记</td></tr>
+    <tr><th>连号图片</th><td data-label="用途">发布到社交媒体等。1 页 1 张</td><td data-label="主要设置">PNG（无损）或 JPEG（较小）、分辨率</td></tr>
+    <tr><th>电子书（EPUB）</th><td data-label="用途">用电子书 App 阅读</td><td data-label="主要设置">图片大小（手机 1200，平板 1600 以上）</td></tr>
+    <tr><th>Graphic（按需印刷）</th><td data-label="用途">在网络印刷厂 Graphic 印制册子</td><td data-label="主要设置">骑马钉或胶装、纸张、书脊宽度、RGB 或 CMYK</td></tr>
+    <tr><th>同人志印刷厂</th><td data-label="用途">向同人志印刷厂交稿</td><td data-label="主要设置">装订方式、封面内侧（表2・表3）、页码、PDF 或 PNG</td></tr>
+    <tr><th>VRChat 用书（Unity）</th><td data-label="用途">让虚拟形象拿着，在 VRChat 中阅读</td><td data-label="主要设置"><a href="#vrchat">第 6 章</a></td></tr>
+  </tbody>
+</table></div>
+<ul>
+  <li>在选择的文件夹中，会按格式创建像 <code>（标题）_Milleaf-v（版本）_PDF</code> 这样的文件夹，文件放在其中。</li>
+  <li>体验版不论种类，每天最多导出 3 次。导出画面会显示今天剩余的次数。</li>
+</ul>
+
+<h3>做成纸质书时</h3>
+<ul>
+  <li>印刷厂用的导出为 350 dpi、出血 3 mm、无裁切标记。</li>
+  <li>骑马钉需要 4 的倍数页，胶装需要 20～304 页之间的偶数页。页数不符合时，导出画面会显示。</li>
+  <li>同人志印刷厂的导出会附上交稿说明（<code>nyuukou.txt</code>，日文）。</li></ul>
+<p class="note">印刷厂用的导出是为日本的印刷厂设计的：内置日本网络印刷 Graphic 与同人志印刷厂的设置，CMYK 会转换为 Japan Color 2001 Coated。其他国家的印刷厂可能使用不同的尺寸、出血和色彩设置，下单前请先向印刷厂确认。</p>
+</section>
+
+<section data-id="vrchat">
+<h2><span class="n">6</span>可在 VRChat 中阅读的书</h2>
+<p>可以导出让虚拟形象拿着、在 VRChat 中翻页的书。适用于 PC 版 VRChat，不支持 Quest。</p>
+<figure class="shot"><img src="img/zh-Hans/export-vrchat.webp" width="1920" height="1200" alt="VRChat 用书的设置。也会显示虚拟形象增加的容量" loading="lazy" decoding="async"><figcaption>VRChat 用书的设置。也会显示虚拟形象增加的容量</figcaption></figure>
+
+<h3>需要的东西</h3>
+<ul>
+  <li>可以上传虚拟形象的 Unity 项目（Unity 2022.3 和 VRChat SDK 的 Avatars。已在 2022.3.22f1 确认可以运行）</li>
+  <li>Modular Avatar（已在 1.18 确认可以运行）。请先用 VCC（VRChat Creator Companion）或 ALCOM 添加到项目中</li>
+</ul>
+
+<h3>导出设置</h3>
+<ul>
+  <li>选择书的高度（拿在手上时为 15～25 cm）、贴图大小（1024、2048、4096）和附加位置（左手、右手、胸前）。在桌面模式（不用 VR）下使用时，「胸前」是容易看的位置。</li>
+  <li>「虚拟形象增加的容量」会显示贴图内存和下载大小。</li>
+  <li>书中的照片其他人也能看到。</li>
+</ul>
+
+<h3>添加到虚拟形象</h3>
+<ol class="steps">
+  <li>在 Unity 中打开虚拟形象的项目，导入导出的 <code>.unitypackage</code>（双击，或用 Assets → Import Package → Custom Package）。</li>
+  <li>把 <code>Assets/Milleaf/（标题）_（月日）/Milleaf.prefab</code> 拖到 Hierarchy 中的虚拟形象里。会自动重新放到所选的位置（手或胸前）。</li>
+  <li>直接上传。</li>
+</ol>
+<ul>
+  <li>要改变方向时，在 Hierarchy 中选择 Milleaf，更改 Inspector 的 Rotation。</li>
+  <li>手的位置偏移时，请使用 Unity 菜单的 Tools → Milleaf → 本を手に合わせ直す（重新把书对齐到手上）。</li>
+  <li>重新导出同一本书并导入后，之前的内容会更新。同一本书每个虚拟形象只能放 1 本。</li>
+  <li>书的文件夹中附有 README.txt。</li>
+</ul>
+
+<h3>在 VRChat 中</h3>
+<p>从 Expression 菜单的「书」操作。</p>
+<dl class="facts">
+  <dt>打开</dt><dd>拿出或收起书</dd>
+  <dt>下一页、上一页</dt><dd>翻动跨页。翻到最后会回到开头</dd>
+  <dt>选择页面</dt><dd>转动来选择跨页</dd>
+  <dt>用手指翻页</dt><dd>用手指触碰页面外侧的边缘即可翻页。其他人的手指也能翻页（要停止时，关闭「用手指翻页」「其他人也能翻页」）</dd>
+</dl>
+<p>在桌面模式（不用 VR）下，用「下一页」或「选择页面」翻页。</p>
+</section>
+
+<section data-id="update">
+<h2><span class="n">7</span>更新与恢复</h2>
+<h3>更新到新版本</h3>
+<ol class="steps">
+  <li>从获得 Milleaf 的商店（BOOTH 或 Gumroad）下载新的 ZIP，解压到与当前文件夹不同的位置。</li>
+  <li>启动新的 <code>Milleaf.exe</code>。书和设置可以照常使用。启动时也会备份之前的数据。</li>
+  <li>确认运行没有问题后，删除旧的文件夹。</li>
+</ol>
+<ul>
+  <li>如果在旧文件夹中创建了 <code>Milleaf-data</code>，请在启动时出现的提示中选择「复制后使用」。</li>
+  <li>无法正常运行时，可以用旧文件夹的 <code>Milleaf.exe</code> 照常使用。不过，用新版本保存的书在旧版本中只能查看。</li>
+  <li>打开「设置」中的「有新版本时通知」后，有新版本时会在书架右上角显示通知。每天只读取一次公开的版本信息，不会从这里发送任何数据。</li>
+</ul>
+<h3>从备份恢复</h3>
+<ul>
+  <li>第一次启动新版本时，会自动复制之前的书、模板和设置（不会复制照片本身）。</li>
+  <li>在「设置」的「从备份恢复」中，从列表选择时间点，再点击「撤销」。恢复前的状态也会复制保存，之后可以再恢复回来。</li>
+</ul>
+</section>
+
+<section data-id="faq" class="qa">
+<h2><span class="n">8</span>遇到问题时</h2>
+
+<h3>无法启动，或马上关闭</h3>
+<p>请确认已将 ZIP 全部解压，并且启动的是解压后文件夹中的 <code>Milleaf.exe</code>。如果放在 <code>C:\Program Files</code> 中，请移到其他位置。如果是杀毒软件阻止，请把解压后的文件夹加入排除项。</p>
+
+<h3>出现「Windows 已保护你的电脑」</h3>
+<p>点击「更多信息」，再点击「仍要运行」（<a href="#install">第 2 章</a>）。</p>
+
+<h3>找不到 VRChat 的照片</h3>
+<p>如果在 VRChat 的设置中更改了照片的保存位置，就无法自动找到。请用「添加位置」选择照片的文件夹。</p>
+
+<h3>出现「找不到这本书中的 N 张照片」</h3>
+<p>制作书之后移动或删除了照片，或存放照片的外接驱动器已拔出。把照片放回原来的位置，就会再次显示。找不到照片期间无法导出。</p>
+
+<h3>加载照片很花时间</h3>
+<p>第一次读取的文件夹会逐张打开照片，可能需要几分钟。第二次起会变快。</p>
+
+<h3>出现「这台电脑没有的字体」</h3>
+<p>书中使用的字体不在这台电脑上。直接导出会以其他字体输出。请重新选择字体，或从「设置」的「添加的字体」添加字体。</p>
+
+<h3>无法导出</h3>
+<p>「导出失败」后面会显示原因。原因是以下其中之一：磁盘空间不足、选择了无法写入的文件夹、文件正在其他应用中打开、文件夹路径太长。请选择其他文件夹再试一次。</p>
+
+<h3>体验版无法再导出</h3>
+<p>体验版每天最多导出 3 次。日期变更后会恢复为 3 次。正式版没有次数限制。</p>
+
+<h3>在 VRChat 中书一直显示着，也没有菜单</h3>
+<p>虚拟形象的项目中没有添加 Modular Avatar。添加后请重新上传。</p>
+
+<h3>在 VRChat 中找不到菜单</h3>
+<p>请查看 Expression 菜单的「More」里面。找不到时，请在 Unity 中确认 Prefab 是否在虚拟形象里。</p>
+
+<h3>其他人无法翻页</h3>
+<p>请在 VRChat 设置的「Avatar Interactions」中允许那个人。</p>
+
+<h3>想反馈问题</h3>
+<p>用应用右下角的对话气泡按钮（<kbd>F8</kbd>），可以连同该画面的截图留下笔记。请附上用「全部导出到文件夹（文字 + 图片）」生成的文件夹，通过获得 Milleaf 的商店联系我们。</p>
+</section>
+
+<section data-id="terms">
+<h2><span class="n">9</span>使用条款与许可</h2>
+<ul>
+  <li><a href="terms.html">使用条款</a></li>
+  <li><a href="THIRD_PARTY_NOTICES.txt">所使用的软件和字体的许可</a>（英文）</li>
+</ul>
+<p>照片中出现的虚拟形象、服装和世界的权利，属于各自的制作者。发布或销售书之前，请确认各自的使用条款，以及照片中人物的许可。</p>
+<p>Milleaf 是个人制作的非官方工具，与 VRChat Inc.、Modular Avatar、Unity Technologies 无关。文中提及的公司名称和服务名称，为各公司的商标或注册商标。</p>
+</section>
+
+</article>
+</div>
+
+</main>
+
+<footer class="wrap foot">
+  <span class="credit">© Mimicria — Mitori</span>
+  <a href="https://mitori-mimicria.booth.pm/">BOOTH</a>
+  <a href="https://mimicria.gumroad.com/">Gumroad</a>
+  <a href="https://x.com/mitori_mimicria">X @mitori_mimicria</a>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* 言語（Milleaf・サークルのサイトと同じ 5 言語・同じ決め方。保存のキーもサイトと共通） */
+  var LANGS = [
+    { id: 'ja', label: '日本語' },
+    { id: 'en', label: 'English' },
+    { id: 'ko', label: '한국어' },
+    { id: 'zh-Hant', label: '繁體中文' },
+    { id: 'zh-Hans', label: '简体中文' }
+  ];
+  var STORAGE_KEY = 'mimicria.lang';
+  function isLang(v) { return LANGS.some(function (l) { return l.id === v; }); }
+  function queryLang() {
+    var q = new URLSearchParams(location.search).get('lang');
+    return q && isLang(q) ? q : null;
+  }
+  function initialLang() {
+    var q = queryLang();
+    if (q) return q;
+    try {
+      var v = localStorage.getItem(STORAGE_KEY);
+      if (v && isLang(v)) return v;
+    } catch (e) { /* 保存できない環境 */ }
+    var nav = (navigator.language || 'en').toLowerCase();
+    if (nav.indexOf('ja') === 0) return 'ja';
+    if (nav.indexOf('ko') === 0) return 'ko';
+    if (nav.indexOf('zh') === 0) return /tw|hk|mo|hant/.test(nav) ? 'zh-Hant' : 'zh-Hans';
+    return 'en';
+  }
+
+  var docs = [].slice.call(document.querySelectorAll('.doc'));
+  var btn = document.getElementById('lang-btn'), pop = document.getElementById('lang-pop');
+  var lang = 'ja', observer = null;
+
+  /* 見出しの id（#export など）は、表示中の言語の見出しだけに付ける。どの言語でも同じ名前で飛べる */
+  function apply(l) {
+    if (!hasDoc(l)) l = hasDoc('en') ? 'en' : 'ja';
+    lang = l;
+    document.documentElement.lang = l;
+    var active = null;
+    docs.forEach(function (d) {
+      var on = d.getAttribute('lang') === l;
+      d.hidden = !on;
+      if (on) active = d;
+      [].forEach.call(d.querySelectorAll('[data-id]'), function (e) {
+        if (on) e.id = e.getAttribute('data-id'); else e.removeAttribute('id');
+      });
+    });
+    if (active) document.title = active.getAttribute('data-title');
+    document.getElementById('lang-cur').textContent = LANGS.filter(function (x) { return x.id === l; })[0].label;
+    buildMenu();
+    watchToc(active);
+  }
+
+  /* 目次: いま読んでいる章に印 */
+  function watchToc(doc) {
+    if (observer) observer.disconnect();
+    if (!doc || !('IntersectionObserver' in window)) return;
+    var links = [].slice.call(doc.querySelectorAll('.toc a'));
+    var mark = function (id) {
+      links.forEach(function (a) {
+        if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+    };
+    observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) mark(en.target.getAttribute('data-id')); });
+    }, { rootMargin: '0px 0px -70% 0px' });
+    [].forEach.call(doc.querySelectorAll('section[data-id]'), function (s) { observer.observe(s); });
+  }
+
+  function buildMenu() {
+    pop.textContent = '';
+    LANGS.forEach(function (l) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.lang = l.id;
+      b.textContent = l.label;
+      if (l.id === lang) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () {
+        try { localStorage.setItem(STORAGE_KEY, l.id); } catch (e) { /* 保存できない環境 */ }
+        /* ?lang= で開いていたら、URL も選んだ言語にする（読み込み直しても戻らないように） */
+        if (queryLang()) {
+          var u = new URL(location.href);
+          u.searchParams.set('lang', l.id);
+          history.replaceState(null, '', u);
+        }
+        apply(l.id);
+        close();
+        btn.focus();
+      });
+      pop.appendChild(b);
+    });
+  }
+  function open() { pop.hidden = false; btn.setAttribute('aria-expanded', 'true'); }
+  function close() { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+  btn.addEventListener('click', function () { if (pop.hidden) open(); else close(); });
+  window.addEventListener('pointerdown', function (e) { if (!pop.hidden && !e.target.closest('.lang')) close(); });
+  window.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) { close(); btn.focus(); } });
+
+  /* 本文の無い言語は英語、それも無ければ日本語で出す */
+  function hasDoc(l) { return docs.some(function (d) { return d.getAttribute('lang') === l; }); }
+  apply(initialLang());
+  if (location.hash) {
+    var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) target.scrollIntoView();
+  }
+})();
+</script>
+</body>
+</html>
