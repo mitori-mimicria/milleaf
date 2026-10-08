@@ -1,5 +1,5 @@
 ==============================================================================
-Milleaf 0.6.7 - Third-party software notices
+Milleaf 0.6.8 - Third-party software notices
 ==============================================================================
 
 Milleaf includes the third-party software listed below. Each component is
