@@ -77,7 +77,6 @@ kbd {
 /* ---------- 頭 ---------- */
 .top { display: flex; align-items: center; gap: 16px; padding-top: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
 .home { font-weight: 700; letter-spacing: 0.04em; color: var(--fg); text-decoration: none; }
-.home:hover { color: var(--accent); }
 .crumb { color: var(--mute); margin-right: auto; font-size: 14px; }
 .lang { position: relative; }
 .lang-btn {
@@ -194,7 +193,8 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 <body>
 
 <header class="wrap top">
-  <a class="home" href="https://mitori-mimicria.github.io/milleaf-store/">Milleaf</a>
+  <span class="home">Mimicria</span>
+  <span class="crumb">/ Milleaf</span>
   <div class="lang">
     <button class="lang-btn" type="button" aria-haspopup="true" aria-expanded="false" id="lang-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
