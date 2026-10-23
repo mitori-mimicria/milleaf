@@ -205,13 +205,13 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </header>
 
 <main class="wrap">
-<div class="doc" lang="ja" data-title="Milleaf説明書" data-toc="目次" data-updated="2026年10月10日更新">
+<div class="doc" lang="ja" data-title="Milleaf説明書" data-toc="目次" data-updated="2026年10月24日更新">
 
 <div class="title">
   <img src="img/icon_128.png" alt="" width="56" height="56">
   <div>
     <h1>Milleaf説明書</h1>
-    <p>2026年10月10日更新（Milleaf 0.6）</p>
+    <p>2026年10月24日更新（Milleaf 0.7）</p>
     <p class="maker">作者：miichan</p>
   </div>
 </div>
@@ -237,11 +237,11 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>OS</dt><dd>Windows 10 / 11（64ビット）</dd>
   <dt>表示言語</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文（右上の地球のボタンか「設定」で切り替え）</dd>
   <dt>インターネット</dt><dd>要りません。写真や本の中身を外へ送ることはありません</dd>
-  <dt>VRChatの本</dt><dd>VRChatの中で読める本を作るときだけ、UnityとVRChat SDK、Modular Avatarが要ります（<a href="#vrchat">6章</a>）</dd>
+  <dt>VRChatの本</dt><dd>VRChatの中で読める本を作るときだけ、UnityとVRChat SDKが要ります。アバターに持たせる本はModular Avatarも要ります（<a href="#vrchat">6章</a>）</dd>
 </dl>
 
 <h3>製品版と体験版</h3>
-<p>体験版は無料です。本を作る・直す機能は製品版と同じで、書き出しの回数とテンプレートの出し入れに制限があります。</p>
+<p>体験版は無料です。本を作る・直す機能は製品版と同じで、書き出しの回数と、テンプレートの出し入れ・素材の追加に制限があります。</p>
 <div class="tbl"><table>
   <thead><tr><th></th><th>製品版</th><th>体験版</th></tr></thead>
   <tbody>
@@ -249,9 +249,17 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>書き出し</th><td data-label="製品版">回数の制限はありません</td><td data-label="体験版">種類を問わず1日3回まで。日付が変わると戻ります</td></tr>
     <tr><th>テンプレートの書き出し（ZIP）</th><td data-label="製品版">できます</td><td data-label="体験版">できません</td></tr>
     <tr><th>テンプレートの追加（公式追加テンプレートを含む）</th><td data-label="製品版">できます</td><td data-label="体験版">できません</td></tr>
+    <tr><th>素材の追加（フォルダ・ZIPから）</th><td data-label="製品版">できます</td><td data-label="体験版">できません</td></tr>
   </tbody>
 </table></div>
 <p>体験版で作った本とテンプレートは、製品版でそのまま開けます。</p>
+
+<h3>公式追加テンプレート</h3>
+<p>別売のテンプレートです。本棚の「テンプレート」で「ZIPから追加」を押し、ダウンロードしたZIPを選ぶと入ります。</p>
+<ul>
+  <li>第1弾：アバター紹介、シネマ、旅のしおり、図鑑、SNS風（<a href="https://mimicria.booth.pm/items/8957481">BOOTH</a>）</li>
+  <li>第2弾：絵日記、ふたりの記念日、誕生日・お祝い会、冬・クリスマス、もっとぎゅうぎゅう（Milleaf 0.7.0から・<a href="https://mimicria.booth.pm/items/8965894">BOOTH</a>）</li>
+</ul>
 </section>
 
 <section data-id="install">
@@ -349,6 +357,25 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </ul>
 <p class="note">操作の一覧は、右下の「?」か<kbd>?</kbd>キーで出ます。その画面でできることとキーが並びます。</p>
 
+<h3>日付の文字</h3>
+<p>日付の文字には、写真を撮った日が入ります。日付の文字を選ぶと、右の「表記」で書き方をページごとに変えられます。</p>
+<ul>
+  <li>「2026年5月23日」「5/23」などのほか、曜日つき（「5月23日（土）」など）、時刻（「7:42」）、「253日目」「253日」を選べます。時刻は、そのページでいちばん大きい写真を撮った時刻です。</li>
+  <li>「253日目」「253日」は、「本の情報」の「はじまりの日」から数えます。空のときは、本に入れた写真でいちばん早い日から数えます。</li>
+  <li>「本の情報」の「1日の区切り」を「5時」にすると、夜中（5時より前）に撮った写真は前の日に入ります。絵日記とふたりの記念日は、はじめから5時です。</li>
+  <li>表紙と裏表紙の日付には、ページに入れた写真でいちばん新しい日が入ります。</li>
+</ul>
+<figure class="shot"><img src="img/ja/book-info.webp" width="1920" height="1200" alt="本の情報。はじまりの日と1日の区切りはここで決めます" loading="lazy" decoding="async"><figcaption>本の情報。はじまりの日と1日の区切りはここで決めます</figcaption></figure>
+
+<h3>自分の素材</h3>
+<p>手持ちの画像（PNG・JPEG・WebP・GIF・SVG・AVIF）を飾りとして使えます。上の「飾り」で素材パネルを開き、「＋」から「フォルダから追加」か「ZIPから追加」を選びます。フォルダやZIPをパネルにドロップしても入ります。</p>
+<ul>
+  <li>フォルダ（ZIP）1つが1つの素材集になり、パネルの上で「内蔵の飾り」と切り替えます。中のフォルダごとに見出しが付きます。</li>
+  <li>入れた画像はデータのフォルダに写すので、元のフォルダやZIPは消しても大丈夫です。</li>
+  <li>同じ名前の素材集を入れ直すと、置き換えるか別に追加するかを選べます。</li>
+  <li>「…」から名前の変更と削除ができます。素材集を消すと、その素材を置いたページからも消えます。</li>
+</ul>
+
 <h3>写真の編集</h3>
 <p>枠の写真をダブルクリックすると「写真を編集」が開きます。モザイク、トリミング、色の調整はここでします。</p>
 <figure class="shot"><img src="img/ja/photo-edit.webp" width="1920" height="1200" alt="写真を編集。範囲を囲んでモザイクをかけたところ" loading="lazy" decoding="async"><figcaption>写真を編集。範囲を囲んでモザイクをかけたところ</figcaption></figure>
@@ -376,7 +403,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>電子書籍（EPUB）</th><td data-label="使い道">電子書籍アプリで読む</td><td data-label="主な設定">画像の大きさ（スマホは1200、タブレットは1600以上）</td></tr>
     <tr><th>グラフィック（オンデマンド印刷）</th><td data-label="使い道">ネット印刷のグラフィックで冊子を刷る</td><td data-label="主な設定">中綴じ・無線綴じ、紙、背幅、RGBかCMYK</td></tr>
     <tr><th>同人誌印刷所</th><td data-label="使い道">同人誌の印刷所に入稿する</td><td data-label="主な設定">綴じ方、表2・表3、ノンブル、PDFかPNG</td></tr>
-    <tr><th>VRChat用の本（Unity）</th><td data-label="使い道">アバターに持たせてVRChatの中で読む</td><td data-label="主な設定"><a href="#vrchat">6章</a></td></tr>
+    <tr><th>VRChat用の本（Unity）</th><td data-label="使い道">アバターに持たせたり、ワールドに置いたりしてVRChatの中で読む</td><td data-label="主な設定"><a href="#vrchat">6章</a></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -394,7 +421,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 
 <section data-id="vrchat">
 <h2><span class="n">6</span>VRChatの中で読める本</h2>
-<p>アバターに持たせて、VRChatの中でページをめくれる本を書き出せます。PC版のVRChat用で、Questには対応していません。</p>
+<p>アバターに持たせたり、ワールドに置いたりして、VRChatの中でページをめくれる本を書き出せます。PC版のVRChat用で、Questには対応していません。</p>
 <figure class="shot"><img src="img/ja/export-vrchat.webp" width="1920" height="1200" alt="VRChat用の本の設定。アバターに増える容量も出ます" loading="lazy" decoding="async"><figcaption>VRChat用の本の設定。アバターに増える容量も出ます</figcaption></figure>
 
 <h3>必要なもの</h3>
@@ -432,6 +459,19 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>指でめくる</dt><dd>ページの外側の端に指で触れるとめくれます。ほかの人の指でもめくれます（止めるときは「指でめくる」「ほかの人もめくれる」をオフ）</dd>
 </dl>
 <p>デスクトップ（VRなし）では、「次のページ」か「ページを選ぶ」でめくります。</p>
+
+<h3>ワールドに置く本</h3>
+<p>書き出しの「使う場所」で「ワールド」を選ぶと、ワールドに置いて、来た人がページを押してめくれる本になります。ワールドをアップロードできるUnityのプロジェクト（VCCの「World」のテンプレートで作ったもの）に取り込みます。Modular Avatarは要りません。VRChat SDK 3.10.5で動作を確かめています。</p>
+<ul>
+  <li>「めくったページをみんなに見せる」をオンにすると、めくったページがワールドにいる全員に見えます。</li>
+  <li>「手に持てる」をオンにすると、ページの内側を押して本を持てます。持っている間は、使う（VRはトリガー、デスクトップはクリック）で次へ、長押しで前へめくります。</li>
+</ul>
+<ol class="steps">
+  <li>ワールドのプロジェクトに、書き出した<code>.unitypackage</code>を取り込みます。数秒で本にUdonが付きます。</li>
+  <li><code>Assets/Milleaf/World/（題名）_（月日）/MilleafBook.prefab</code>をシーンへドラッグし、机や床の上に置きます。プレハブの位置が本の下の端です。</li>
+  <li>そのままアップロードします。</li>
+</ol>
+<p>ワールドの中では、右のページ（右綴じの本は左）を押すと次へ、反対のページを押すと前へめくります。手に持てる本を置いたままめくるときは、ページの外側の端を押します。</p>
 </section>
 
 <section data-id="update">
@@ -490,6 +530,9 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 <h3>ほかの人がページをめくれない</h3>
 <p>VRChatの設定の「Avatar Interactions」で、その人を許可してください。</p>
 
+<h3>ワールドの本がめくれない</h3>
+<p>取り込んだあと、本にUdonが付くまで少し待ちます。付いていなければ、UnityのメニューのTools → Milleaf →「ワールドの本を準備し直す」を使います。</p>
+
 <h3>不具合を知らせたい</h3>
 <p>アプリの右下の吹き出しのボタン（<kbd>F8</kbd>）で、その画面のスクリーンショットと一緒にメモを残せます。「まとめてフォルダに書き出す」でできたフォルダを添えて、入手したお店からお問い合わせください。</p>
 </section>
@@ -514,7 +557,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <img src="img/icon_128.png" alt="" width="56" height="56">
   <div>
     <h1>Milleaf manual</h1>
-    <p>Updated October 10, 2026 (Milleaf 0.6)</p>
+    <p>Updated October 24, 2026 (Milleaf 0.7)</p>
     <p class="maker">Made by miichan</p>
   </div>
 </div>
@@ -540,11 +583,11 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>OS</dt><dd>Windows 10 / 11 (64-bit)</dd>
   <dt>Languages</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文 (switch with the globe button at the top right or in Settings)</dd>
   <dt>Internet</dt><dd>Not needed. Milleaf never sends your photos or books anywhere</dd>
-  <dt>VRChat book</dt><dd>Only to make a book you can read inside VRChat: Unity, the VRChat SDK and Modular Avatar (<a href="#vrchat">section 6</a>)</dd>
+  <dt>VRChat book</dt><dd>Only to make a book you can read inside VRChat: Unity and the VRChat SDK, plus Modular Avatar for a book your avatar holds (<a href="#vrchat">section 6</a>)</dd>
 </dl>
 
 <h3>Full version and trial</h3>
-<p>The trial is free. Making and editing books works the same as in the full version. The trial limits how often you can export, and it cannot export or add templates.</p>
+<p>The trial is free. Making and editing books works the same as in the full version. The trial limits how often you can export, and it cannot export or add templates or add your own assets.</p>
 <div class="tbl"><table>
   <thead><tr><th></th><th>Full version</th><th>Trial</th></tr></thead>
   <tbody>
@@ -552,9 +595,17 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>Export</th><td data-label="Full version">No limit</td><td data-label="Trial">Up to 3 times a day, any format. The count resets when the date changes</td></tr>
     <tr><th>Export templates (ZIP)</th><td data-label="Full version">Yes</td><td data-label="Trial">No</td></tr>
     <tr><th>Add templates (including official add-ons)</th><td data-label="Full version">Yes</td><td data-label="Trial">No</td></tr>
+    <tr><th>Add assets (from a folder or ZIP)</th><td data-label="Full version">Yes</td><td data-label="Trial">No</td></tr>
   </tbody>
 </table></div>
 <p>Books and templates made in the trial open as they are in the full version.</p>
+
+<h3>Official add-on templates</h3>
+<p>These templates are sold separately. To add them, click Templates on the shelf, then Add from ZIP, and choose the ZIP you downloaded.</p>
+<ul>
+  <li>First set: Avatar profile, Cinema, Travel guide, Field guide and Social feed (<a href="https://mimicria.booth.pm/items/8957481">BOOTH</a>)</li>
+  <li>Second set: Picture Diary, The Two of Us, Birthday &amp; Celebration, Winter &amp; Christmas and Even More Packed (Milleaf 0.7.0 or later, <a href="https://mimicria.booth.pm/items/8965894">BOOTH</a>)</li>
+</ul>
 </section>
 
 <section data-id="install">
@@ -652,6 +703,25 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </ul>
 <p class="note">The <kbd>?</kbd> button at the bottom right (or the <kbd>?</kbd> key) lists what you can do on the current screen and the keys for it.</p>
 
+<h3>Date text</h3>
+<p>Date text shows the day the photo was taken. Select a date text and use Format on the right to change how it is written, page by page.</p>
+<ul>
+  <li>Besides "2026.05.23", "5/23" and the others, you can choose the date with the weekday ("Sat, May 23" and similar), the time ("7:42"), "Day 253" or "253 days". The time is when the largest photo on that page was taken.</li>
+  <li>"Day 253" and "253 days" count from the Start date in Book info. If it is empty, they count from the earliest photo in the book.</li>
+  <li>If you set Day starts at in Book info to 5:00, photos taken late at night (before 5:00) count as the previous day. Picture Diary and The Two of Us start with 5:00.</li>
+  <li>Dates on the front and back covers show the latest date among the photos in the pages.</li>
+</ul>
+<figure class="shot"><img src="img/en/book-info.webp" width="1920" height="1200" alt="Book info. Set the Start date and Day starts at here" loading="lazy" decoding="async"><figcaption>Book info. Set the Start date and Day starts at here</figcaption></figure>
+
+<h3>Your own assets</h3>
+<p>You can use your own images (PNG, JPEG, WebP, GIF, SVG, AVIF) as decorations. Open the assets panel with Decorations at the top, press +, and choose Add from folder or Add from ZIP. You can also drop a folder or ZIP onto the panel.</p>
+<ul>
+  <li>Each folder (or ZIP) becomes one set. Switch between sets and Built-in decorations at the top of the panel. Folders inside become headings.</li>
+  <li>The images are copied into your data folder, so you can delete the original folder or ZIP.</li>
+  <li>If you add a set with the same name again, you can replace it or add it separately.</li>
+  <li>Use … to rename or delete a set. Deleting a set also removes its images from the pages where you placed them.</li>
+</ul>
+
 <h3>Photo editing</h3>
 <p>Double-click a photo in a frame to open Edit photo. Mosaic, cropping and color adjustments are all here.</p>
 <figure class="shot"><img src="img/en/photo-edit.webp" width="1920" height="1200" alt="Edit photo, with a mosaic over a selected area" loading="lazy" decoding="async"><figcaption>Edit photo, with a mosaic over a selected area</figcaption></figure>
@@ -679,7 +749,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>E-book (EPUB)</th><td data-label="Use it to">Read in an e-book app</td><td data-label="Main options">Image size (1200 for phones, 1600 or more for tablets)</td></tr>
     <tr><th>Graphic (on-demand printing)</th><td data-label="Use it to">Print a booklet with the Japanese online printer Graphic</td><td data-label="Main options">Saddle stitch or perfect binding, paper, spine width, RGB or CMYK</td></tr>
     <tr><th>Doujinshi printers</th><td data-label="Use it to">Send the book to a doujinshi print shop</td><td data-label="Main options">Binding, inside covers, page numbers, PDF or PNG</td></tr>
-    <tr><th>VRChat book (Unity)</th><td data-label="Use it to">Give it to your avatar and read it inside VRChat</td><td data-label="Main options"><a href="#vrchat">Section 6</a></td></tr>
+    <tr><th>VRChat book (Unity)</th><td data-label="Use it to">Give it to your avatar or place it in a world, and read it inside VRChat</td><td data-label="Main options"><a href="#vrchat">Section 6</a></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -698,7 +768,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 
 <section data-id="vrchat">
 <h2><span class="n">6</span>Books you can read in VRChat</h2>
-<p>Milleaf can export a book that your avatar holds and that you can page through inside VRChat. It is for VRChat on PC. Quest is not supported.</p>
+<p>Milleaf can export a book that your avatar holds, or a book placed in a world, that you can page through inside VRChat. It is for VRChat on PC. Quest is not supported.</p>
 <figure class="shot"><img src="img/en/export-vrchat.webp" width="1920" height="1200" alt="VRChat book options, including how much it adds to your avatar" loading="lazy" decoding="async"><figcaption>VRChat book options, including how much it adds to your avatar</figcaption></figure>
 
 <h3>What you need</h3>
@@ -736,6 +806,19 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>Turn with finger</dt><dd>Touch the outer edge of a page to turn it. Other players can turn pages this way too (turn off Turn with finger or Others can turn pages to stop this)</dd>
 </dl>
 <p>On desktop, without VR, use Next page or Choose page.</p>
+
+<h3>A book placed in a world</h3>
+<p>Choose World under For in the export settings to make a book that people in your world can page through by pressing the pages. Import it into a Unity project you can upload worlds from (one made from the World template in VCC). You do not need Modular Avatar. Tested with VRChat SDK 3.10.5.</p>
+<ul>
+  <li>With Show the turned page to everyone on, everyone in the world sees the page you turn to.</li>
+  <li>With Can be picked up on, press the inner part of the pages to pick up the book. While you hold it, Use (trigger in VR, click on desktop) goes to the next spread, and a long press goes back.</li>
+</ul>
+<ol class="steps">
+  <li>Import the exported <code>.unitypackage</code> into your world project. Udon is added to the book in a few seconds.</li>
+  <li>Drag <code>Assets/Milleaf/World/(title)_(month and day)/MilleafBook.prefab</code> into your scene and put it on a desk or the floor. The prefab position is the bottom edge of the book.</li>
+  <li>Upload as usual.</li>
+</ol>
+<p>In the world, press the right page (the left page for a right-bound book) to go to the next spread, and the other page to go back. To turn the pages of a book that can be picked up while it lies on a desk, press the outer edge of a page.</p>
 </section>
 
 <section data-id="update">
@@ -794,6 +877,9 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 <h3>Other players cannot turn the pages</h3>
 <p>Allow that player under Avatar Interactions in VRChat's settings.</p>
 
+<h3>The pages of a world book do not turn</h3>
+<p>After importing, wait a moment until Udon is added to the book. If it is not, use Tools → Milleaf → ワールドの本を準備し直す (Set Up World Books) in the Unity menu.</p>
+
 <h3>Reporting a problem</h3>
 <p>The speech bubble button at the bottom right of the app (<kbd>F8</kbd>) saves a note together with a screenshot of the screen. Use Export all to a folder (text + images), then contact us through the store where you got Milleaf and include that folder.</p>
 </section>
@@ -812,13 +898,13 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </div>
 
 
-<div class="doc" hidden lang="ko" data-title="Milleaf 설명서" data-toc="목차" data-updated="2026년 10월 10일 업데이트">
+<div class="doc" hidden lang="ko" data-title="Milleaf 설명서" data-toc="목차" data-updated="2026년 10월 24일 업데이트">
 
 <div class="title">
   <img src="img/icon_128.png" alt="" width="56" height="56">
   <div>
     <h1>Milleaf 설명서</h1>
-    <p>2026년 10월 10일 업데이트 (Milleaf 0.6)</p>
+    <p>2026년 10월 24일 업데이트 (Milleaf 0.7)</p>
     <p class="maker">만든 사람: miichan</p>
   </div>
 </div>
@@ -844,11 +930,11 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>OS</dt><dd>Windows 10 / 11(64비트)</dd>
   <dt>표시 언어</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文(오른쪽 위의 지구 버튼이나 ‘설정’에서 전환)</dd>
   <dt>인터넷</dt><dd>필요하지 않습니다. 사진이나 책의 내용을 외부로 보내지 않습니다</dd>
-  <dt>VRChat 책</dt><dd>VRChat 안에서 읽을 수 있는 책을 만들 때만 Unity와 VRChat SDK, Modular Avatar가 필요합니다(<a href="#vrchat">6장</a>)</dd>
+  <dt>VRChat 책</dt><dd>VRChat 안에서 읽을 수 있는 책을 만들 때만 Unity와 VRChat SDK가 필요합니다. 아바타에게 들리는 책은 Modular Avatar도 필요합니다(<a href="#vrchat">6장</a>)</dd>
 </dl>
 
 <h3>정식판과 체험판</h3>
-<p>체험판은 무료입니다. 책을 만들고 고치는 기능은 정식판과 같으며, 내보내기 횟수와 템플릿 내보내기·추가에 제한이 있습니다.</p>
+<p>체험판은 무료입니다. 책을 만들고 고치는 기능은 정식판과 같으며, 내보내기 횟수와 템플릿 내보내기·추가, 소재 추가에 제한이 있습니다.</p>
 <div class="tbl"><table>
   <thead><tr><th></th><th>정식판</th><th>체험판</th></tr></thead>
   <tbody>
@@ -856,9 +942,17 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>내보내기</th><td data-label="정식판">횟수 제한이 없습니다</td><td data-label="체험판">종류와 관계없이 하루 3회까지. 날짜가 바뀌면 다시 3회가 됩니다</td></tr>
     <tr><th>템플릿 내보내기(ZIP)</th><td data-label="정식판">할 수 있습니다</td><td data-label="체험판">할 수 없습니다</td></tr>
     <tr><th>템플릿 추가(공식 추가 템플릿 포함)</th><td data-label="정식판">할 수 있습니다</td><td data-label="체험판">할 수 없습니다</td></tr>
+    <tr><th>소재 추가(폴더·ZIP에서)</th><td data-label="정식판">할 수 있습니다</td><td data-label="체험판">할 수 없습니다</td></tr>
   </tbody>
 </table></div>
 <p>체험판에서 만든 책과 템플릿은 정식판에서 그대로 열 수 있습니다.</p>
+
+<h3>공식 추가 템플릿</h3>
+<p>별도로 판매하는 템플릿입니다. 책장의 ‘템플릿’에서 ‘ZIP에서 추가’를 누르고, 다운로드한 ZIP을 고르면 들어갑니다.</p>
+<ul>
+  <li>제1탄: 아바타 소개, 시네마, 여행 안내서, 도감, SNS 스타일(<a href="https://mimicria.booth.pm/items/8957481">BOOTH</a>)</li>
+  <li>제2탄: 그림일기, 우리 둘의 기념일, 생일·축하 모임, 겨울·크리스마스, 더 빽빽하게(Milleaf 0.7.0부터, <a href="https://mimicria.booth.pm/items/8965894">BOOTH</a>)</li>
+</ul>
 </section>
 
 <section data-id="install">
@@ -956,6 +1050,25 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </ul>
 <p class="note">조작 목록은 오른쪽 아래의 ‘?’나 <kbd>?</kbd> 키로 나옵니다. 그 화면에서 할 수 있는 일과 키가 나열됩니다.</p>
 
+<h3>날짜 글자</h3>
+<p>날짜 글자에는 사진을 찍은 날이 들어갑니다. 날짜 글자를 고르면 오른쪽의 ‘표기’에서 쓰는 방식을 페이지마다 바꿀 수 있습니다.</p>
+<ul>
+  <li>‘2026.05.23’, ‘5/23’ 등 외에 요일 포함(‘5월 23일 (토)’ 등), 시각(‘7:42’), ‘253일째’, ‘253일’을 고를 수 있습니다. 시각은 그 페이지에서 가장 큰 사진을 찍은 시각입니다.</li>
+  <li>‘253일째’와 ‘253일’은 ‘책 정보’의 ‘시작일’부터 셉니다. 비어 있으면 책에 넣은 사진 중 가장 이른 날부터 셉니다.</li>
+  <li>‘책 정보’의 ‘하루의 시작’을 ‘5시’로 하면 한밤중(5시 전)에 찍은 사진은 전날로 들어갑니다. 그림일기와 우리 둘의 기념일은 처음부터 5시입니다.</li>
+  <li>앞표지와 뒤표지의 날짜에는 페이지에 넣은 사진 중 가장 최근 날짜가 들어갑니다.</li>
+</ul>
+<figure class="shot"><img src="img/ko/book-info.webp" width="1920" height="1200" alt="책 정보. 시작일과 하루의 시작은 여기서 정합니다" loading="lazy" decoding="async"><figcaption>책 정보. 시작일과 하루의 시작은 여기서 정합니다</figcaption></figure>
+
+<h3>내 소재</h3>
+<p>가지고 있는 이미지(PNG·JPEG·WebP·GIF·SVG·AVIF)를 장식으로 쓸 수 있습니다. 위쪽의 ‘장식’으로 소재 패널을 열고, ‘+’에서 ‘폴더에서 추가’나 ‘ZIP에서 추가’를 고릅니다. 폴더나 ZIP을 패널에 끌어다 놓아도 추가됩니다.</p>
+<ul>
+  <li>폴더(ZIP) 하나가 소재 묶음 하나가 되며, 패널 위쪽에서 ‘기본 장식’과 바꿉니다. 안의 폴더별로 제목이 붙습니다.</li>
+  <li>추가한 이미지는 데이터 폴더에 복사되므로, 원래 폴더나 ZIP은 지워도 괜찮습니다.</li>
+  <li>같은 이름의 소재 묶음을 다시 넣으면, 바꿀지 따로 추가할지 고를 수 있습니다.</li>
+  <li>‘…’에서 이름을 바꾸거나 삭제할 수 있습니다. 소재 묶음을 지우면, 그 소재를 놓은 페이지에서도 사라집니다.</li>
+</ul>
+
 <h3>사진 편집</h3>
 <p>프레임의 사진을 더블클릭하면 ‘사진 편집’이 열립니다. 모자이크, 자르기, 색 보정은 여기서 합니다.</p>
 <figure class="shot"><img src="img/ko/photo-edit.webp" width="1920" height="1200" alt="사진 편집. 범위를 둘러싸서 모자이크를 적용한 모습" loading="lazy" decoding="async"><figcaption>사진 편집. 범위를 둘러싸서 모자이크를 적용한 모습</figcaption></figure>
@@ -983,7 +1096,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>전자책(EPUB)</th><td data-label="용도">전자책 앱에서 읽기</td><td data-label="주요 설정">이미지 크기(스마트폰은 1200, 태블릿은 1600 이상)</td></tr>
     <tr><th>그래픽 (온디맨드 인쇄)</th><td data-label="용도">온라인 인쇄소 그래픽에서 책자 인쇄하기</td><td data-label="주요 설정">중철·무선철, 용지, 책등 폭, RGB 또는 CMYK</td></tr>
     <tr><th>동인지 인쇄소</th><td data-label="용도">동인지 인쇄소에 입고하기</td><td data-label="주요 설정">제본 방식, 표2·표3, 쪽번호, PDF 또는 PNG</td></tr>
-    <tr><th>VRChat용 책(Unity)</th><td data-label="용도">아바타에게 들려서 VRChat 안에서 읽기</td><td data-label="주요 설정"><a href="#vrchat">6장</a></td></tr>
+    <tr><th>VRChat용 책(Unity)</th><td data-label="용도">아바타에게 들리거나 월드에 놓고 VRChat 안에서 읽기</td><td data-label="주요 설정"><a href="#vrchat">6장</a></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -1001,7 +1114,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 
 <section data-id="vrchat">
 <h2><span class="n">6</span>VRChat 안에서 읽을 수 있는 책</h2>
-<p>아바타에게 들려서 VRChat 안에서 페이지를 넘길 수 있는 책을 내보낼 수 있습니다. PC판 VRChat용이며, Quest는 지원하지 않습니다.</p>
+<p>아바타에게 들리거나 월드에 놓고, VRChat 안에서 페이지를 넘길 수 있는 책을 내보낼 수 있습니다. PC판 VRChat용이며, Quest는 지원하지 않습니다.</p>
 <figure class="shot"><img src="img/ko/export-vrchat.webp" width="1920" height="1200" alt="VRChat용 책 설정. 아바타에 늘어나는 용량도 나옵니다" loading="lazy" decoding="async"><figcaption>VRChat용 책 설정. 아바타에 늘어나는 용량도 나옵니다</figcaption></figure>
 
 <h3>필요한 것</h3>
@@ -1039,6 +1152,19 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>손가락으로 넘기기</dt><dd>페이지 바깥쪽 가장자리에 손가락을 대면 넘어갑니다. 다른 사람의 손가락으로도 넘길 수 있습니다(막으려면 ‘손가락으로 넘기기’, ‘다른 사람도 넘길 수 있음’을 끔)</dd>
 </dl>
 <p>데스크톱(VR 없음)에서는 ‘다음 페이지’나 ‘페이지 고르기’로 넘깁니다.</p>
+
+<h3>월드에 놓는 책</h3>
+<p>내보내기의 ‘용도’에서 ‘월드’를 고르면, 월드에 놓고 방문한 사람이 페이지를 눌러 넘길 수 있는 책이 됩니다. 월드를 업로드할 수 있는 Unity 프로젝트(VCC의 ‘World’ 템플릿으로 만든 것)에 가져옵니다. Modular Avatar는 필요 없습니다. VRChat SDK 3.10.5에서 동작을 확인했습니다.</p>
+<ul>
+  <li>‘넘긴 페이지를 모두에게 보이기’를 켜면, 넘긴 페이지가 월드에 있는 모두에게 보입니다.</li>
+  <li>‘손에 들 수 있게’를 켜면, 페이지 안쪽을 눌러 책을 들 수 있습니다. 들고 있는 동안에는 사용(VR은 트리거, 데스크톱은 클릭)으로 다음으로, 길게 누르면 앞으로 넘깁니다.</li>
+</ul>
+<ol class="steps">
+  <li>월드 프로젝트에 내보낸 <code>.unitypackage</code>를 가져옵니다. 몇 초 뒤 책에 Udon이 붙습니다.</li>
+  <li><code>Assets/Milleaf/World/(제목)_(월일)/MilleafBook.prefab</code>을 씬으로 드래그해 책상이나 바닥 위에 놓습니다. 프리팹의 위치가 책의 아래쪽 끝입니다.</li>
+  <li>그대로 업로드합니다.</li>
+</ol>
+<p>월드 안에서는 오른쪽 페이지(오른쪽 철 책은 왼쪽)를 누르면 다음으로, 반대쪽 페이지를 누르면 앞으로 넘어갑니다. 손에 들 수 있는 책을 놓아둔 채로 넘길 때는 페이지의 바깥쪽 끝을 누릅니다.</p>
 </section>
 
 <section data-id="update">
@@ -1097,6 +1223,9 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 <h3>다른 사람이 페이지를 넘길 수 없음</h3>
 <p>VRChat 설정의 ‘Avatar Interactions’에서 그 사람을 허용하세요.</p>
 
+<h3>월드의 책이 넘어가지 않음</h3>
+<p>가져온 뒤 책에 Udon이 붙을 때까지 잠시 기다립니다. 붙지 않으면 Unity 메뉴의 Tools → Milleaf → ‘ワールドの本を準備し直す’(Set Up World Books)를 사용합니다.</p>
+
 <h3>문제를 알리고 싶을 때</h3>
 <p>앱 오른쪽 아래의 말풍선 버튼(<kbd>F8</kbd>)으로 그 화면의 스크린샷과 함께 메모를 남길 수 있습니다. ‘폴더로 모두 내보내기 (텍스트 + 이미지)’로 만든 폴더를 첨부해 Milleaf를 받은 스토어를 통해 문의해 주세요.</p>
 </section>
@@ -1115,13 +1244,13 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </div>
 
 
-<div class="doc" hidden lang="zh-Hant" data-title="Milleaf 說明書" data-toc="目錄" data-updated="2026年10月10日更新">
+<div class="doc" hidden lang="zh-Hant" data-title="Milleaf 說明書" data-toc="目錄" data-updated="2026年10月24日更新">
 
 <div class="title">
   <img src="img/icon_128.png" alt="" width="56" height="56">
   <div>
     <h1>Milleaf 說明書</h1>
-    <p>2026年10月10日更新（Milleaf 0.6）</p>
+    <p>2026年10月24日更新（Milleaf 0.7）</p>
     <p class="maker">作者：miichan</p>
   </div>
 </div>
@@ -1147,11 +1276,11 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>OS</dt><dd>Windows 10 / 11（64 位元）</dd>
   <dt>顯示語言</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文（用右上角的地球按鈕或「設定」切換）</dd>
   <dt>網路</dt><dd>不需要。不會把照片或書的內容傳送到外部</dd>
-  <dt>VRChat 的書</dt><dd>只有製作可在 VRChat 中閱讀的書時，才需要 Unity、VRChat SDK 與 Modular Avatar（<a href="#vrchat">第 6 章</a>）</dd>
+  <dt>VRChat 的書</dt><dd>只有製作可在 VRChat 中閱讀的書時，才需要 Unity 與 VRChat SDK；讓虛擬角色拿著的書還需要 Modular Avatar（<a href="#vrchat">第 6 章</a>）</dd>
 </dl>
 
 <h3>正式版與體驗版</h3>
-<p>體驗版免費。製作與修改書的功能和正式版相同，但匯出次數以及範本的匯出與新增有限制。</p>
+<p>體驗版免費。製作與修改書的功能和正式版相同，但匯出次數、範本的匯出與新增，以及新增素材有限制。</p>
 <div class="tbl"><table>
   <thead><tr><th></th><th>正式版</th><th>體驗版</th></tr></thead>
   <tbody>
@@ -1159,9 +1288,17 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>匯出</th><td data-label="正式版">沒有次數限制</td><td data-label="體驗版">不論種類，每天最多 3 次。日期變更後恢復</td></tr>
     <tr><th>範本匯出（ZIP）</th><td data-label="正式版">可以</td><td data-label="體驗版">不可以</td></tr>
     <tr><th>新增範本（包含官方追加範本）</th><td data-label="正式版">可以</td><td data-label="體驗版">不可以</td></tr>
+    <tr><th>新增素材（從資料夾或 ZIP）</th><td data-label="正式版">可以</td><td data-label="體驗版">不可以</td></tr>
   </tbody>
 </table></div>
 <p>在體驗版製作的書與範本，可以直接在正式版開啟。</p>
+
+<h3>官方追加範本</h3>
+<p>另售的範本。在書架的「範本」中按「從 ZIP 新增」，選擇下載的 ZIP 即可加入。</p>
+<ul>
+  <li>第 1 彈：角色介紹、電影、旅行手冊、圖鑑、社群貼文風（<a href="https://mimicria.booth.pm/items/8957481">BOOTH</a>）</li>
+  <li>第 2 彈：圖畫日記、兩人的紀念日、生日・慶祝會、冬日・聖誕、更滿滿的（Milleaf 0.7.0 起，<a href="https://mimicria.booth.pm/items/8965894">BOOTH</a>）</li>
+</ul>
 </section>
 
 <section data-id="install">
@@ -1259,6 +1396,25 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </ul>
 <p class="note">操作一覽可以用右下角的「?」或 <kbd>?</kbd> 鍵叫出。會列出該畫面能做的操作與按鍵。</p>
 
+<h3>日期文字</h3>
+<p>日期文字會填入照片的拍攝日期。選擇日期文字後，可以在右邊的「格式」逐頁更改寫法。</p>
+<ul>
+  <li>除了「2026.05.23」「5/23」等，還可以選擇含星期（「5月23日（六）」等）、時間（「7:42」）、「第253天」「253天」。時間是該頁最大的照片的拍攝時間。</li>
+  <li>「第253天」「253天」從「書籍資訊」的「起始日」開始算。留空時，從書中照片最早的日期開始算。</li>
+  <li>把「書籍資訊」的「一天的分界」設為「5點」，深夜（5 點以前）拍的照片會算在前一天。圖畫日記與兩人的紀念日一開始就是 5 點。</li>
+  <li>封面與封底的日期，會填入頁面中照片最新的日期。</li>
+</ul>
+<figure class="shot"><img src="img/zh-Hant/book-info.webp" width="1920" height="1200" alt="書籍資訊。起始日與一天的分界在這裡設定" loading="lazy" decoding="async"><figcaption>書籍資訊。起始日與一天的分界在這裡設定</figcaption></figure>
+
+<h3>自己的素材</h3>
+<p>可以把手邊的圖片（PNG・JPEG・WebP・GIF・SVG・AVIF）當作裝飾使用。用上方的「裝飾」打開素材面板，從「+」選擇「從資料夾新增」或「從 ZIP 新增」。也可以把資料夾或 ZIP 拖放到面板上。</p>
+<ul>
+  <li>一個資料夾（ZIP）就是一組素材，在面板上方和「內建裝飾」切換。其中的每個資料夾會成為一個標題。</li>
+  <li>新增的圖片會複製到資料資料夾，所以原本的資料夾或 ZIP 可以刪除。</li>
+  <li>再次加入同名的素材組時，可以選擇取代或另外新增。</li>
+  <li>可以從「…」重新命名或刪除。刪除素材組後，放過該素材的頁面上也會消失。</li>
+</ul>
+
 <h3>編輯照片</h3>
 <p>按兩下框中的照片，會開啟「編輯照片」。馬賽克、裁切、調整顏色都在這裡進行。</p>
 <figure class="shot"><img src="img/zh-Hant/photo-edit.webp" width="1920" height="1200" alt="編輯照片。圈選範圍並加上馬賽克的樣子" loading="lazy" decoding="async"><figcaption>編輯照片。圈選範圍並加上馬賽克的樣子</figcaption></figure>
@@ -1286,7 +1442,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>電子書（EPUB）</th><td data-label="用途">用電子書 App 閱讀</td><td data-label="主要設定">圖片大小（手機 1200，平板 1600 以上）</td></tr>
     <tr><th>Graphic（隨需印刷）</th><td data-label="用途">在網路印刷廠 Graphic 印製冊子</td><td data-label="主要設定">騎馬釘或膠裝、紙張、書背寬度、RGB 或 CMYK</td></tr>
     <tr><th>同人誌印刷廠</th><td data-label="用途">向同人誌印刷廠交稿</td><td data-label="主要設定">裝訂方式、封面內側（表2・表3）、頁碼、PDF 或 PNG</td></tr>
-    <tr><th>VRChat 用書（Unity）</th><td data-label="用途">讓虛擬角色拿著，在 VRChat 中閱讀</td><td data-label="主要設定"><a href="#vrchat">第 6 章</a></td></tr>
+    <tr><th>VRChat 用書（Unity）</th><td data-label="用途">讓虛擬角色拿著或放在世界裡，在 VRChat 中閱讀</td><td data-label="主要設定"><a href="#vrchat">第 6 章</a></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -1304,7 +1460,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 
 <section data-id="vrchat">
 <h2><span class="n">6</span>可在 VRChat 中閱讀的書</h2>
-<p>可以匯出讓虛擬角色拿著、在 VRChat 中翻頁的書。適用於 PC 版 VRChat，不支援 Quest。</p>
+<p>可以匯出讓虛擬角色拿著、或放在世界裡，在 VRChat 中翻頁的書。適用於 PC 版 VRChat，不支援 Quest。</p>
 <figure class="shot"><img src="img/zh-Hant/export-vrchat.webp" width="1920" height="1200" alt="VRChat 用書的設定。也會顯示虛擬角色增加的容量" loading="lazy" decoding="async"><figcaption>VRChat 用書的設定。也會顯示虛擬角色增加的容量</figcaption></figure>
 
 <h3>需要的東西</h3>
@@ -1342,6 +1498,19 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>用手指翻頁</dt><dd>用手指碰觸頁面外側的邊緣即可翻頁。其他人的手指也能翻頁（要停止時，關閉「用手指翻頁」「其他人也能翻頁」）</dd>
 </dl>
 <p>在桌面模式（不用 VR）下，用「下一頁」或「選擇頁面」翻頁。</p>
+
+<h3>放在世界裡的書</h3>
+<p>在匯出的「用途」選擇「世界」，就會成為放在世界裡、來訪的人按下頁面即可翻頁的書。請匯入可以上傳世界的 Unity 專案（用 VCC 的「World」範本建立的專案），不需要 Modular Avatar。已在 VRChat SDK 3.10.5 確認可以運作。</p>
+<ul>
+  <li>開啟「翻到的頁面讓大家都看到」後，翻到的頁面會讓世界裡的所有人都看到。</li>
+  <li>開啟「可以拿在手上」後，按下頁面內側就能拿起書。拿著的時候，用「使用」（VR 為扳機，桌面模式為點擊）翻到下一頁，長按則翻回上一頁。</li>
+</ul>
+<ol class="steps">
+  <li>將匯出的 <code>.unitypackage</code> 匯入世界的專案。幾秒後書就會加上 Udon。</li>
+  <li>把 <code>Assets/Milleaf/World/（標題）_（月日）/MilleafBook.prefab</code> 拖曳到場景中，放在桌上或地板上。預製物件的位置就是書的下緣。</li>
+  <li>直接上傳。</li>
+</ol>
+<p>在世界裡，按右頁（右翻的書為左頁）翻到下一頁，按另一頁翻回上一頁。可以拿在手上的書放著翻頁時，請按頁面外側的邊緣。</p>
 </section>
 
 <section data-id="update">
@@ -1400,6 +1569,9 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 <h3>其他人無法翻頁</h3>
 <p>請在 VRChat 設定的「Avatar Interactions」中允許那個人。</p>
 
+<h3>世界裡的書無法翻頁</h3>
+<p>匯入後，請稍等書加上 Udon。如果沒有加上，請使用 Unity 選單的 Tools → Milleaf →「ワールドの本を準備し直す」（Set Up World Books）。</p>
+
 <h3>想回報問題</h3>
 <p>用應用程式右下角的對話氣泡按鈕（<kbd>F8</kbd>），可以連同該畫面的截圖留下筆記。請附上用「全部匯出到資料夾（文字 + 圖片）」產生的資料夾，透過取得 Milleaf 的商店聯絡我們。</p>
 </section>
@@ -1418,13 +1590,13 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </div>
 
 
-<div class="doc" hidden lang="zh-Hans" data-title="Milleaf 说明书" data-toc="目录" data-updated="2026年10月10日更新">
+<div class="doc" hidden lang="zh-Hans" data-title="Milleaf 说明书" data-toc="目录" data-updated="2026年10月24日更新">
 
 <div class="title">
   <img src="img/icon_128.png" alt="" width="56" height="56">
   <div>
     <h1>Milleaf 说明书</h1>
-    <p>2026年10月10日更新（Milleaf 0.6）</p>
+    <p>2026年10月24日更新（Milleaf 0.7）</p>
     <p class="maker">作者：miichan</p>
   </div>
 </div>
@@ -1450,11 +1622,11 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>OS</dt><dd>Windows 10 / 11（64 位）</dd>
   <dt>显示语言</dt><dd>日本語 / English / 한국어 / 繁體中文 / 简体中文（用右上角的地球按钮或「设置」切换）</dd>
   <dt>网络</dt><dd>不需要。不会把照片或书的内容发送到外部</dd>
-  <dt>VRChat 的书</dt><dd>只有制作可在 VRChat 中阅读的书时，才需要 Unity、VRChat SDK 和 Modular Avatar（<a href="#vrchat">第 6 章</a>）</dd>
+  <dt>VRChat 的书</dt><dd>只有制作可在 VRChat 中阅读的书时，才需要 Unity 和 VRChat SDK；让虚拟形象拿着的书还需要 Modular Avatar（<a href="#vrchat">第 6 章</a>）</dd>
 </dl>
 
 <h3>正式版和体验版</h3>
-<p>体验版免费。制作和修改书的功能与正式版相同，但导出次数以及模板的导出和添加有限制。</p>
+<p>体验版免费。制作和修改书的功能与正式版相同，但导出次数、模板的导出和添加，以及添加素材有限制。</p>
 <div class="tbl"><table>
   <thead><tr><th></th><th>正式版</th><th>体验版</th></tr></thead>
   <tbody>
@@ -1462,9 +1634,17 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>导出</th><td data-label="正式版">没有次数限制</td><td data-label="体验版">不论种类，每天最多 3 次。日期变更后恢复</td></tr>
     <tr><th>模板导出（ZIP）</th><td data-label="正式版">可以</td><td data-label="体验版">不可以</td></tr>
     <tr><th>添加模板（包含官方追加模板）</th><td data-label="正式版">可以</td><td data-label="体验版">不可以</td></tr>
+    <tr><th>添加素材（从文件夹或 ZIP）</th><td data-label="正式版">可以</td><td data-label="体验版">不可以</td></tr>
   </tbody>
 </table></div>
 <p>在体验版制作的书和模板，可以直接在正式版中打开。</p>
+
+<h3>官方追加模板</h3>
+<p>另售的模板。在书架的「模板」中点击「从 ZIP 添加」，选择下载的 ZIP 即可加入。</p>
+<ul>
+  <li>第 1 弹：角色介绍、电影、旅行手册、图鉴、社交动态风（<a href="https://mimicria.booth.pm/items/8957481">BOOTH</a>）</li>
+  <li>第 2 弹：图画日记、两人的纪念日、生日・庆祝会、冬日・圣诞、更满满的（Milleaf 0.7.0 起，<a href="https://mimicria.booth.pm/items/8965894">BOOTH</a>）</li>
+</ul>
 </section>
 
 <section data-id="install">
@@ -1562,6 +1742,25 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 </ul>
 <p class="note">操作一览可以用右下角的「?」或 <kbd>?</kbd> 键调出。会列出该画面能做的操作和按键。</p>
 
+<h3>日期文字</h3>
+<p>日期文字会填入照片的拍摄日期。选择日期文字后，可以在右侧的「格式」逐页更改写法。</p>
+<ul>
+  <li>除了「2026.05.23」「5/23」等，还可以选择含星期（「5月23日（六）」等）、时间（「7:42」）、「第253天」「253天」。时间是该页最大的照片的拍摄时间。</li>
+  <li>「第253天」「253天」从「书籍信息」的「起始日」开始算。留空时，从书中照片最早的日期开始算。</li>
+  <li>把「书籍信息」的「一天的分界」设为「5点」，深夜（5 点以前）拍的照片会算在前一天。图画日记和两人的纪念日一开始就是 5 点。</li>
+  <li>封面和封底的日期，会填入页面中照片最新的日期。</li>
+</ul>
+<figure class="shot"><img src="img/zh-Hans/book-info.webp" width="1920" height="1200" alt="书籍信息。起始日和一天的分界在这里设置" loading="lazy" decoding="async"><figcaption>书籍信息。起始日和一天的分界在这里设置</figcaption></figure>
+
+<h3>自己的素材</h3>
+<p>可以把手边的图片（PNG・JPEG・WebP・GIF・SVG・AVIF）当作装饰使用。用上方的「装饰」打开素材面板，从「+」选择「从文件夹添加」或「从 ZIP 添加」。也可以把文件夹或 ZIP 拖放到面板上。</p>
+<ul>
+  <li>一个文件夹（ZIP）就是一组素材，在面板上方和「内置装饰」切换。其中的每个文件夹会成为一个标题。</li>
+  <li>添加的图片会复制到数据文件夹，所以原来的文件夹或 ZIP 可以删除。</li>
+  <li>再次加入同名的素材组时，可以选择替换或另外添加。</li>
+  <li>可以从「…」重命名或删除。删除素材组后，放过该素材的页面上也会消失。</li>
+</ul>
+
 <h3>编辑照片</h3>
 <p>双击框中的照片，会打开「编辑照片」。马赛克、裁剪、调整颜色都在这里进行。</p>
 <figure class="shot"><img src="img/zh-Hans/photo-edit.webp" width="1920" height="1200" alt="编辑照片。圈选范围并加上马赛克的样子" loading="lazy" decoding="async"><figcaption>编辑照片。圈选范围并加上马赛克的样子</figcaption></figure>
@@ -1589,7 +1788,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
     <tr><th>电子书（EPUB）</th><td data-label="用途">用电子书 App 阅读</td><td data-label="主要设置">图片大小（手机 1200，平板 1600 以上）</td></tr>
     <tr><th>Graphic（按需印刷）</th><td data-label="用途">在网络印刷厂 Graphic 印制册子</td><td data-label="主要设置">骑马钉或胶装、纸张、书脊宽度、RGB 或 CMYK</td></tr>
     <tr><th>同人志印刷厂</th><td data-label="用途">向同人志印刷厂交稿</td><td data-label="主要设置">装订方式、封面内侧（表2・表3）、页码、PDF 或 PNG</td></tr>
-    <tr><th>VRChat 用书（Unity）</th><td data-label="用途">让虚拟形象拿着，在 VRChat 中阅读</td><td data-label="主要设置"><a href="#vrchat">第 6 章</a></td></tr>
+    <tr><th>VRChat 用书（Unity）</th><td data-label="用途">让虚拟形象拿着或放在世界里，在 VRChat 中阅读</td><td data-label="主要设置"><a href="#vrchat">第 6 章</a></td></tr>
   </tbody>
 </table></div>
 <ul>
@@ -1607,7 +1806,7 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 
 <section data-id="vrchat">
 <h2><span class="n">6</span>可在 VRChat 中阅读的书</h2>
-<p>可以导出让虚拟形象拿着、在 VRChat 中翻页的书。适用于 PC 版 VRChat，不支持 Quest。</p>
+<p>可以导出让虚拟形象拿着、或放在世界里，在 VRChat 中翻页的书。适用于 PC 版 VRChat，不支持 Quest。</p>
 <figure class="shot"><img src="img/zh-Hans/export-vrchat.webp" width="1920" height="1200" alt="VRChat 用书的设置。也会显示虚拟形象增加的容量" loading="lazy" decoding="async"><figcaption>VRChat 用书的设置。也会显示虚拟形象增加的容量</figcaption></figure>
 
 <h3>需要的东西</h3>
@@ -1645,6 +1844,19 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
   <dt>用手指翻页</dt><dd>用手指触碰页面外侧的边缘即可翻页。其他人的手指也能翻页（要停止时，关闭「用手指翻页」「其他人也能翻页」）</dd>
 </dl>
 <p>在桌面模式（不用 VR）下，用「下一页」或「选择页面」翻页。</p>
+
+<h3>放在世界里的书</h3>
+<p>在导出的「用途」中选择「世界」，就会成为放在世界里、来访的人按下页面即可翻页的书。请导入可以上传世界的 Unity 项目（用 VCC 的「World」模板创建的项目），不需要 Modular Avatar。已在 VRChat SDK 3.10.5 确认可以运行。</p>
+<ul>
+  <li>打开「翻到的页面让大家都看到」后，翻到的页面会让世界里的所有人都看到。</li>
+  <li>打开「可以拿在手上」后，按下页面内侧就能拿起书。拿着的时候，用「使用」（VR 为扳机，桌面模式为点击）翻到下一页，长按则翻回上一页。</li>
+</ul>
+<ol class="steps">
+  <li>将导出的 <code>.unitypackage</code> 导入世界的项目。几秒后书就会加上 Udon。</li>
+  <li>把 <code>Assets/Milleaf/World/（标题）_（月日）/MilleafBook.prefab</code> 拖到场景中，放在桌上或地板上。预制件的位置就是书的下边缘。</li>
+  <li>直接上传。</li>
+</ol>
+<p>在世界里，按右页（右翻的书为左页）翻到下一页，按另一页翻回上一页。可以拿在手上的书放着翻页时，请按页面外侧的边缘。</p>
 </section>
 
 <section data-id="update">
@@ -1702,6 +1914,9 @@ pre.terms-text { margin: 0; max-width: 46em; white-space: pre-wrap; font: inheri
 
 <h3>其他人无法翻页</h3>
 <p>请在 VRChat 设置的「Avatar Interactions」中允许那个人。</p>
+
+<h3>世界里的书无法翻页</h3>
+<p>导入后，请稍等书加上 Udon。如果没有加上，请使用 Unity 菜单的 Tools → Milleaf →「ワールドの本を準備し直す」（Set Up World Books）。</p>
 
 <h3>想反馈问题</h3>
 <p>用应用右下角的对话气泡按钮（<kbd>F8</kbd>），可以连同该画面的截图留下笔记。请附上用「全部导出到文件夹（文字 + 图片）」生成的文件夹，通过获得 Milleaf 的商店联系我们。</p>

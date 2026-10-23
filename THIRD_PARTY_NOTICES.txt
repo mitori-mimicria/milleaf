@@ -1,13 +1,13 @@
 ==============================================================================
-Milleaf 0.6.8 - Third-party software notices
+Milleaf 0.7.0 - Third-party software notices
 ==============================================================================
 
 Milleaf includes the third-party software listed below. Each component is
 licensed under its own license, reproduced or referenced here. Nothing in the
 Milleaf terms of use restricts the rights granted by these licenses.
 
-Milleaf に含まれるサードパーティのソフトウェアとフォントの一覧と、そのライセンスです。
-各ライセンスが Milleaf の利用規約より優先します。
+Milleafに含まれるサードパーティのソフトウェアとフォントの一覧と、そのライセンスです。
+各ライセンスがMilleafの利用規約より優先します。
 
 Contents
   1. Electron and Chromium
@@ -27,8 +27,8 @@ Copyright (c) 2013-2020 GitHub Inc.
 The Electron license is in LICENSE.electron.txt, and the licenses of Chromium and
 the libraries it includes (such as FFmpeg, LGPL-2.1) are in LICENSES.chromium.html.
 Both files are in the Milleaf folder (next to Milleaf.exe).
-Electron のライセンスは LICENSE.electron.txt、Chromium と同梱ライブラリ（FFmpeg など）の
-ライセンスは LICENSES.chromium.html にあります（どちらも Milleaf.exe と同じフォルダ）。
+ElectronのライセンスはLICENSE.electron.txt、Chromiumと同梱ライブラリ（FFmpegなど）の
+ライセンスはLICENSES.chromium.htmlにあります（どちらもMilleaf.exeと同じフォルダ）。
 
 ffmpeg.dll is the Chromium build of FFmpeg (LGPL-2.1), dynamically linked and replaceable.
 Milleaf ships the build without proprietary codecs (no H.264 or AAC decoders) that Electron
@@ -75,7 +75,7 @@ file headers of each source archive):
   GNU FriBidi 1.0.16 - Copyright (C) the GNU FriBidi authors
   proxy-libintl 0.5 - Copyright (C) the proxy-libintl authors
 
-libvips（LGPL-3.0）などの DLL は差し替えられる形で同梱しています。ソースの入手先は上記のとおりです。
+libvips（LGPL-3.0）などのDLLは差し替えられる形で同梱しています。ソースの入手先は上記のとおりです。
 リンクから入手できなくなったときは、入手したお店からご連絡ください。同じ版のソース一式をお渡しします。
 
 Library           Version     License
@@ -3575,8 +3575,8 @@ Milleaf modified (fixed to weights 400 and 700, and subset to the characters the
 no Reserved Font Name is used).
 They are licensed under the SIL Open Font License, Version 1.1 (full text below).
 Text rendered with these fonts into PDFs, images and textures is not covered by the OFL.
-アプリに同梱しているフォントです（Fontsource が配布する WOFF2 のサブセット、韓国語の書体は Google Fonts の TTF をそのまま、
-Noto Sans SC・Noto Serif SC・Noto Sans は Google Fonts の書体を Milleaf が改変: 太さ 400 と 700 に固定し、同梱の日本語の書体に無い字だけに絞った。予約名は使っていない）。ライセンスは SIL OFL 1.1。
+アプリに同梱しているフォントです（Fontsourceが配布するWOFF2のサブセット、韓国語の書体はGoogle FontsのTTFをそのまま、
+Noto Sans SC・Noto Serif SC・Noto SansはGoogle Fontsの書体をMilleafが改変：太さ400と700に固定し、同梱の日本語の書体に無い字だけに絞った。予約名は使っていない）。ライセンスはSIL OFL 1.1。
 
 bodoni-moda (@fontsource/bodoni-moda 5.3.0)
   Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)
@@ -3777,6 +3777,6 @@ resources/icc/JapanColor2001Coated.icc - "Japan Color 2001 Coated"
   Adobe provides the profile "as is". Adobe makes no warranties and has no liability for damages relating to
   its use; any terms that differ from the Adobe license are offered by the Milleaf author alone, not by Adobe.
   The profile is also available from Adobe: https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html
-印刷所入稿の CMYK 変換に使う ICC プロファイルです。Adobe の同梱用ライセンスにより、改変せずに同梱しています。
-Adobe はこのプロファイルについて何も保証せず、使用による損害の責任を負いません。
-Adobe のサイト（上の URL）からも入手できます。
+印刷所入稿のCMYK変換に使うICCプロファイルです。Adobeの同梱用ライセンスにより、改変せずに同梱しています。
+Adobeはこのプロファイルについて何も保証せず、使用による損害の責任を負いません。
+Adobeのサイト（上のURL）からも入手できます。
